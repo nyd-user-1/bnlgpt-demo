@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+import { ArrowUp } from "lucide-react";
 import type { NsrRecord } from "@/types/nsr";
 
 interface NsrRecordCardProps {
@@ -5,8 +7,37 @@ interface NsrRecordCardProps {
 }
 
 export function NsrRecordCard({ record }: NsrRecordCardProps) {
+  const navigate = useNavigate();
+
+  const handleSendToChat = (e: React.MouseEvent) => {
+    e.stopPropagation();
+
+    const prompt = `Tell me about "${record.title}"${
+      record.authors ? ` by ${record.authors}` : ""
+    }. What is the significance of this research?`;
+
+    const context = [
+      `Title: ${record.title}`,
+      record.authors ? `Authors: ${record.authors}` : null,
+      `Key Number: ${record.key_number}`,
+      `Year: ${record.pub_year}`,
+      record.reference ? `Reference: ${record.reference}` : null,
+      record.doi ? `DOI: ${record.doi}` : null,
+      record.keywords ? `Keywords: ${record.keywords}` : null,
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    const url = record.doi ? `https://doi.org/${record.doi}` : "";
+
+    const params = new URLSearchParams({ prompt, context });
+    if (url) params.set("url", url);
+
+    navigate(`/?${params.toString()}`);
+  };
+
   return (
-    <div className="rounded-lg border bg-card p-5 transition-shadow hover:shadow-md">
+    <div className="relative rounded-lg border bg-card p-5 transition-shadow hover:shadow-md">
       {/* Top row: BNL logo + key number */}
       <div className="flex items-center gap-2 mb-3">
         <img
@@ -70,6 +101,15 @@ export function NsrRecordCard({ record }: NsrRecordCardProps) {
           </div>
         )}
       </div>
+
+      {/* Send to chat button */}
+      <button
+        onClick={handleSendToChat}
+        className="absolute bottom-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-foreground text-background shadow-lg transition-transform hover:scale-110"
+        title="Ask NSRgpt about this reference"
+      >
+        <ArrowUp className="h-4 w-4" />
+      </button>
     </div>
   );
 }
