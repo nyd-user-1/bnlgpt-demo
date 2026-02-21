@@ -18,7 +18,7 @@ function SourcesSection({ sources }: { sources: MessageSources }) {
   if (totalCount === 0) return null;
 
   return (
-    <div className="mt-3 border rounded-lg overflow-hidden">
+    <div className="mt-3 mb-4 border rounded-lg overflow-hidden">
       <button
         onClick={() => setOpen(!open)}
         className="flex w-full items-center gap-2 px-3 py-2 text-xs font-medium text-muted-foreground hover:bg-muted/50 transition-colors"
@@ -26,7 +26,7 @@ function SourcesSection({ sources }: { sources: MessageSources }) {
         <ChevronDown
           className={`h-3.5 w-3.5 transition-transform ${open ? "rotate-180" : ""}`}
         />
-        Show {totalCount} source{totalCount !== 1 ? "s" : ""}
+        {open ? "Hide" : "Show"} {totalCount} source{totalCount !== 1 ? "s" : ""}
       </button>
 
       {open && (
@@ -39,30 +39,35 @@ function SourcesSection({ sources }: { sources: MessageSources }) {
                 NSR Records
               </p>
               <div className="space-y-1.5">
-                {sources.nsr.map((r) => (
-                  <div
-                    key={r.key_number}
-                    className="flex items-start gap-2 text-xs rounded-md bg-muted/30 px-2.5 py-1.5"
-                  >
-                    <span className="font-mono font-bold text-foreground shrink-0">
-                      {r.key_number}
-                    </span>
-                    <span className="text-muted-foreground truncate flex-1">
-                      {r.title}
-                    </span>
-                    {r.doi && (
-                      <a
-                        href={`https://doi.org/${r.doi}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="shrink-0 text-blue-500 hover:text-blue-600"
-                        title="Open DOI"
-                      >
-                        <ExternalLink className="h-3 w-3" />
-                      </a>
-                    )}
-                  </div>
-                ))}
+                {sources.nsr.map((r) => {
+                  const href = r.doi
+                    ? `https://doi.org/${r.doi}`
+                    : undefined;
+                  const Row = href ? "a" : "div";
+                  return (
+                    <Row
+                      key={r.key_number}
+                      {...(href
+                        ? {
+                            href,
+                            target: "_blank",
+                            rel: "noopener noreferrer",
+                          }
+                        : {})}
+                      className="flex items-start gap-2 text-xs rounded-md bg-muted/30 px-2.5 py-1.5 transition-colors hover:bg-muted/60 cursor-pointer"
+                    >
+                      <span className="font-mono font-bold text-foreground shrink-0">
+                        {r.key_number}
+                      </span>
+                      <span className="text-muted-foreground truncate flex-1">
+                        {r.title}
+                      </span>
+                      {href && (
+                        <ExternalLink className="h-3 w-3 shrink-0 text-muted-foreground/70" />
+                      )}
+                    </Row>
+                  );
+                })}
               </div>
             </div>
           )}
@@ -75,32 +80,34 @@ function SourcesSection({ sources }: { sources: MessageSources }) {
                 Semantic Scholar
               </p>
               <div className="space-y-1.5">
-                {sources.s2.map((p, i) => (
-                  <div
-                    key={i}
-                    className="flex items-start gap-2 text-xs rounded-md bg-muted/30 px-2.5 py-1.5"
-                  >
-                    <div className="flex-1 min-w-0">
-                      <span className="text-foreground font-medium line-clamp-1">
-                        {p.title}
-                      </span>
-                      <span className="text-muted-foreground block truncate">
-                        {p.authors} &middot; {p.citations} citations
-                      </span>
-                    </div>
-                    {p.url && (
-                      <a
-                        href={p.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="shrink-0 text-blue-500 hover:text-blue-600"
-                        title="Open on Semantic Scholar"
-                      >
-                        <ExternalLink className="h-3 w-3" />
-                      </a>
-                    )}
-                  </div>
-                ))}
+                {sources.s2.map((p, i) => {
+                  const Row = p.url ? "a" : "div";
+                  return (
+                    <Row
+                      key={i}
+                      {...(p.url
+                        ? {
+                            href: p.url,
+                            target: "_blank",
+                            rel: "noopener noreferrer",
+                          }
+                        : {})}
+                      className="flex items-start gap-2 text-xs rounded-md bg-muted/30 px-2.5 py-1.5 transition-colors hover:bg-muted/60 cursor-pointer"
+                    >
+                      <div className="flex-1 min-w-0">
+                        <span className="text-foreground font-medium line-clamp-1">
+                          {p.title}
+                        </span>
+                        <span className="text-muted-foreground block truncate">
+                          {p.authors} &middot; {p.citations} citations
+                        </span>
+                      </div>
+                      {p.url && (
+                        <ExternalLink className="h-3 w-3 shrink-0 text-muted-foreground/70 mt-0.5" />
+                      )}
+                    </Row>
+                  );
+                })}
               </div>
             </div>
           )}
