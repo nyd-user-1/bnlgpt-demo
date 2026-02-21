@@ -4,7 +4,6 @@ import { Toaster } from "sonner";
 import { AppLayout } from "@/layouts/AppLayout";
 import Chat from "@/pages/Chat";
 import References from "@/pages/References";
-import ReferenceDetail from "@/pages/ReferenceDetail";
 import Resources from "@/pages/Resources";
 
 const queryClient = new QueryClient();
@@ -18,7 +17,6 @@ function App() {
             <Route path="/" element={<Chat />} />
             <Route path="/c/:sessionId" element={<Chat />} />
             <Route path="/references" element={<References />} />
-            <Route path="/r/:keyNumber" element={<ReferenceDetail />} />
             <Route path="/resources" element={<Resources />} />
           </Route>
         </Routes>

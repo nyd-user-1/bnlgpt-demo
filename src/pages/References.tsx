@@ -1,5 +1,5 @@
 import { useState, useDeferredValue, useMemo, useRef, useEffect } from "react";
-import { ArrowUpDown, ChevronDown, FlaskConical } from "lucide-react";
+import { ArrowUpDown, ChevronDown } from "lucide-react";
 import { SearchInput } from "@/components/SearchInput";
 import { NsrRecordCard } from "@/components/NsrRecordCard";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -100,7 +100,6 @@ function getUniqueValues(records: NsrRecord[], field: "reference"): string[] {
 export default function References() {
   const [query, setQuery] = useState("");
   const [yearFilter, setYearFilter] = useState<string | null>(null);
-  const [exforOnly, setExforOnly] = useState(false);
   const [referenceFilter, setReferenceFilter] = useState<string | null>(null);
   const [authorsSortAsc, setAuthorsSortAsc] = useState<boolean | null>(null);
   const deferredQuery = useDeferredValue(query);
@@ -108,7 +107,6 @@ export default function References() {
   const search = useNsrSearch(deferredQuery);
   const browse = useNsrRecords({
     year: yearFilter ? Number(yearFilter) : undefined,
-    exforOnly,
   });
 
   const isSearching = deferredQuery.length >= 3;
@@ -158,17 +156,6 @@ export default function References() {
           value={yearFilter}
           onChange={setYearFilter}
         />
-        <button
-          onClick={() => setExforOnly((v) => !v)}
-          className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm transition-colors ${
-            exforOnly
-              ? "bg-foreground text-background font-medium"
-              : "text-muted-foreground hover:bg-muted hover:text-foreground"
-          }`}
-        >
-          <FlaskConical className="h-3.5 w-3.5" />
-          Exp. Data
-        </button>
         <FilterDropdown
           label="Reference"
           options={referenceOptions}
@@ -220,7 +207,7 @@ export default function References() {
       )}
 
       {/* Empty state */}
-      {records && records.length === 0 && (isSearching || yearFilter || referenceFilter || exforOnly) && (
+      {records && records.length === 0 && (isSearching || yearFilter || referenceFilter) && (
         <p className="text-center text-muted-foreground py-12">
           No matching records found. Try a different query or clear filters.
         </p>

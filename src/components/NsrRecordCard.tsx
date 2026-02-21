@@ -39,8 +39,7 @@ export const NsrRecordCard = memo(function NsrRecordCard({ record }: NsrRecordCa
 
   return (
     <div
-      onClick={() => navigate(`/r/${record.key_number}`)}
-      className="group relative rounded-lg border bg-muted/40 p-6 min-h-[220px] transition-shadow hover:shadow-lg cursor-pointer"
+      className="group relative rounded-lg border bg-muted/40 p-6 pb-16 min-h-[280px] transition-shadow hover:shadow-lg"
     >
       {/* Top row: BNL logo + key number + year */}
       <div className="flex items-center gap-2 mb-3">
