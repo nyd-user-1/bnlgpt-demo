@@ -39,7 +39,7 @@ export const NsrRecordCard = memo(function NsrRecordCard({ record }: NsrRecordCa
 
   return (
     <div
-      className="group relative flex flex-col rounded-lg border bg-muted/40 p-6 pb-16 min-h-[280px] transition-shadow hover:shadow-lg"
+      className="group relative rounded-lg border bg-muted/40 p-6 pb-16 min-h-[280px] transition-shadow hover:shadow-lg"
     >
       {/* Top row: BNL logo + key number + year */}
       <div className="flex items-center gap-2 mb-3">
@@ -59,8 +59,9 @@ export const NsrRecordCard = memo(function NsrRecordCard({ record }: NsrRecordCa
         {record.title}
       </p>
 
-      {/* Metadata: Authors + Reference */}
+      {/* Metadata grid */}
       <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
+        {/* Row 1: Authors (col-span-2) */}
         {record.authors && (
           <div className="col-span-2">
             <span className="text-muted-foreground">Authors</span>
@@ -68,61 +69,63 @@ export const NsrRecordCard = memo(function NsrRecordCard({ record }: NsrRecordCa
           </div>
         )}
 
+        {/* Row 2: Reference (col-span-2) */}
         {record.reference && (
           <div className="col-span-2">
             <span className="text-muted-foreground">Reference</span>
             <p className="font-medium truncate">{record.reference}</p>
           </div>
         )}
-      </div>
 
-      {/* DOI + EXFOR pushed to bottom */}
-      {(record.doi || record.exfor_keys) && (
-        <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs mt-auto pt-3">
-          <div>
-            {record.doi && (
-              <>
-                <span className="text-muted-foreground">DOI</span>
-                <p className="font-medium">
-                  <a
-                    href={`https://doi.org/${record.doi}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={(e) => e.stopPropagation()}
-                    className="text-nuclear hover:underline"
-                  >
-                    {record.doi}
-                  </a>
-                </p>
-              </>
-            )}
-          </div>
-          <div>
-            {(() => {
-              const keys = record.exfor_keys
-                ? record.exfor_keys.split(";").map((k) => k.trim()).filter(Boolean)
-                : [];
-              if (keys.length === 0) return null;
-              return (
+        {/* Row 3: DOI (col 1) | EXFOR badges (col 2) */}
+        {(record.doi || record.exfor_keys) && (
+          <>
+            <div>
+              {record.doi && (
                 <>
-                  <span className="text-muted-foreground">EXFOR</span>
-                  <div className="flex flex-wrap gap-1.5 mt-0.5">
-                    {keys.map((k) => (
-                      <span
-                        key={k}
-                        className="inline-flex items-center gap-1 rounded-full bg-nuclear/10 px-2 py-0.5 text-[11px] font-medium text-nuclear"
-                      >
-                        <FlaskConical className="h-3 w-3" />
-                        {k}
-                      </span>
-                    ))}
-                  </div>
+                  <span className="text-muted-foreground">DOI</span>
+                  <p className="font-medium">
+                    <a
+                      href={`https://doi.org/${record.doi}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="text-nuclear hover:underline"
+                    >
+                      {record.doi}
+                    </a>
+                  </p>
                 </>
-              );
-            })()}
-          </div>
-        </div>
-      )}
+              )}
+            </div>
+            <div>
+              {(() => {
+                const keys = record.exfor_keys
+                  ? record.exfor_keys.split(";").map((k) => k.trim()).filter(Boolean)
+                  : [];
+                if (keys.length === 0) return null;
+                return (
+                  <>
+                    <span className="text-muted-foreground">EXFOR</span>
+                    <div className="flex flex-wrap gap-1.5 mt-0.5">
+                      {keys.map((k) => (
+                        <span
+                          key={k}
+                          className="inline-flex items-center gap-1 rounded-full bg-nuclear/10 px-2 py-0.5 text-[11px] font-medium text-nuclear"
+                        >
+                          <FlaskConical className="h-3 w-3" />
+                          {k}
+                        </span>
+                      ))}
+                    </div>
+                  </>
+                );
+              })()}
+            </div>
+          </>
+        )}
+
+      </div>
 
       {/* Send to chat button */}
       <button
