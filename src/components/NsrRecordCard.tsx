@@ -131,7 +131,7 @@ export const NsrRecordCard = memo(function NsrRecordCard({ record }: NsrRecordCa
       <button
         onClick={handleSendToChat}
         className="absolute bottom-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-foreground text-background shadow-lg transition-all hover:scale-110 opacity-0 group-hover:opacity-100"
-        title="Ask NSRgpt about this reference"
+        title="Ask BNLgpt about this reference"
       >
         <ArrowUp className="h-4 w-4" />
       </button>

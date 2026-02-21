@@ -46,7 +46,7 @@ export default function Chat() {
       setAutoSubmitted(true);
 
       let systemContext =
-        "You are NSRgpt, an AI research assistant specializing in nuclear science. " +
+        "You are BNLgpt, an AI research assistant specializing in nuclear science. " +
         "You help researchers explore Nuclear Science References (NSR) from the " +
         "National Nuclear Data Center (NNDC) at Brookhaven National Laboratory.";
 
