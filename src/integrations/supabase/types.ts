@@ -22,6 +22,25 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["nsr"]["Insert"]>;
         Relationships: [];
       };
+      exfor_entries: {
+        Row: {
+          exfor_id: string;
+          title: string | null;
+          doi: string | null;
+          targets: string[] | null;
+          processes: string[] | null;
+          observables: string[] | null;
+          year: number | null;
+          facility: string | null;
+          num_datasets: number | null;
+          created_at: string;
+        };
+        Insert: Omit<Database["public"]["Tables"]["exfor_entries"]["Row"], "created_at"> & {
+          created_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["exfor_entries"]["Insert"]>;
+        Relationships: [];
+      };
       chat_sessions: {
         Row: {
           id: string;

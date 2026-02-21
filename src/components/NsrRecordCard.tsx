@@ -1,13 +1,14 @@
 import { memo } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowUp } from "lucide-react";
+import { ArrowUp, FlaskConical } from "lucide-react";
 import type { NsrRecord } from "@/types/nsr";
 
 interface NsrRecordCardProps {
   record: NsrRecord;
+  abstract?: string | null;
 }
 
-export const NsrRecordCard = memo(function NsrRecordCard({ record }: NsrRecordCardProps) {
+export const NsrRecordCard = memo(function NsrRecordCard({ record, abstract }: NsrRecordCardProps) {
   const navigate = useNavigate();
 
   const handleSendToChat = (e: React.MouseEvent) => {
@@ -38,8 +39,11 @@ export const NsrRecordCard = memo(function NsrRecordCard({ record }: NsrRecordCa
   };
 
   return (
-    <div className="group relative rounded-lg border bg-card p-5 transition-shadow hover:shadow-md">
-      {/* Top row: BNL logo + key number */}
+    <div
+      onClick={() => navigate(`/r/${record.key_number}`)}
+      className="group relative rounded-lg border bg-card p-5 transition-shadow hover:shadow-md cursor-pointer"
+    >
+      {/* Top row: BNL logo + key number + year */}
       <div className="flex items-center gap-2 mb-3">
         <img
           src="/bnl-logo.png"
@@ -47,56 +51,92 @@ export const NsrRecordCard = memo(function NsrRecordCard({ record }: NsrRecordCa
           className="h-6 w-6 rounded-full object-cover"
         />
         <span className="text-base font-bold">{record.key_number}</span>
+        <span className="ml-auto text-sm font-medium text-muted-foreground">
+          {record.pub_year}
+        </span>
       </div>
 
       {/* Title */}
-      <p className="text-sm text-foreground leading-snug mb-4 line-clamp-2">
+      <p className="text-sm text-foreground leading-snug mb-3 line-clamp-2">
         {record.title}
       </p>
 
+      {/* Abstract */}
+      {abstract && (
+        <p className="text-xs text-muted-foreground leading-relaxed mb-3 line-clamp-3">
+          {abstract}
+        </p>
+      )}
+
       {/* Metadata grid */}
       <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
+        {/* Row 1: Authors (col-span-2) */}
         {record.authors && (
-          <>
-            <div>
-              <span className="text-muted-foreground">Authors</span>
-              <p className="font-medium truncate">{record.authors}</p>
-            </div>
-            <div>
-              <span className="text-muted-foreground">Year</span>
-              <p className="font-medium">{record.pub_year}</p>
-            </div>
-          </>
-        )}
-        {!record.authors && (
           <div className="col-span-2">
-            <span className="text-muted-foreground">Year</span>
-            <p className="font-medium">{record.pub_year}</p>
+            <span className="text-muted-foreground">Authors</span>
+            <p className="font-medium truncate">{record.authors}</p>
           </div>
         )}
+
+        {/* Row 2: Reference (col-span-2) */}
         {record.reference && (
           <div className="col-span-2">
             <span className="text-muted-foreground">Reference</span>
             <p className="font-medium truncate">{record.reference}</p>
           </div>
         )}
-        {record.doi && (
-          <div className="col-span-2">
-            <span className="text-muted-foreground">DOI</span>
-            <p className="font-medium">
-              <a
-                href={`https://doi.org/${record.doi}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-nuclear hover:underline"
-              >
-                {record.doi}
-              </a>
-            </p>
-          </div>
+
+        {/* Row 3: DOI (col 1) | EXFOR badges (col 2) */}
+        {(record.doi || record.exfor_keys) && (
+          <>
+            <div>
+              {record.doi && (
+                <>
+                  <span className="text-muted-foreground">DOI</span>
+                  <p className="font-medium">
+                    <a
+                      href={`https://doi.org/${record.doi}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="text-nuclear hover:underline"
+                    >
+                      {record.doi}
+                    </a>
+                  </p>
+                </>
+              )}
+            </div>
+            <div>
+              {(() => {
+                const keys = record.exfor_keys
+                  ? record.exfor_keys.split(";").map((k) => k.trim()).filter(Boolean)
+                  : [];
+                if (keys.length === 0) return null;
+                return (
+                  <>
+                    <span className="text-muted-foreground">EXFOR</span>
+                    <div className="flex flex-wrap gap-1.5 mt-0.5">
+                      {keys.map((k) => (
+                        <span
+                          key={k}
+                          className="inline-flex items-center gap-1 rounded-full bg-nuclear/10 px-2 py-0.5 text-[11px] font-medium text-nuclear"
+                        >
+                          <FlaskConical className="h-3 w-3" />
+                          {k}
+                        </span>
+                      ))}
+                    </div>
+                  </>
+                );
+              })()}
+            </div>
+          </>
         )}
+
+        {/* Row 4: Keywords (col-span-2) */}
         {record.keywords && (
-          <div className="col-span-2 max-w-[calc(100%-3rem)]">
+          <div className="col-span-2 max-w-[320px]">
             <span className="text-muted-foreground">Keywords</span>
             <p className="font-medium truncate">{record.keywords}</p>
           </div>
