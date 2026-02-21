@@ -27,12 +27,12 @@ export default function Chat() {
     }
   }, [routeSessionId, sessionLoaded, loadSession]);
 
-  // Update URL when session is created
+  // Update URL when session is created (without remounting)
   useEffect(() => {
-    if (sessionId && !routeSessionId && messages.length > 0) {
-      navigate(`/c/${sessionId}`, { replace: true });
+    if (sessionId && !routeSessionId && messages.length > 0 && !isLoading) {
+      window.history.replaceState(null, "", `/c/${sessionId}`);
     }
-  }, [sessionId, routeSessionId, messages.length, navigate]);
+  }, [sessionId, routeSessionId, messages.length, isLoading]);
 
   // Auto-submit from URL params (from reference card click)
   useEffect(() => {

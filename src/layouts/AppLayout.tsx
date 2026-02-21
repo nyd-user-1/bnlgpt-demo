@@ -8,22 +8,20 @@ export function AppLayout() {
   const navigate = useNavigate();
 
   return (
-    <div className="flex h-screen overflow-hidden bg-background">
-      <Sidebar isOpen={sidebarOpen} onToggle={() => setSidebarOpen(false)} />
+    <div className="flex h-screen bg-background p-4">
+      <Sidebar isOpen={sidebarOpen} />
 
-      {/* Main content */}
-      <div className="flex flex-1 flex-col min-w-0">
-        {/* Top bar — matches NYSgpt: no border, hover states */}
-        <div className="flex items-center justify-between px-4 py-3 bg-background flex-shrink-0">
-          {/* Left: hamburger */}
+      {/* App wrapper — rounded border container */}
+      <div className="flex flex-1 flex-col min-w-0 rounded-xl border bg-background overflow-hidden">
+        {/* Top bar — inside the wrapper */}
+        <div className="flex items-center justify-between px-4 py-3 flex-shrink-0">
           <button
-            onClick={() => setSidebarOpen(true)}
+            onClick={() => setSidebarOpen((o) => !o)}
             className="inline-flex items-center justify-center h-10 w-10 rounded-md text-foreground hover:bg-muted transition-colors"
           >
             <List className="h-5 w-5" />
           </button>
 
-          {/* Right: NSRgpt with hover */}
           <button
             onClick={() => navigate("/")}
             className="inline-flex items-center justify-center h-10 rounded-md px-3 text-foreground hover:bg-muted transition-colors font-semibold text-xl"

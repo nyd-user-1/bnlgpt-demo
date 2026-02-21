@@ -1,4 +1,5 @@
 import ReactMarkdown from "react-markdown";
+import { ChatResponseFooter } from "./ChatResponseFooter";
 
 interface ChatMessageProps {
   role: "user" | "assistant";
@@ -77,6 +78,7 @@ export function ChatMessage({ role, content, isStreaming }: ChatMessageProps) {
           <span className="inline-block w-1.5 h-4 bg-foreground animate-pulse" />
         )}
       </div>
+      <ChatResponseFooter content={content} isStreaming={isStreaming} />
     </div>
   );
 }

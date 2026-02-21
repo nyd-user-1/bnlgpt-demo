@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowUp } from "lucide-react";
 import type { NsrRecord } from "@/types/nsr";
@@ -6,7 +7,7 @@ interface NsrRecordCardProps {
   record: NsrRecord;
 }
 
-export function NsrRecordCard({ record }: NsrRecordCardProps) {
+export const NsrRecordCard = memo(function NsrRecordCard({ record }: NsrRecordCardProps) {
   const navigate = useNavigate();
 
   const handleSendToChat = (e: React.MouseEvent) => {
@@ -37,7 +38,7 @@ export function NsrRecordCard({ record }: NsrRecordCardProps) {
   };
 
   return (
-    <div className="relative rounded-lg border bg-card p-5 transition-shadow hover:shadow-md">
+    <div className="group relative rounded-lg border bg-card p-5 transition-shadow hover:shadow-md">
       {/* Top row: BNL logo + key number */}
       <div className="flex items-center gap-2 mb-3">
         <img
@@ -49,7 +50,7 @@ export function NsrRecordCard({ record }: NsrRecordCardProps) {
       </div>
 
       {/* Title */}
-      <p className="text-sm text-foreground leading-snug mb-4 line-clamp-3">
+      <p className="text-sm text-foreground leading-snug mb-4 line-clamp-2">
         {record.title}
       </p>
 
@@ -95,7 +96,7 @@ export function NsrRecordCard({ record }: NsrRecordCardProps) {
           </div>
         )}
         {record.keywords && (
-          <div className="col-span-2">
+          <div className="col-span-2 max-w-[calc(100%-3rem)]">
             <span className="text-muted-foreground">Keywords</span>
             <p className="font-medium truncate">{record.keywords}</p>
           </div>
@@ -105,11 +106,11 @@ export function NsrRecordCard({ record }: NsrRecordCardProps) {
       {/* Send to chat button */}
       <button
         onClick={handleSendToChat}
-        className="absolute bottom-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-foreground text-background shadow-lg transition-transform hover:scale-110"
+        className="absolute bottom-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-foreground text-background shadow-lg transition-all hover:scale-110 opacity-0 group-hover:opacity-100"
         title="Ask NSRgpt about this reference"
       >
         <ArrowUp className="h-4 w-4" />
       </button>
     </div>
   );
-}
+});

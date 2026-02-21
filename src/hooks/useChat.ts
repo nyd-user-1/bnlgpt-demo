@@ -28,6 +28,8 @@ export function useChat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
+  const messagesRef = useRef<Message[]>([]);
+  messagesRef.current = messages;
   const persistence = useChatPersistence();
 
   const sendMessage = useCallback(
@@ -81,7 +83,7 @@ export function useChat() {
                   "specific references when possible.",
               },
             ]),
-        ...messages.slice(-10).map((m) => ({
+        ...messagesRef.current.slice(-10).map((m) => ({
           role: m.role as "user" | "assistant",
           content: m.content,
         })),
@@ -186,7 +188,7 @@ export function useChat() {
         abortRef.current = null;
       }
     },
-    [messages, persistence]
+    [persistence]
   );
 
   const loadSession = useCallback(
