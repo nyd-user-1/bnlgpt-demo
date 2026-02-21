@@ -156,9 +156,13 @@ export default function References() {
   // Structured search inputs
   const [nuclideInput, setNuclideInput] = useState("");
   const [reactionInput, setReactionInput] = useState("");
+  const [zMinInput, setZMinInput] = useState("");
+  const [zMaxInput, setZMaxInput] = useState("");
   const [structuredParams, setStructuredParams] = useState<{
     nuclides?: string[];
     reactions?: string[];
+    zMin?: number;
+    zMax?: number;
   } | null>(null);
 
   const deferredQuery = useDeferredValue(query);
@@ -173,6 +177,8 @@ export default function References() {
     setStructuredParams(null);
     setNuclideInput("");
     setReactionInput("");
+    setZMinInput("");
+    setZMaxInput("");
   };
 
   const handleStructuredSearch = () => {
@@ -184,8 +190,10 @@ export default function References() {
       .split(/[,;]+/)
       .map((s) => s.trim())
       .filter(Boolean);
+    const zMin = zMinInput ? Number(zMinInput) : undefined;
+    const zMax = zMaxInput ? Number(zMaxInput) : undefined;
 
-    if (nuclides.length === 0 && reactions.length === 0) {
+    if (nuclides.length === 0 && reactions.length === 0 && zMin == null && zMax == null) {
       clearStructuredSearch();
       return;
     }
@@ -195,7 +203,35 @@ export default function References() {
     setStructuredParams({
       nuclides: nuclides.length > 0 ? nuclides : undefined,
       reactions: reactions.length > 0 ? reactions : undefined,
+      zMin,
+      zMax,
     });
+  };
+
+  // Auto-clear structured search when all inputs are emptied via backspace
+  const handleNuclideChange = (v: string) => {
+    setNuclideInput(v);
+    if (!v && !reactionInput && !zMinInput && !zMaxInput && structuredParams) {
+      setStructuredParams(null);
+    }
+  };
+  const handleReactionChange = (v: string) => {
+    setReactionInput(v);
+    if (!nuclideInput && !v && !zMinInput && !zMaxInput && structuredParams) {
+      setStructuredParams(null);
+    }
+  };
+  const handleZMinChange = (v: string) => {
+    setZMinInput(v);
+    if (!nuclideInput && !reactionInput && !v && !zMaxInput && structuredParams) {
+      setStructuredParams(null);
+    }
+  };
+  const handleZMaxChange = (v: string) => {
+    setZMaxInput(v);
+    if (!nuclideInput && !reactionInput && !zMinInput && !v && structuredParams) {
+      setStructuredParams(null);
+    }
   };
 
   const isSearching = deferredQuery.length >= 3;
@@ -294,16 +330,32 @@ export default function References() {
           label="Nuclide"
           placeholder="e.g. 16O"
           value={nuclideInput}
-          onChange={setNuclideInput}
+          onChange={handleNuclideChange}
           onSubmit={handleStructuredSearch}
         />
 
         {/* Reaction filter */}
         <TextFilter
           label="Reaction"
-          placeholder="e.g. (n,gamma)"
+          placeholder="e.g. (p,n)"
           value={reactionInput}
-          onChange={setReactionInput}
+          onChange={handleReactionChange}
+          onSubmit={handleStructuredSearch}
+        />
+
+        {/* Z range filter */}
+        <TextFilter
+          label="Z min"
+          placeholder="e.g. 6"
+          value={zMinInput}
+          onChange={handleZMinChange}
+          onSubmit={handleStructuredSearch}
+        />
+        <TextFilter
+          label="Z max"
+          placeholder="e.g. 28"
+          value={zMaxInput}
+          onChange={handleZMaxChange}
           onSubmit={handleStructuredSearch}
         />
 

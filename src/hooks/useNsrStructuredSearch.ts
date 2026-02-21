@@ -5,6 +5,8 @@ import type { NsrRecord } from "@/types/nsr";
 export interface StructuredSearchParams {
   nuclides?: string[];
   reactions?: string[];
+  zMin?: number;
+  zMax?: number;
 }
 
 async function structuredSearch(
@@ -13,6 +15,8 @@ async function structuredSearch(
   const { data, error } = await supabase.rpc("search_nsr_structured", {
     p_nuclides: params.nuclides?.length ? params.nuclides : null,
     p_reactions: params.reactions?.length ? params.reactions : null,
+    p_z_min: params.zMin ?? null,
+    p_z_max: params.zMax ?? null,
     p_limit: 50,
   });
 
@@ -23,7 +27,10 @@ async function structuredSearch(
 export function useNsrStructuredSearch(params: StructuredSearchParams | null) {
   const hasFilters =
     params !== null &&
-    ((params.nuclides?.length ?? 0) > 0 || (params.reactions?.length ?? 0) > 0);
+    ((params.nuclides?.length ?? 0) > 0 ||
+      (params.reactions?.length ?? 0) > 0 ||
+      params.zMin != null ||
+      params.zMax != null);
 
   return useQuery({
     queryKey: ["nsr-structured", params],
