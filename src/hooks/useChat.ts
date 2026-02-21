@@ -1,4 +1,6 @@
 import { useState, useCallback, useRef } from "react";
+import { useChatPersistence } from "./useChatPersistence";
+import type { PersistedMessage } from "@/integrations/supabase/types";
 
 export interface Message {
   id: string;
@@ -11,10 +13,22 @@ function makeId() {
   return Math.random().toString(36).slice(2, 10);
 }
 
+function toPersistedMessages(msgs: Message[]): PersistedMessage[] {
+  return msgs
+    .filter((m) => m.content && !m.isStreaming)
+    .map((m) => ({
+      id: m.id,
+      role: m.role,
+      content: m.content,
+      timestamp: new Date().toISOString(),
+    }));
+}
+
 export function useChat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
+  const persistence = useChatPersistence();
 
   const sendMessage = useCallback(
     async (userText: string, systemContext?: string) => {
@@ -34,6 +48,24 @@ export function useChat() {
       setMessages((prev) => [...prev, userMsg, assistantMsg]);
       setIsLoading(true);
 
+      // Create session on first message
+      let sessionId = persistence.currentSessionId;
+      if (!sessionId) {
+        const title = userText.slice(0, 80);
+        try {
+          sessionId = await persistence.createSession(title, [
+            {
+              id: userMsg.id,
+              role: "user",
+              content: userText,
+              timestamp: new Date().toISOString(),
+            },
+          ]);
+        } catch {
+          // continue without persistence
+        }
+      }
+
       const apiMessages = [
         ...(systemContext
           ? [{ role: "system" as const, content: systemContext }]
@@ -49,7 +81,6 @@ export function useChat() {
                   "specific references when possible.",
               },
             ]),
-        // Include last 10 messages for context
         ...messages.slice(-10).map((m) => ({
           role: m.role as "user" | "assistant",
           content: m.content,
@@ -122,11 +153,21 @@ export function useChat() {
         }
 
         // Mark streaming complete
-        setMessages((prev) =>
-          prev.map((m) =>
-            m.id === assistantMsg.id ? { ...m, isStreaming: false } : m
-          )
-        );
+        const finalContent = accumulated;
+        setMessages((prev) => {
+          const updated = prev.map((m) =>
+            m.id === assistantMsg.id
+              ? { ...m, content: finalContent, isStreaming: false }
+              : m
+          );
+
+          // Persist completed messages
+          if (sessionId) {
+            persistence.updateMessages(sessionId, toPersistedMessages(updated));
+          }
+
+          return updated;
+        });
       } catch (err: any) {
         if (err.name === "AbortError") return;
         setMessages((prev) =>
@@ -145,12 +186,39 @@ export function useChat() {
         abortRef.current = null;
       }
     },
-    [messages]
+    [messages, persistence]
+  );
+
+  const loadSession = useCallback(
+    async (sessionId: string) => {
+      const session = await persistence.loadSession(sessionId);
+      if (session) {
+        persistence.setCurrentSessionId(session.id);
+        setMessages(
+          session.messages.map((m) => ({
+            id: m.id,
+            role: m.role,
+            content: m.content,
+          }))
+        );
+        return session;
+      }
+      return null;
+    },
+    [persistence]
   );
 
   const clearMessages = useCallback(() => {
     setMessages([]);
-  }, []);
+    persistence.setCurrentSessionId(null);
+  }, [persistence]);
 
-  return { messages, isLoading, sendMessage, clearMessages };
+  return {
+    messages,
+    isLoading,
+    sendMessage,
+    clearMessages,
+    loadSession,
+    sessionId: persistence.currentSessionId,
+  };
 }

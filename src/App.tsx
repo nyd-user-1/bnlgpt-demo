@@ -14,6 +14,7 @@ function App() {
         <Routes>
           <Route element={<AppLayout />}>
             <Route path="/" element={<Chat />} />
+            <Route path="/c/:sessionId" element={<Chat />} />
             <Route path="/references" element={<References />} />
           </Route>
         </Routes>

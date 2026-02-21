@@ -22,6 +22,24 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["nsr"]["Insert"]>;
         Relationships: [];
       };
+      chat_sessions: {
+        Row: {
+          id: string;
+          title: string;
+          messages: PersistedMessage[];
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          title: string;
+          messages?: PersistedMessage[];
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["chat_sessions"]["Insert"]>;
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: {
@@ -49,4 +67,11 @@ export interface Database {
     Enums: Record<string, never>;
     CompositeTypes: Record<string, never>;
   };
+}
+
+export interface PersistedMessage {
+  id: string;
+  role: "user" | "assistant";
+  content: string;
+  timestamp: string;
 }

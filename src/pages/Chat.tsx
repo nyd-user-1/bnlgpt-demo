@@ -1,24 +1,42 @@
 import { useEffect, useRef, useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams, useNavigate, useParams } from "react-router-dom";
 import { ChatInput } from "@/components/ChatInput";
 import { ChatMessage } from "@/components/ChatMessage";
 import { useChat } from "@/hooks/useChat";
 
 export default function Chat() {
   const [searchParams] = useSearchParams();
+  const { sessionId: routeSessionId } = useParams();
   const navigate = useNavigate();
-  const { messages, isLoading, sendMessage } = useChat();
+  const { messages, isLoading, sendMessage, loadSession, sessionId } =
+    useChat();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [autoSubmitted, setAutoSubmitted] = useState(false);
+  const [sessionLoaded, setSessionLoaded] = useState(false);
 
   // Auto-scroll on new messages
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  // Load existing session from route param
+  useEffect(() => {
+    if (routeSessionId && !sessionLoaded) {
+      setSessionLoaded(true);
+      loadSession(routeSessionId);
+    }
+  }, [routeSessionId, sessionLoaded, loadSession]);
+
+  // Update URL when session is created
+  useEffect(() => {
+    if (sessionId && !routeSessionId && messages.length > 0) {
+      navigate(`/c/${sessionId}`, { replace: true });
+    }
+  }, [sessionId, routeSessionId, messages.length, navigate]);
+
   // Auto-submit from URL params (from reference card click)
   useEffect(() => {
-    if (autoSubmitted) return;
+    if (autoSubmitted || routeSessionId) return;
 
     const prompt = searchParams.get("prompt");
     const context = searchParams.get("context");
@@ -55,7 +73,7 @@ export default function Chat() {
       sendMessage(prompt, systemContext);
       navigate("/", { replace: true });
     }
-  }, [searchParams, autoSubmitted, sendMessage, navigate]);
+  }, [searchParams, autoSubmitted, routeSessionId, sendMessage, navigate]);
 
   const hasMessages = messages.length > 0;
 
@@ -78,7 +96,7 @@ export default function Chat() {
             </div>
           </div>
 
-          {/* Input pinned to bottom — no top border */}
+          {/* Input pinned to bottom */}
           <div className="px-4 py-4 shrink-0 bg-background">
             <ChatInput
               onSubmit={(text) => sendMessage(text)}
