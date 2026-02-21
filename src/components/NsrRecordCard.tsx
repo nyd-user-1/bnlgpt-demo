@@ -97,7 +97,7 @@ export function NsrRecordCard({ record }: NsrRecordCardProps) {
         {record.keywords && (
           <div className="col-span-2">
             <span className="text-muted-foreground">Keywords</span>
-            <p className="font-medium line-clamp-2">{record.keywords}</p>
+            <p className="font-medium truncate">{record.keywords}</p>
           </div>
         )}
       </div>

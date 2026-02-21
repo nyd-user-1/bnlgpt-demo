@@ -1,23 +1,67 @@
-import { useState, useDeferredValue } from "react";
+import { useState, useDeferredValue, useMemo } from "react";
 import { SearchInput } from "@/components/SearchInput";
 import { NsrRecordCard } from "@/components/NsrRecordCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useNsrSearch } from "@/hooks/useNsrSearch";
 import { useNsrRecords } from "@/hooks/useNsrRecords";
+import type { NsrRecord } from "@/types/nsr";
 
-const FILTER_TABS = ["Year", "Reference", "Keywords", "Authors"] as const;
+type SortField = "year" | "reference" | "keywords" | "authors";
+
+const FILTER_TABS: { label: string; field: SortField }[] = [
+  { label: "Year", field: "year" },
+  { label: "Reference", field: "reference" },
+  { label: "Keywords", field: "keywords" },
+  { label: "Authors", field: "authors" },
+];
+
+function sortRecords(records: NsrRecord[], field: SortField): NsrRecord[] {
+  return [...records].sort((a, b) => {
+    switch (field) {
+      case "year":
+        return b.pub_year - a.pub_year;
+      case "reference": {
+        const ra = a.reference ?? "";
+        const rb = b.reference ?? "";
+        return ra.localeCompare(rb);
+      }
+      case "keywords": {
+        const ka = a.keywords ?? "";
+        const kb = b.keywords ?? "";
+        // Records with keywords first, then alphabetical
+        if (ka && !kb) return -1;
+        if (!ka && kb) return 1;
+        return ka.localeCompare(kb);
+      }
+      case "authors": {
+        const aa = a.authors ?? "";
+        const ab = b.authors ?? "";
+        return aa.localeCompare(ab);
+      }
+      default:
+        return 0;
+    }
+  });
+}
 
 export default function References() {
   const [query, setQuery] = useState("");
+  const [activeSort, setActiveSort] = useState<SortField | null>(null);
   const deferredQuery = useDeferredValue(query);
 
   const search = useNsrSearch(deferredQuery);
   const browse = useNsrRecords();
 
   const isSearching = deferredQuery.length >= 3;
-  const records = isSearching ? search.data?.records : browse.data;
+  const rawRecords = isSearching ? search.data?.records : browse.data;
   const isLoading = isSearching ? search.isLoading : browse.isLoading;
   const error = isSearching ? search.error : browse.error;
+
+  const records = useMemo(() => {
+    if (!rawRecords) return null;
+    if (!activeSort) return rawRecords;
+    return sortRecords(rawRecords, activeSort);
+  }, [rawRecords, activeSort]);
 
   return (
     <div className="px-6 py-6">
@@ -30,14 +74,23 @@ export default function References() {
         />
       </div>
 
-      {/* Filter tabs */}
+      {/* Filter/sort tabs */}
       <div className="mb-6 flex gap-6">
         {FILTER_TABS.map((tab) => (
           <button
-            key={tab}
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            key={tab.field}
+            onClick={() =>
+              setActiveSort((prev) =>
+                prev === tab.field ? null : tab.field
+              )
+            }
+            className={`text-sm transition-colors ${
+              activeSort === tab.field
+                ? "text-foreground font-medium"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
           >
-            {tab}
+            {tab.label}
           </button>
         ))}
       </div>
