@@ -2,11 +2,27 @@ import { useState, useCallback, useRef } from "react";
 import { useChatPersistence } from "./useChatPersistence";
 import type { PersistedMessage } from "@/integrations/supabase/types";
 
+export interface MessageSources {
+  nsr: Array<{
+    key_number: string;
+    title: string;
+    doi?: string | null;
+    similarity: number;
+  }>;
+  s2: Array<{
+    title: string;
+    url: string;
+    authors: string;
+    citations: number;
+  }>;
+}
+
 export interface Message {
   id: string;
   role: "user" | "assistant";
   content: string;
   isStreaming?: boolean;
+  sources?: MessageSources;
 }
 
 function makeId() {
@@ -23,6 +39,9 @@ function toPersistedMessages(msgs: Message[]): PersistedMessage[] {
       timestamp: new Date().toISOString(),
     }));
 }
+
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 export function useChat() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -68,44 +87,27 @@ export function useChat() {
         }
       }
 
-      const apiMessages = [
-        ...(systemContext
-          ? [{ role: "system" as const, content: systemContext }]
-          : [
-              {
-                role: "system" as const,
-                content:
-                  "You are BNLgpt, an AI research assistant specializing in nuclear science. " +
-                  "You help researchers explore Nuclear Science References (NSR) from the " +
-                  "National Nuclear Data Center (NNDC) at Brookhaven National Laboratory. " +
-                  "Answer questions about nuclear physics, nuclear reactions, isotopes, " +
-                  "decay processes, cross sections, and related topics. Be precise and cite " +
-                  "specific references when possible.",
-              },
-            ]),
-        ...messagesRef.current.slice(-10).map((m) => ({
-          role: m.role as "user" | "assistant",
-          content: m.content,
-        })),
-        { role: "user" as const, content: userText },
-      ];
+      // Build conversation history for the Edge Function
+      const historyMessages = messagesRef.current.slice(-10).map((m) => ({
+        role: m.role as "user" | "assistant",
+        content: m.content,
+      }));
 
       try {
         abortRef.current = new AbortController();
 
         const res = await fetch(
-          "https://api.openai.com/v1/chat/completions",
+          `${SUPABASE_URL}/functions/v1/chat`,
           {
             method: "POST",
             headers: {
-              Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
+              Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              model: "gpt-4o",
-              messages: apiMessages,
-              stream: true,
-              max_tokens: 2048,
+              messages: historyMessages,
+              userMessage: userText,
+              systemContext: systemContext || undefined,
             }),
             signal: abortRef.current.signal,
           }
@@ -113,12 +115,14 @@ export function useChat() {
 
         if (!res.ok) {
           const err = await res.text();
-          throw new Error(`OpenAI error ${res.status}: ${err}`);
+          throw new Error(`Chat error ${res.status}: ${err}`);
         }
 
         const reader = res.body?.getReader();
         const decoder = new TextDecoder();
         let accumulated = "";
+        let parsedSources: MessageSources | undefined;
+        let isFirstDataLine = true;
 
         if (reader) {
           while (true) {
@@ -135,6 +139,16 @@ export function useChat() {
 
               try {
                 const parsed = JSON.parse(data);
+
+                // First data event contains sources metadata
+                if (isFirstDataLine && parsed.sources) {
+                  isFirstDataLine = false;
+                  parsedSources = parsed.sources as MessageSources;
+                  continue;
+                }
+                isFirstDataLine = false;
+
+                // Remaining events are OpenAI streaming deltas
                 const delta = parsed.choices?.[0]?.delta?.content;
                 if (delta) {
                   accumulated += delta;
@@ -156,10 +170,16 @@ export function useChat() {
 
         // Mark streaming complete
         const finalContent = accumulated;
+        const finalSources = parsedSources;
         setMessages((prev) => {
           const updated = prev.map((m) =>
             m.id === assistantMsg.id
-              ? { ...m, content: finalContent, isStreaming: false }
+              ? {
+                  ...m,
+                  content: finalContent,
+                  isStreaming: false,
+                  sources: finalSources,
+                }
               : m
           );
 

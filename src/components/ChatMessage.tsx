@@ -1,13 +1,121 @@
+import { useState } from "react";
 import ReactMarkdown from "react-markdown";
+import { ChevronDown, ExternalLink, BookOpen, GraduationCap } from "lucide-react";
 import { ChatResponseFooter } from "./ChatResponseFooter";
+import type { MessageSources } from "@/hooks/useChat";
 
 interface ChatMessageProps {
   role: "user" | "assistant";
   content: string;
   isStreaming?: boolean;
+  sources?: MessageSources;
 }
 
-export function ChatMessage({ role, content, isStreaming }: ChatMessageProps) {
+function SourcesSection({ sources }: { sources: MessageSources }) {
+  const [open, setOpen] = useState(false);
+
+  const totalCount = sources.nsr.length + sources.s2.length;
+  if (totalCount === 0) return null;
+
+  return (
+    <div className="mt-3 border rounded-lg overflow-hidden">
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex w-full items-center gap-2 px-3 py-2 text-xs font-medium text-muted-foreground hover:bg-muted/50 transition-colors"
+      >
+        <ChevronDown
+          className={`h-3.5 w-3.5 transition-transform ${open ? "rotate-180" : ""}`}
+        />
+        Show {totalCount} source{totalCount !== 1 ? "s" : ""}
+      </button>
+
+      {open && (
+        <div className="border-t px-3 py-2 space-y-3">
+          {/* NSR Records */}
+          {sources.nsr.length > 0 && (
+            <div>
+              <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wide mb-1.5 flex items-center gap-1">
+                <BookOpen className="h-3 w-3" />
+                NSR Records
+              </p>
+              <div className="space-y-1.5">
+                {sources.nsr.map((r) => (
+                  <div
+                    key={r.key_number}
+                    className="flex items-start gap-2 text-xs rounded-md bg-muted/30 px-2.5 py-1.5"
+                  >
+                    <span className="font-mono font-bold text-foreground shrink-0">
+                      {r.key_number}
+                    </span>
+                    <span className="text-muted-foreground truncate flex-1">
+                      {r.title}
+                    </span>
+                    {r.doi && (
+                      <a
+                        href={`https://doi.org/${r.doi}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="shrink-0 text-blue-500 hover:text-blue-600"
+                        title="Open DOI"
+                      >
+                        <ExternalLink className="h-3 w-3" />
+                      </a>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Semantic Scholar Papers */}
+          {sources.s2.length > 0 && (
+            <div>
+              <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wide mb-1.5 flex items-center gap-1">
+                <GraduationCap className="h-3 w-3" />
+                Semantic Scholar
+              </p>
+              <div className="space-y-1.5">
+                {sources.s2.map((p, i) => (
+                  <div
+                    key={i}
+                    className="flex items-start gap-2 text-xs rounded-md bg-muted/30 px-2.5 py-1.5"
+                  >
+                    <div className="flex-1 min-w-0">
+                      <span className="text-foreground font-medium line-clamp-1">
+                        {p.title}
+                      </span>
+                      <span className="text-muted-foreground block truncate">
+                        {p.authors} &middot; {p.citations} citations
+                      </span>
+                    </div>
+                    {p.url && (
+                      <a
+                        href={p.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="shrink-0 text-blue-500 hover:text-blue-600"
+                        title="Open on Semantic Scholar"
+                      >
+                        <ExternalLink className="h-3 w-3" />
+                      </a>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+export function ChatMessage({
+  role,
+  content,
+  isStreaming,
+  sources,
+}: ChatMessageProps) {
   if (role === "user") {
     return (
       <div className="flex justify-end mb-6">
@@ -78,6 +186,7 @@ export function ChatMessage({ role, content, isStreaming }: ChatMessageProps) {
           <span className="inline-block w-1.5 h-4 bg-foreground animate-pulse" />
         )}
       </div>
+      {!isStreaming && sources && <SourcesSection sources={sources} />}
       <ChatResponseFooter content={content} isStreaming={isStreaming} />
     </div>
   );

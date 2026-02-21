@@ -82,6 +82,30 @@ export interface Database {
           similarity: number;
         }[];
       };
+      search_nsr_structured: {
+        Args: {
+          p_nuclides?: string[] | null;
+          p_reactions?: string[] | null;
+          p_z_min?: number | null;
+          p_z_max?: number | null;
+          p_year_min?: number | null;
+          p_year_max?: number | null;
+          p_limit?: number;
+        };
+        Returns: {
+          id: number;
+          key_number: string;
+          pub_year: number;
+          reference: string | null;
+          authors: string | null;
+          title: string;
+          doi: string | null;
+          exfor_keys: string | null;
+          keywords: string | null;
+          nuclides: string[] | null;
+          reactions: string[] | null;
+        }[];
+      };
     };
     Enums: Record<string, never>;
     CompositeTypes: Record<string, never>;

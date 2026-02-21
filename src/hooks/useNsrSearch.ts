@@ -1,43 +1,34 @@
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
 import type { NsrRecord } from "@/types/nsr";
+
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 interface SearchResult {
   records: NsrRecord[];
   count: number;
 }
 
-async function embedQuery(text: string): Promise<number[]> {
-  const res = await fetch("https://api.openai.com/v1/embeddings", {
+async function searchNsr(query: string): Promise<SearchResult> {
+  const res = await fetch(`${SUPABASE_URL}/functions/v1/semantic-search-nsr`, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
+      Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: "text-embedding-3-small",
-      input: text,
-      dimensions: 256,
+      query,
+      match_count: 20,
+      match_threshold: 0.3,
     }),
   });
 
-  if (!res.ok) throw new Error(`OpenAI error: ${res.status}`);
-  const json = await res.json();
-  return json.data[0].embedding;
-}
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`Search error ${res.status}: ${err}`);
+  }
 
-async function searchNsr(query: string): Promise<SearchResult> {
-  const embedding = await embedQuery(query);
-
-  // pgvector expects the embedding as a JSON string like "[0.1, 0.2, ...]"
-  const { data, error } = await supabase.rpc("match_nsr_records", {
-    query_embedding: JSON.stringify(embedding),
-    match_threshold: 0.3,
-    match_count: 20,
-  });
-
-  if (error) throw new Error(error.message);
-  const records = (data ?? []) as NsrRecord[];
+  const records = (await res.json()) as NsrRecord[];
   return { records, count: records.length };
 }
 

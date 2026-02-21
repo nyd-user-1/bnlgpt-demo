@@ -90,6 +90,7 @@ export default function Chat() {
                   role={msg.role}
                   content={msg.content}
                   isStreaming={msg.isStreaming}
+                  sources={msg.sources}
                 />
               ))}
               <div ref={messagesEndRef} />

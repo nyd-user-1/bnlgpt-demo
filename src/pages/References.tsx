@@ -1,10 +1,11 @@
 import { useState, useDeferredValue, useMemo, useRef, useEffect } from "react";
-import { ArrowUpDown, ChevronDown } from "lucide-react";
+import { ArrowUpDown, ChevronDown, Search } from "lucide-react";
 import { SearchInput } from "@/components/SearchInput";
 import { NsrRecordCard } from "@/components/NsrRecordCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useNsrSearch } from "@/hooks/useNsrSearch";
 import { useNsrRecords } from "@/hooks/useNsrRecords";
+import { useNsrStructuredSearch } from "@/hooks/useNsrStructuredSearch";
 import type { NsrRecord } from "@/types/nsr";
 
 /* ------------------------------------------------------------------ */
@@ -78,10 +79,47 @@ function FilterDropdown({ label, options, value, onChange }: FilterDropdownProps
 }
 
 /* ------------------------------------------------------------------ */
+/*  Text filter input (inline, submit on Enter)                        */
+/* ------------------------------------------------------------------ */
+
+interface TextFilterProps {
+  label: string;
+  placeholder: string;
+  value: string;
+  onChange: (value: string) => void;
+  onSubmit: () => void;
+}
+
+function TextFilter({ label, placeholder, value, onChange, onSubmit }: TextFilterProps) {
+  return (
+    <div className="inline-flex items-center gap-1.5 rounded-lg border px-2 py-1">
+      <span className="text-xs text-muted-foreground font-medium">{label}</span>
+      <input
+        type="text"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") onSubmit();
+        }}
+        placeholder={placeholder}
+        className="bg-transparent text-sm w-24 outline-none placeholder:text-muted-foreground/50"
+      />
+      <button
+        onClick={onSubmit}
+        className="text-muted-foreground hover:text-foreground"
+        title="Search"
+      >
+        <Search className="h-3 w-3" />
+      </button>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /*  Helpers                                                            */
 /* ------------------------------------------------------------------ */
 
-// All years in the database (2000–2026)
+// All years in the database (2000-2026)
 const YEAR_OPTIONS = Array.from({ length: 27 }, (_, i) => String(2026 - i));
 
 function getUniqueValues(records: NsrRecord[], field: "reference"): string[] {
@@ -93,6 +131,18 @@ function getUniqueValues(records: NsrRecord[], field: "reference"): string[] {
   return values.sort((a, b) => a.localeCompare(b));
 }
 
+/** Normalize user nuclide input: "o-16" → "16O", "pb208" → "208Pb" */
+function normalizeNuclide(raw: string): string {
+  const s = raw.trim();
+  // Already in ASymbol form: "16O"
+  const m1 = s.match(/^(\d+)([A-Za-z]{1,2})$/);
+  if (m1) return `${m1[1]}${m1[2][0].toUpperCase()}${m1[2].slice(1).toLowerCase()}`;
+  // Symbol-first: "O16", "Pb208"
+  const m2 = s.match(/^([A-Za-z]{1,2})[-]?(\d+)$/);
+  if (m2) return `${m2[2]}${m2[1][0].toUpperCase()}${m2[1].slice(1).toLowerCase()}`;
+  return s;
+}
+
 /* ------------------------------------------------------------------ */
 /*  Page                                                               */
 /* ------------------------------------------------------------------ */
@@ -102,17 +152,65 @@ export default function References() {
   const [yearFilter, setYearFilter] = useState<string | null>(null);
   const [referenceFilter, setReferenceFilter] = useState<string | null>(null);
   const [authorsSortAsc, setAuthorsSortAsc] = useState<boolean | null>(null);
+
+  // Structured search inputs
+  const [nuclideInput, setNuclideInput] = useState("");
+  const [reactionInput, setReactionInput] = useState("");
+  const [structuredParams, setStructuredParams] = useState<{
+    nuclides?: string[];
+    reactions?: string[];
+  } | null>(null);
+
   const deferredQuery = useDeferredValue(query);
 
   const search = useNsrSearch(deferredQuery);
   const browse = useNsrRecords({
     year: yearFilter ? Number(yearFilter) : undefined,
   });
+  const structured = useNsrStructuredSearch(structuredParams);
+
+  const handleStructuredSearch = () => {
+    const nuclides = nuclideInput
+      .split(/[,;\s]+/)
+      .map(normalizeNuclide)
+      .filter(Boolean);
+    const reactions = reactionInput
+      .split(/[,;]+/)
+      .map((s) => s.trim())
+      .filter(Boolean);
+
+    if (nuclides.length === 0 && reactions.length === 0) {
+      setStructuredParams(null);
+      return;
+    }
+
+    setStructuredParams({
+      nuclides: nuclides.length > 0 ? nuclides : undefined,
+      reactions: reactions.length > 0 ? reactions : undefined,
+    });
+  };
 
   const isSearching = deferredQuery.length >= 3;
-  const rawRecords = isSearching ? search.data?.records : browse.data;
-  const isLoading = isSearching ? search.isLoading : browse.isLoading;
-  const error = isSearching ? search.error : browse.error;
+  const isStructured = structuredParams !== null;
+
+  // Determine which data source to show
+  let rawRecords: NsrRecord[] | null | undefined;
+  let isLoading: boolean;
+  let error: Error | null;
+
+  if (isStructured) {
+    rawRecords = structured.data;
+    isLoading = structured.isLoading;
+    error = structured.error;
+  } else if (isSearching) {
+    rawRecords = search.data?.records;
+    isLoading = search.isLoading;
+    error = search.error;
+  } else {
+    rawRecords = browse.data;
+    isLoading = browse.isLoading;
+    error = browse.error;
+  }
 
   // Extract unique reference values from loaded records
   const allRecords = browse.data ?? [];
@@ -143,7 +241,10 @@ export default function References() {
       <div className="mb-4">
         <SearchInput
           value={query}
-          onChange={setQuery}
+          onChange={(v) => {
+            setQuery(v);
+            if (v.length >= 3) setStructuredParams(null);
+          }}
           isLoading={search.isFetching}
         />
       </div>
@@ -179,6 +280,38 @@ export default function References() {
           Authors
           <ArrowUpDown className="h-3.5 w-3.5" />
         </button>
+
+        {/* Nuclide filter */}
+        <TextFilter
+          label="Nuclide"
+          placeholder="e.g. 16O"
+          value={nuclideInput}
+          onChange={setNuclideInput}
+          onSubmit={handleStructuredSearch}
+        />
+
+        {/* Reaction filter */}
+        <TextFilter
+          label="Reaction"
+          placeholder="e.g. (n,gamma)"
+          value={reactionInput}
+          onChange={setReactionInput}
+          onSubmit={handleStructuredSearch}
+        />
+
+        {/* Clear structured filters */}
+        {isStructured && (
+          <button
+            onClick={() => {
+              setStructuredParams(null);
+              setNuclideInput("");
+              setReactionInput("");
+            }}
+            className="text-xs text-muted-foreground hover:text-foreground underline"
+          >
+            Clear nuclide/reaction filters
+          </button>
+        )}
       </div>
 
       {/* Error state */}
@@ -207,7 +340,7 @@ export default function References() {
       )}
 
       {/* Empty state */}
-      {records && records.length === 0 && (isSearching || yearFilter || referenceFilter) && (
+      {records && records.length === 0 && (isSearching || isStructured || yearFilter || referenceFilter) && (
         <p className="text-center text-muted-foreground py-12">
           No matching records found. Try a different query or clear filters.
         </p>
