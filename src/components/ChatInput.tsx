@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { ArrowUp } from "lucide-react";
+import { ArrowUp, Plus, Square } from "lucide-react";
 
 interface ChatInputProps {
   onSubmit: (message: string) => void;
@@ -18,8 +18,11 @@ export function ChatInput({ onSubmit, isLoading, initialValue }: ChatInputProps)
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
+      const maxHeight = 144; // ~6 lines
       textareaRef.current.style.height =
-        Math.min(textareaRef.current.scrollHeight, 200) + "px";
+        Math.min(textareaRef.current.scrollHeight, maxHeight) + "px";
+      textareaRef.current.style.overflowY =
+        textareaRef.current.scrollHeight > maxHeight ? "auto" : "hidden";
     }
   }, [value]);
 
@@ -38,8 +41,9 @@ export function ChatInput({ onSubmit, isLoading, initialValue }: ChatInputProps)
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto">
-      <div className="rounded-2xl border bg-muted/40 p-3">
+    <div className="max-w-[720px] mx-auto w-full">
+      <div className="rounded-2xl bg-[#fafafa] border-0 p-3 shadow-lg">
+        {/* Textarea */}
         <textarea
           ref={textareaRef}
           value={value}
@@ -47,19 +51,37 @@ export function ChatInput({ onSubmit, isLoading, initialValue }: ChatInputProps)
           onKeyDown={handleKeyDown}
           placeholder="What are you researching?"
           rows={1}
-          className="w-full resize-none bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+          className="flex-1 min-h-[40px] w-full resize-none border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 p-0 placeholder:text-muted-foreground/60 text-base text-black outline-none"
         />
+
+        {/* Bottom row: + button, model label, send button */}
         <div className="flex items-center justify-between pt-1">
-          <div className="text-xs text-muted-foreground">
-            GPT-4o
-          </div>
           <button
-            onClick={handleSubmit}
-            disabled={!value.trim() || isLoading}
-            className="flex h-8 w-8 items-center justify-center rounded-lg bg-foreground text-background transition-opacity disabled:opacity-30"
+            type="button"
+            className="h-9 w-9 rounded-lg flex items-center justify-center transition-colors text-muted-foreground hover:bg-[#e8e8e8] hover:text-foreground"
           >
-            <ArrowUp className="h-4 w-4" />
+            <Plus className="h-5 w-5" />
           </button>
+
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-muted-foreground">GPT-4o</span>
+            <button
+              type="button"
+              onClick={handleSubmit}
+              disabled={!value.trim() && !isLoading}
+              className={`h-9 w-9 rounded-lg flex items-center justify-center transition-colors ${
+                isLoading
+                  ? "bg-destructive hover:bg-destructive/90 text-white"
+                  : "bg-foreground hover:bg-foreground/90 text-background"
+              } disabled:opacity-30`}
+            >
+              {isLoading ? (
+                <Square className="h-4 w-4" fill="currentColor" />
+              ) : (
+                <ArrowUp className="h-4 w-4" />
+              )}
+            </button>
+          </div>
         </div>
       </div>
     </div>

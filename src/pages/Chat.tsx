@@ -53,8 +53,6 @@ export default function Chat() {
         "to related work in the field.";
 
       sendMessage(prompt, systemContext);
-
-      // Clear URL params
       navigate("/", { replace: true });
     }
   }, [searchParams, autoSubmitted, sendMessage, navigate]);
@@ -65,9 +63,9 @@ export default function Chat() {
     <div className="flex h-full flex-col">
       {hasMessages ? (
         <>
-          {/* Messages */}
+          {/* Messages — scrollable */}
           <div className="flex-1 overflow-y-auto">
-            <div className="mx-auto max-w-3xl px-4 py-8">
+            <div className="mx-auto max-w-[720px] px-4 py-8">
               {messages.map((msg) => (
                 <ChatMessage
                   key={msg.id}
@@ -80,8 +78,8 @@ export default function Chat() {
             </div>
           </div>
 
-          {/* Input pinned to bottom */}
-          <div className="border-t px-4 py-4 shrink-0">
+          {/* Input pinned to bottom — no top border */}
+          <div className="px-4 py-4 shrink-0 bg-background">
             <ChatInput
               onSubmit={(text) => sendMessage(text)}
               isLoading={isLoading}
@@ -89,7 +87,7 @@ export default function Chat() {
           </div>
         </>
       ) : (
-        /* Empty state — input centered */
+        /* Empty state — input vertically centered */
         <div className="flex flex-1 flex-col items-center justify-center px-4">
           <ChatInput
             onSubmit={(text) => sendMessage(text)}

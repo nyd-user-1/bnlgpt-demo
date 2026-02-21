@@ -16,6 +16,7 @@ export default defineConfig({
         manualChunks: {
           supabase: ['@supabase/supabase-js'],
           react: ['react', 'react-dom', 'react-router-dom'],
+          markdown: ['react-markdown'],
         },
       },
     },
