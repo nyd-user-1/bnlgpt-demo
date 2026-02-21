@@ -1,6 +1,3 @@
-import { ExternalLink } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import type { NsrRecord } from "@/types/nsr";
 
 interface NsrRecordCardProps {
@@ -8,52 +5,71 @@ interface NsrRecordCardProps {
 }
 
 export function NsrRecordCard({ record }: NsrRecordCardProps) {
-  const similarityPct = record.similarity
-    ? Math.round(record.similarity * 100)
-    : null;
-
   return (
-    <Card className="transition-shadow hover:shadow-md">
-      <CardHeader className="pb-3">
-        <div className="flex items-start justify-between gap-2">
-          <CardTitle className="text-base leading-snug">{record.title}</CardTitle>
-          {similarityPct !== null && (
-            <Badge variant="nuclear" className="shrink-0">
-              {similarityPct}%
-            </Badge>
-          )}
-        </div>
+    <div className="rounded-lg border bg-card p-5 transition-shadow hover:shadow-md">
+      {/* Top row: BNL logo + key number */}
+      <div className="flex items-center gap-2 mb-3">
+        <img
+          src="/bnl-logo.png"
+          alt="BNL"
+          className="h-6 w-6 rounded-full object-cover"
+        />
+        <span className="text-base font-bold">{record.key_number}</span>
+      </div>
+
+      {/* Title */}
+      <p className="text-sm text-foreground leading-snug mb-4 line-clamp-3">
+        {record.title}
+      </p>
+
+      {/* Metadata grid */}
+      <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
         {record.authors && (
-          <p className="text-sm text-muted-foreground line-clamp-2">
-            {record.authors}
-          </p>
+          <>
+            <div>
+              <span className="text-muted-foreground">Authors</span>
+              <p className="font-medium truncate">{record.authors}</p>
+            </div>
+            <div>
+              <span className="text-muted-foreground">Year</span>
+              <p className="font-medium">{record.pub_year}</p>
+            </div>
+          </>
         )}
-      </CardHeader>
-      <CardContent>
-        <div className="flex flex-wrap items-center gap-2 text-sm">
-          <Badge variant="secondary">{record.key_number}</Badge>
-          <Badge variant="outline">{record.pub_year}</Badge>
-          {record.reference && (
-            <span className="text-muted-foreground">{record.reference}</span>
-          )}
-        </div>
-        {record.keywords && (
-          <p className="mt-3 text-xs text-muted-foreground line-clamp-3">
-            {record.keywords}
-          </p>
+        {!record.authors && (
+          <div className="col-span-2">
+            <span className="text-muted-foreground">Year</span>
+            <p className="font-medium">{record.pub_year}</p>
+          </div>
+        )}
+        {record.reference && (
+          <div className="col-span-2">
+            <span className="text-muted-foreground">Reference</span>
+            <p className="font-medium truncate">{record.reference}</p>
+          </div>
         )}
         {record.doi && (
-          <a
-            href={`https://doi.org/${record.doi}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-3 inline-flex items-center gap-1 text-sm text-nuclear hover:underline"
-          >
-            <ExternalLink className="h-3 w-3" />
-            {record.doi}
-          </a>
+          <div className="col-span-2">
+            <span className="text-muted-foreground">DOI</span>
+            <p className="font-medium">
+              <a
+                href={`https://doi.org/${record.doi}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-nuclear hover:underline"
+              >
+                {record.doi}
+              </a>
+            </p>
+          </div>
         )}
-      </CardContent>
-    </Card>
+        {record.keywords && (
+          <div className="col-span-2">
+            <span className="text-muted-foreground">Keywords</span>
+            <p className="font-medium line-clamp-2">{record.keywords}</p>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }

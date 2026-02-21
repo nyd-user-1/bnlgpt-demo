@@ -7,7 +7,7 @@ async function fetchRecords(): Promise<NsrRecord[]> {
     .from("nsr")
     .select("id, key_number, pub_year, reference, authors, title, doi, exfor_keys, keywords")
     .order("key_number", { ascending: false })
-    .limit(50);
+    .limit(500);
 
   if (error) throw new Error(error.message);
   return data ?? [];
