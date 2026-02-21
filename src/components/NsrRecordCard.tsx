@@ -5,10 +5,9 @@ import type { NsrRecord } from "@/types/nsr";
 
 interface NsrRecordCardProps {
   record: NsrRecord;
-  abstract?: string | null;
 }
 
-export const NsrRecordCard = memo(function NsrRecordCard({ record, abstract }: NsrRecordCardProps) {
+export const NsrRecordCard = memo(function NsrRecordCard({ record }: NsrRecordCardProps) {
   const navigate = useNavigate();
 
   const handleSendToChat = (e: React.MouseEvent) => {
@@ -41,7 +40,7 @@ export const NsrRecordCard = memo(function NsrRecordCard({ record, abstract }: N
   return (
     <div
       onClick={() => navigate(`/r/${record.key_number}`)}
-      className="group relative rounded-lg border bg-card p-5 transition-shadow hover:shadow-md cursor-pointer"
+      className="group relative rounded-lg border bg-muted/40 p-6 min-h-[220px] transition-shadow hover:shadow-lg cursor-pointer"
     >
       {/* Top row: BNL logo + key number + year */}
       <div className="flex items-center gap-2 mb-3">
@@ -60,13 +59,6 @@ export const NsrRecordCard = memo(function NsrRecordCard({ record, abstract }: N
       <p className="text-sm text-foreground leading-snug mb-3 line-clamp-2">
         {record.title}
       </p>
-
-      {/* Abstract */}
-      {abstract && (
-        <p className="text-xs text-muted-foreground leading-relaxed mb-3 line-clamp-3">
-          {abstract}
-        </p>
-      )}
 
       {/* Metadata grid */}
       <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
@@ -134,13 +126,6 @@ export const NsrRecordCard = memo(function NsrRecordCard({ record, abstract }: N
           </>
         )}
 
-        {/* Row 4: Keywords (col-span-2) */}
-        {record.keywords && (
-          <div className="col-span-2 max-w-[320px]">
-            <span className="text-muted-foreground">Keywords</span>
-            <p className="font-medium truncate">{record.keywords}</p>
-          </div>
-        )}
       </div>
 
       {/* Send to chat button */}

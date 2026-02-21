@@ -5,7 +5,6 @@ import { NsrRecordCard } from "@/components/NsrRecordCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useNsrSearch } from "@/hooks/useNsrSearch";
 import { useNsrRecords } from "@/hooks/useNsrRecords";
-import { useBatchAbstracts } from "@/hooks/useBatchAbstracts";
 import type { NsrRecord } from "@/types/nsr";
 
 /* ------------------------------------------------------------------ */
@@ -140,13 +139,6 @@ export default function References() {
     return filtered;
   }, [rawRecords, referenceFilter, authorsSortAsc]);
 
-  // Batch-fetch abstracts for all visible records with DOIs
-  const dois = useMemo(
-    () => (records ?? []).map((r) => r.doi).filter((d): d is string => !!d),
-    [records],
-  );
-  const { data: abstractsMap } = useBatchAbstracts(dois);
-
   return (
     <div className="px-6 py-6 h-full overflow-y-auto">
       {/* Search bar */}
@@ -222,11 +214,7 @@ export default function References() {
       {records && records.length > 0 && (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {records.map((record) => (
-            <NsrRecordCard
-              key={record.id}
-              record={record}
-              abstract={record.doi ? abstractsMap?.get(record.doi) : undefined}
-            />
+            <NsrRecordCard key={record.id} record={record} />
           ))}
         </div>
       )}
