@@ -328,7 +328,7 @@ export default function References() {
         {/* Nuclide filter */}
         <TextFilter
           label="Nuclide"
-          placeholder="e.g. 16O"
+          placeholder="e.g. 6He"
           value={nuclideInput}
           onChange={handleNuclideChange}
           onSubmit={handleStructuredSearch}
