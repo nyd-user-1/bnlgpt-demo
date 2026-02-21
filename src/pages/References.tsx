@@ -169,6 +169,12 @@ export default function References() {
   });
   const structured = useNsrStructuredSearch(structuredParams);
 
+  const clearStructuredSearch = () => {
+    setStructuredParams(null);
+    setNuclideInput("");
+    setReactionInput("");
+  };
+
   const handleStructuredSearch = () => {
     const nuclides = nuclideInput
       .split(/[,;\s]+/)
@@ -180,10 +186,12 @@ export default function References() {
       .filter(Boolean);
 
     if (nuclides.length === 0 && reactions.length === 0) {
-      setStructuredParams(null);
+      clearStructuredSearch();
       return;
     }
 
+    // Clear text search when using structured search
+    setQuery("");
     setStructuredParams({
       nuclides: nuclides.length > 0 ? nuclides : undefined,
       reactions: reactions.length > 0 ? reactions : undefined,
@@ -243,7 +251,7 @@ export default function References() {
           value={query}
           onChange={(v) => {
             setQuery(v);
-            if (v.length >= 3) setStructuredParams(null);
+            if (v.length >= 3) clearStructuredSearch();
           }}
           isLoading={search.isFetching}
         />
@@ -302,11 +310,7 @@ export default function References() {
         {/* Clear structured filters */}
         {isStructured && (
           <button
-            onClick={() => {
-              setStructuredParams(null);
-              setNuclideInput("");
-              setReactionInput("");
-            }}
+            onClick={clearStructuredSearch}
             className="text-xs text-muted-foreground hover:text-foreground underline"
           >
             Clear nuclide/reaction filters
