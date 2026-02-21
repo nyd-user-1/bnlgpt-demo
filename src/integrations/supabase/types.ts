@@ -20,14 +20,16 @@ export interface Database {
           created_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["nsr"]["Insert"]>;
+        Relationships: [];
       };
     };
+    Views: Record<string, never>;
     Functions: {
       match_nsr_records: {
         Args: {
-          query_embedding: number[];
-          match_threshold: number;
-          match_count: number;
+          query_embedding: string;
+          match_threshold?: number;
+          match_count?: number;
           filter_year?: number;
         };
         Returns: {
@@ -45,5 +47,6 @@ export interface Database {
       };
     };
     Enums: Record<string, never>;
+    CompositeTypes: Record<string, never>;
   };
 }
