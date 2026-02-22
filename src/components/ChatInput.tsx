@@ -183,46 +183,49 @@ export function ChatInput({ onSubmit, isLoading, initialValue }: ChatInputProps)
     return () => document.removeEventListener("mousedown", handleClick);
   }, [modelMenuOpen]);
 
-  // ---- fetch functions ----
+  // ---- fetch functions (NYSgpt pattern: .from().select().range()) ----
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const db = supabase as any;
+
   const fetchNuclidesForSelection = useCallback(async (offset: number) => {
     setNuclidesLoading(true);
-    const { data, error } = await supabase.rpc("get_distinct_nuclides", {
-      p_limit: PAGE_SIZE,
-      p_offset: offset,
-    });
-    if (error) console.error("get_distinct_nuclides error:", error);
-    if (data) {
-      setAvailableNuclides((prev) => (offset === 0 ? data : [...prev, ...data]));
-      setNuclidesHasMore(data.length === PAGE_SIZE);
-    }
+    const { data, error } = await db
+      .from("distinct_nuclides")
+      .select("value, record_count")
+      .order("value", { ascending: true })
+      .range(offset, offset + PAGE_SIZE - 1);
+    if (error) console.error("distinct_nuclides error:", error);
+    const rows = (data ?? []) as DbItem[];
+    setAvailableNuclides((prev) => (offset === 0 ? rows : [...prev, ...rows]));
+    setNuclidesHasMore(rows.length === PAGE_SIZE);
     setNuclidesLoading(false);
   }, []);
 
   const fetchReactionsForSelection = useCallback(async (offset: number) => {
     setReactionsLoading(true);
-    const { data, error } = await supabase.rpc("get_distinct_reactions", {
-      p_limit: PAGE_SIZE,
-      p_offset: offset,
-    });
-    if (error) console.error("get_distinct_reactions error:", error);
-    if (data) {
-      setAvailableReactions((prev) => (offset === 0 ? data : [...prev, ...data]));
-      setReactionsHasMore(data.length === PAGE_SIZE);
-    }
+    const { data, error } = await db
+      .from("distinct_reactions")
+      .select("value, record_count")
+      .order("value", { ascending: true })
+      .range(offset, offset + PAGE_SIZE - 1);
+    if (error) console.error("distinct_reactions error:", error);
+    const rows = (data ?? []) as DbItem[];
+    setAvailableReactions((prev) => (offset === 0 ? rows : [...prev, ...rows]));
+    setReactionsHasMore(rows.length === PAGE_SIZE);
     setReactionsLoading(false);
   }, []);
 
   const fetchAuthorsForSelection = useCallback(async (offset: number) => {
     setAuthorsLoading(true);
-    const { data, error } = await supabase.rpc("get_distinct_authors", {
-      p_limit: PAGE_SIZE,
-      p_offset: offset,
-    });
-    if (error) console.error("get_distinct_authors error:", error);
-    if (data) {
-      setAvailableAuthors((prev) => (offset === 0 ? data : [...prev, ...data]));
-      setAuthorsHasMore(data.length === PAGE_SIZE);
-    }
+    const { data, error } = await db
+      .from("distinct_authors")
+      .select("value, record_count")
+      .order("value", { ascending: true })
+      .range(offset, offset + PAGE_SIZE - 1);
+    if (error) console.error("distinct_authors error:", error);
+    const rows = (data ?? []) as DbItem[];
+    setAvailableAuthors((prev) => (offset === 0 ? rows : [...prev, ...rows]));
+    setAuthorsHasMore(rows.length === PAGE_SIZE);
     setAuthorsLoading(false);
   }, []);
 
@@ -240,7 +243,7 @@ export function ChatInput({ onSubmit, isLoading, initialValue }: ChatInputProps)
      fetchNuclidesForSelection, fetchReactionsForSelection, fetchAuthorsForSelection],
   );
 
-  // ---- server-side search with debounce ----
+  // ---- server-side search with debounce (NYSgpt pattern: .ilike()) ----
   useEffect(() => {
     if (!drawerCategory || drawerCategory === "prompts") return;
     if (drawerSearch.length < MIN_SEARCH_LEN) {
@@ -250,20 +253,21 @@ export function ChatInput({ onSubmit, isLoading, initialValue }: ChatInputProps)
 
     setDrawerSearchLoading(true);
     const timer = setTimeout(async () => {
-      const rpcName =
+      const viewName =
         drawerCategory === "nuclides"
-          ? "get_distinct_nuclides"
+          ? "distinct_nuclides"
           : drawerCategory === "reactions"
-            ? "get_distinct_reactions"
-            : "get_distinct_authors";
+            ? "distinct_reactions"
+            : "distinct_authors";
 
-      const { data, error } = await supabase.rpc(rpcName, {
-        p_search: drawerSearch,
-        p_limit: PAGE_SIZE,
-        p_offset: 0,
-      });
-      if (error) console.error(`${rpcName} search error:`, error);
-      setDrawerSearchResults(data ?? []);
+      const { data, error } = await db
+        .from(viewName)
+        .select("value, record_count")
+        .ilike("value", `%${drawerSearch}%`)
+        .order("value", { ascending: true })
+        .limit(PAGE_SIZE);
+      if (error) console.error(`${viewName} search error:`, error);
+      setDrawerSearchResults((data ?? []) as DbItem[]);
       setDrawerSearchLoading(false);
     }, SEARCH_DEBOUNCE);
 

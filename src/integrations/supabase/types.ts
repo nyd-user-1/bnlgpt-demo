@@ -106,39 +106,6 @@ export interface Database {
           reactions: string[] | null;
         }[];
       };
-      get_distinct_nuclides: {
-        Args: {
-          p_search?: string | null;
-          p_limit?: number;
-          p_offset?: number;
-        };
-        Returns: {
-          value: string;
-          record_count: number;
-        }[];
-      };
-      get_distinct_reactions: {
-        Args: {
-          p_search?: string | null;
-          p_limit?: number;
-          p_offset?: number;
-        };
-        Returns: {
-          value: string;
-          record_count: number;
-        }[];
-      };
-      get_distinct_authors: {
-        Args: {
-          p_search?: string | null;
-          p_limit?: number;
-          p_offset?: number;
-        };
-        Returns: {
-          value: string;
-          record_count: number;
-        }[];
-      };
     };
     Enums: Record<string, never>;
     CompositeTypes: Record<string, never>;
