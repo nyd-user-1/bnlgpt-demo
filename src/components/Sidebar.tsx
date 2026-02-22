@@ -2,7 +2,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import {
   SquarePen,
   Atom,
-  Wrench,
   ChevronDown,
   MoreHorizontal,
   Pencil,
@@ -200,18 +199,6 @@ export function Sidebar({ isOpen }: SidebarProps) {
           >
             <SquarePen className="h-4 w-4" />
             New Chat
-          </button>
-
-          <button
-            onClick={() => navigate("/resources")}
-            className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-              location.pathname === "/resources"
-                ? "bg-muted"
-                : "hover:bg-muted"
-            }`}
-          >
-            <Wrench className="h-4 w-4" />
-            Tools & Data
           </button>
 
           {/* Your Chats section */}
