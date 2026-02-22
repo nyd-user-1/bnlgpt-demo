@@ -177,6 +177,9 @@ export function Sidebar({ isOpen }: SidebarProps) {
       <div className="w-[281px] h-full flex flex-col">
         {/* Navigation */}
         <nav className="flex-1 overflow-y-auto px-3 pt-2 space-y-1">
+          <h1 className="px-3 pt-1 pb-3 text-lg font-bold tracking-tight">
+            Nuclear Science References
+          </h1>
           <button
             onClick={() => navigate("/references")}
             className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
