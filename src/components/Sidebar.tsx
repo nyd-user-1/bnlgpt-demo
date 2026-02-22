@@ -99,7 +99,7 @@ function ChatSessionItem({
     <div className="group relative" ref={menuRef}>
       <button
         onClick={onNavigate}
-        className={`flex w-full items-center rounded-lg px-3 py-2 text-sm transition-colors truncate ${
+        className={`flex w-full items-center rounded-lg px-3 py-2 pr-10 text-sm transition-colors ${
           isActive
             ? "bg-muted font-medium"
             : "text-muted-foreground hover:bg-muted hover:text-foreground"
