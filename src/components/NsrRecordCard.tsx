@@ -73,7 +73,9 @@ export const NsrRecordCard = memo(function NsrRecordCard({ record }: NsrRecordCa
         {record.reference && (
           <div className="col-span-2">
             <span className="text-muted-foreground">Reference</span>
-            <p className="font-medium truncate">{record.reference}</p>
+            <p className="font-medium truncate">
+              {record.reference.replace(/\s*\(\d{4}\)\s*$/, "")}
+            </p>
           </div>
         )}
 
