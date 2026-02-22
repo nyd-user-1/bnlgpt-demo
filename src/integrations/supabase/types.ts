@@ -12,6 +12,9 @@ export interface Database {
           doi: string | null;
           exfor_keys: string | null;
           keywords: string | null;
+          nuclides: string[] | null;
+          reactions: string[] | null;
+          z_values: number[] | null;
           created_at: string;
           embedding: number[] | null;
         };
