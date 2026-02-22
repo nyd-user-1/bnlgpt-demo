@@ -49,7 +49,7 @@ export function UserMenu() {
 
       {/* Menu popup */}
       {open && (
-        <div className="absolute left-0 bottom-full mb-2 z-50 w-[220px] rounded-lg border bg-background shadow-lg animate-in fade-in slide-in-from-bottom-2 duration-150 py-1">
+        <div className="absolute left-0 bottom-full mb-2 z-[100] w-[220px] rounded-lg border bg-background shadow-lg animate-in fade-in slide-in-from-bottom-2 duration-150 py-1">
           {/* Upgrade plan (dummy) */}
           <button className="flex w-full items-center gap-2.5 px-3 py-2 text-sm hover:bg-muted transition-colors text-muted-foreground">
             <Zap className="h-4 w-4" />
@@ -74,7 +74,7 @@ export function UserMenu() {
             </button>
 
             {themeOpen && (
-              <div className="absolute left-full top-0 ml-1 z-50 w-[140px] rounded-lg border bg-background shadow-lg animate-in fade-in slide-in-from-left-1 duration-100 py-1">
+              <div className="absolute left-full top-0 ml-1 z-[100] w-[140px] rounded-lg border bg-background shadow-lg animate-in fade-in slide-in-from-left-1 duration-100 py-1">
                 <button
                   onClick={() => {
                     setTheme("light");
