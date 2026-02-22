@@ -166,9 +166,11 @@ export default function References() {
     setZMaxInput("");
   };
 
-  const handleStructuredSearch = () => {
-    const nuclides = nuclideInput.trim() ? [nuclideInput.trim()] : [];
-    const reactions = reactionInput.trim() ? [reactionInput.trim()] : [];
+  const handleStructuredSearch = (overrides?: { nuclide?: string; reaction?: string }) => {
+    const nuc = overrides?.nuclide ?? nuclideInput;
+    const rxn = overrides?.reaction ?? reactionInput;
+    const nuclides = nuc.trim() ? [nuc.trim()] : [];
+    const reactions = rxn.trim() ? [rxn.trim()] : [];
     const zMin = zMinInput ? Number(zMinInput) : undefined;
     const zMax = zMaxInput ? Number(zMaxInput) : undefined;
 

@@ -6,7 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 interface ReactionComboboxProps {
   value: string;
   onChange: (value: string) => void;
-  onSubmit: () => void;
+  onSubmit: (overrides?: { reaction?: string }) => void;
 }
 
 /** Strip parentheses for display: "(p,n)" → "p,n" */
@@ -68,7 +68,7 @@ export function ReactionCombobox({ value, onChange, onSubmit }: ReactionCombobox
     onChange(reaction);
     setInputValue(stripParens(reaction));
     setOpen(false);
-    onSubmit();
+    onSubmit({ reaction });
   };
 
   const clearSelection = () => {
@@ -94,7 +94,7 @@ export function ReactionCombobox({ value, onChange, onSubmit }: ReactionCombobox
         selectReaction(exactMatch);
       } else {
         setOpen(false);
-        onSubmit();
+        onSubmit({ reaction: value ? value : `(${inputValue})` });
       }
     }
     if (e.key === "Escape") {

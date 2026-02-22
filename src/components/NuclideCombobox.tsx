@@ -6,7 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 interface NuclideComboboxProps {
   value: string;
   onChange: (value: string) => void;
-  onSubmit: () => void;
+  onSubmit: (overrides?: { nuclide?: string }) => void;
 }
 
 /** Normalize user nuclide input: "o-16" → "16O", "pb208" → "208Pb" */
@@ -75,7 +75,7 @@ export function NuclideCombobox({ value, onChange, onSubmit }: NuclideComboboxPr
     onChange(nuclide);
     setInputValue(nuclide);
     setOpen(false);
-    onSubmit();
+    onSubmit({ nuclide });
   };
 
   const clearSelection = () => {
@@ -101,7 +101,7 @@ export function NuclideCombobox({ value, onChange, onSubmit }: NuclideComboboxPr
         selectNuclide(exactMatch);
       } else {
         setOpen(false);
-        onSubmit();
+        onSubmit({ nuclide: inputValue });
       }
     }
     if (e.key === "Escape") {
