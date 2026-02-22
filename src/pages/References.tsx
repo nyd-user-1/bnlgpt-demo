@@ -4,6 +4,7 @@ import { SearchInput } from "@/components/SearchInput";
 import { NsrRecordCard } from "@/components/NsrRecordCard";
 import { NuclideCombobox } from "@/components/NuclideCombobox";
 import { ReactionCombobox } from "@/components/ReactionCombobox";
+import { ElementRangeCombobox } from "@/components/ElementRangeCombobox";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useNsrSearch } from "@/hooks/useNsrSearch";
 import { useNsrRecords } from "@/hooks/useNsrRecords";
@@ -89,14 +90,12 @@ function FilterDropdown({ label, options, value, onChange }: FilterDropdownProps
 // All years in the database (2000-2026)
 const YEAR_OPTIONS = Array.from({ length: 27 }, (_, i) => String(2026 - i));
 
-// Element range presets for Z-value filtering
-const ELEMENT_RANGES: { label: string; zMin: number; zMax: number }[] = [
-  { label: "Light (H–Ca, Z 1–20)", zMin: 1, zMax: 20 },
-  { label: "Medium (Sc–Sn, Z 21–50)", zMin: 21, zMax: 50 },
-  { label: "Heavy (Sb–Pb, Z 51–82)", zMin: 51, zMax: 82 },
-  { label: "Actinides (Ac–Lr, Z 89–103)", zMin: 89, zMax: 103 },
-  { label: "Superheavy (Rf–Og, Z 104–118)", zMin: 104, zMax: 118 },
-];
+/** Parse "1-20" → { zMin: 1, zMax: 20 } */
+function parseElementRange(v: string | null): { zMin?: number; zMax?: number } {
+  if (!v) return {};
+  const [min, max] = v.split("-").map(Number);
+  return { zMin: min, zMax: max };
+}
 
 /* ------------------------------------------------------------------ */
 /*  Page                                                               */
@@ -141,11 +140,9 @@ export default function References() {
     const rxn = overrides?.reaction ?? reactionInput;
     const nuclides = nuc.trim() ? [nuc.trim()] : [];
     const reactions = rxn.trim() ? [rxn.trim()] : [];
-    const range = ELEMENT_RANGES.find((r) => r.label === elementRange);
-    const zMin = range?.zMin;
-    const zMax = range?.zMax;
+    const { zMin, zMax } = parseElementRange(elementRange);
 
-    if (nuclides.length === 0 && reactions.length === 0 && !range) {
+    if (nuclides.length === 0 && reactions.length === 0 && !elementRange) {
       clearStructuredSearch();
       return;
     }
@@ -176,8 +173,7 @@ export default function References() {
   };
   const handleElementRangeChange = (v: string | null) => {
     setElementRange(v);
-    // Immediately trigger search with the new range
-    const range = v ? ELEMENT_RANGES.find((r) => r.label === v) : undefined;
+    const { zMin, zMax } = parseElementRange(v);
     const nuclides = nuclideInput.trim() ? [nuclideInput.trim()] : [];
     const reactions = reactionInput.trim() ? [reactionInput.trim()] : [];
 
@@ -191,8 +187,8 @@ export default function References() {
     setStructuredParams({
       nuclides: nuclides.length > 0 ? nuclides : undefined,
       reactions: reactions.length > 0 ? reactions : undefined,
-      zMin: range?.zMin,
-      zMax: range?.zMax,
+      zMin,
+      zMax,
     });
   };
 
@@ -293,9 +289,7 @@ export default function References() {
           />
 
           {/* Element range filter */}
-          <FilterDropdown
-            label="Element Range"
-            options={ELEMENT_RANGES.map((r) => r.label)}
+          <ElementRangeCombobox
             value={elementRange}
             onChange={handleElementRangeChange}
           />
