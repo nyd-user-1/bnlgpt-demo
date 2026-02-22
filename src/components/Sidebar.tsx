@@ -1,7 +1,7 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   SquarePen,
-  BookOpen,
+  Atom,
   Wrench,
   ChevronDown,
   MoreHorizontal,
@@ -195,7 +195,7 @@ export function Sidebar({ isOpen }: SidebarProps) {
                 : "hover:bg-muted"
             }`}
           >
-            <BookOpen className="h-4 w-4" />
+            <Atom className="h-4 w-4" />
             References
           </button>
 
