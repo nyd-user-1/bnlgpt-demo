@@ -395,7 +395,7 @@ export function ChatInput({ onSubmit, isLoading, initialValue }: ChatInputProps)
 
   return (
     <div className="max-w-[720px] mx-auto w-full">
-      <div className="rounded-2xl bg-[#f4f4f4] border-0 p-3 shadow-lg">
+      <div className="rounded-2xl bg-secondary border border-border p-3 shadow-lg">
         {/* Textarea */}
         <textarea
           ref={textareaRef}
@@ -404,7 +404,7 @@ export function ChatInput({ onSubmit, isLoading, initialValue }: ChatInputProps)
           onKeyDown={handleKeyDown}
           placeholder="What are you researching?"
           rows={1}
-          className="flex-1 min-h-[40px] w-full resize-none border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 p-0 placeholder:text-muted-foreground/60 text-base text-black outline-none"
+          className="flex-1 min-h-[40px] w-full resize-none border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 p-0 placeholder:text-muted-foreground/60 text-base text-foreground outline-none"
         />
 
         {/* Bottom row: + button, model label, send button */}
@@ -423,7 +423,7 @@ export function ChatInput({ onSubmit, isLoading, initialValue }: ChatInputProps)
                   setDrawerSearchResults(null);
                 }
               }}
-              className="h-9 w-9 rounded-lg flex items-center justify-center transition-colors text-muted-foreground hover:bg-[#e8e8e8] hover:text-foreground"
+              className="h-9 w-9 rounded-lg flex items-center justify-center transition-colors text-muted-foreground hover:bg-muted hover:text-foreground"
             >
               <Plus className="h-5 w-5" />
             </button>
@@ -592,7 +592,7 @@ export function ChatInput({ onSubmit, isLoading, initialValue }: ChatInputProps)
               className={`h-10 w-10 rounded-xl flex items-center justify-center transition-colors ${
                 isLoading
                   ? "bg-destructive hover:bg-destructive/90 text-white"
-                  : "bg-black hover:bg-black/85 text-white"
+                  : "bg-foreground hover:bg-foreground/85 text-background"
               }`}
             >
               {isLoading ? (

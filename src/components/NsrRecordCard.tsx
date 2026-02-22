@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowUp, FlaskConical } from "lucide-react";
+import { ArrowUp, FlaskConical, Hash } from "lucide-react";
 import type { NsrRecord } from "@/types/nsr";
 
 interface NsrRecordCardProps {
@@ -41,13 +41,9 @@ export const NsrRecordCard = memo(function NsrRecordCard({ record }: NsrRecordCa
     <div
       className="group relative rounded-lg border bg-muted/40 p-6 pb-16 min-h-[280px] transition-shadow hover:shadow-lg"
     >
-      {/* Top row: BNL logo + key number + year */}
+      {/* Top row: hash icon + key number + year */}
       <div className="flex items-center gap-2 mb-3">
-        <img
-          src="/bnl-logo.png"
-          alt="BNL"
-          className="h-6 w-6 rounded-full object-cover"
-        />
+        <Hash className="h-5 w-5 text-muted-foreground" />
         <span className="text-base font-bold">{record.key_number}</span>
         <span className="ml-auto text-sm font-medium text-muted-foreground">
           {record.pub_year}
