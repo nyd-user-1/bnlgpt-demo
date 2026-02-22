@@ -381,7 +381,23 @@ export default function References() {
       {isLoading && (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: 9 }).map((_, i) => (
-            <Skeleton key={i} className="h-56 w-full rounded-lg" />
+            <div key={i} className="rounded-lg border bg-muted/40 p-6 min-h-[280px] space-y-4">
+              <div className="flex items-center gap-2">
+                <Skeleton className="h-6 w-6 rounded-full" />
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-4 w-12 ml-auto" />
+              </div>
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-3/4" />
+              <div className="space-y-2 pt-2">
+                <Skeleton className="h-3 w-20" />
+                <Skeleton className="h-3 w-48" />
+              </div>
+              <div className="space-y-2">
+                <Skeleton className="h-3 w-20" />
+                <Skeleton className="h-3 w-40" />
+              </div>
+            </div>
           ))}
         </div>
       )}
