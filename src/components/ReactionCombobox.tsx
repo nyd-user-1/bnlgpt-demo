@@ -59,6 +59,19 @@ export function ReactionCombobox({ value, onChange, onSubmit }: ReactionCombobox
     return () => document.removeEventListener("mousedown", handleClick);
   }, [open]);
 
+  // Escape key clears selection (document-level)
+  useEffect(() => {
+    if (!value) return;
+    function handleEsc(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        onChange("");
+        setInputValue("");
+      }
+    }
+    document.addEventListener("keydown", handleEsc);
+    return () => document.removeEventListener("keydown", handleEsc);
+  }, [value, onChange]);
+
   // Sync external value changes
   useEffect(() => {
     setInputValue(value ? stripParens(value) : "");
@@ -107,16 +120,7 @@ export function ReactionCombobox({ value, onChange, onSubmit }: ReactionCombobox
   };
 
   return (
-    <div
-      className="relative"
-      ref={ref}
-      onKeyDown={(e) => {
-        if (e.key === "Escape" && value && !open) {
-          e.preventDefault();
-          clearSelection();
-        }
-      }}
-    >
+    <div className="relative" ref={ref}>
       <div className="inline-flex items-center gap-1.5 rounded-lg border px-2 py-1">
         <span className="text-xs text-muted-foreground font-medium">Reaction</span>
 
@@ -126,9 +130,6 @@ export function ReactionCombobox({ value, onChange, onSubmit }: ReactionCombobox
             onClick={() => {
               setOpen(true);
               setTimeout(() => inputRef.current?.focus(), 0);
-            }}
-            onKeyDown={(e) => {
-              if (e.key === "Escape") clearSelection();
             }}
             className="inline-flex items-center gap-1 rounded-full bg-foreground/10 px-2 py-0.5 text-xs font-medium text-foreground"
           >
