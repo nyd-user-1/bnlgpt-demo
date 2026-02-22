@@ -371,11 +371,50 @@ export default function References() {
             </button>
           )}
 
-          {/* Page indicator (far right) */}
-          {totalRecords > 0 && (
-            <span className="ml-auto text-xs text-muted-foreground">
-              Page {currentPage} of {totalPages}
-            </span>
+          {/* Inline pagination (far right) */}
+          {totalPages > 1 && (
+            <div className="ml-auto inline-flex items-center gap-1.5">
+              <button
+                onClick={() => goToPage(currentPage - 1)}
+                disabled={currentPage <= 1}
+                className="text-xs text-muted-foreground hover:text-foreground disabled:opacity-30 transition-colors"
+              >
+                <ChevronLeft className="h-3.5 w-3.5" />
+              </button>
+
+              {Array.from({ length: totalPages }, (_, i) => i + 1)
+                .filter((p) => p === 1 || p === totalPages || Math.abs(p - currentPage) <= 1)
+                .reduce<(number | "...")[]>((acc, p, idx, arr) => {
+                  if (idx > 0 && p - (arr[idx - 1]) > 1) acc.push("...");
+                  acc.push(p);
+                  return acc;
+                }, [])
+                .map((item, idx) =>
+                  item === "..." ? (
+                    <span key={`dots-${idx}`} className="text-xs text-muted-foreground">...</span>
+                  ) : (
+                    <button
+                      key={item}
+                      onClick={() => goToPage(item)}
+                      className={`text-xs transition-colors ${
+                        item === currentPage
+                          ? "text-foreground font-medium"
+                          : "text-muted-foreground hover:text-foreground"
+                      }`}
+                    >
+                      {item}
+                    </button>
+                  )
+                )}
+
+              <button
+                onClick={() => goToPage(currentPage + 1)}
+                disabled={currentPage >= totalPages}
+                className="text-xs text-muted-foreground hover:text-foreground disabled:opacity-30 transition-colors"
+              >
+                <ChevronRight className="h-3.5 w-3.5" />
+              </button>
+            </div>
           )}
         </div>
       </div>
@@ -423,51 +462,6 @@ export default function References() {
           </div>
         )}
 
-        {/* Pagination controls */}
-        {totalPages > 1 && (
-          <div className="flex items-center justify-center gap-2 py-8">
-            <button
-              onClick={() => goToPage(currentPage - 1)}
-              disabled={currentPage <= 1}
-              className="inline-flex items-center justify-center h-8 w-8 rounded-md border text-sm disabled:opacity-30 hover:bg-muted transition-colors"
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </button>
-
-            {Array.from({ length: totalPages }, (_, i) => i + 1)
-              .filter((p) => p === 1 || p === totalPages || Math.abs(p - currentPage) <= 2)
-              .reduce<(number | "...")[]>((acc, p, idx, arr) => {
-                if (idx > 0 && p - (arr[idx - 1]) > 1) acc.push("...");
-                acc.push(p);
-                return acc;
-              }, [])
-              .map((item, idx) =>
-                item === "..." ? (
-                  <span key={`dots-${idx}`} className="px-1 text-muted-foreground text-sm">...</span>
-                ) : (
-                  <button
-                    key={item}
-                    onClick={() => goToPage(item)}
-                    className={`inline-flex items-center justify-center h-8 w-8 rounded-md text-sm transition-colors ${
-                      item === currentPage
-                        ? "bg-foreground text-background font-medium"
-                        : "border hover:bg-muted"
-                    }`}
-                  >
-                    {item}
-                  </button>
-                )
-              )}
-
-            <button
-              onClick={() => goToPage(currentPage + 1)}
-              disabled={currentPage >= totalPages}
-              className="inline-flex items-center justify-center h-8 w-8 rounded-md border text-sm disabled:opacity-30 hover:bg-muted transition-colors"
-            >
-              <ChevronRight className="h-4 w-4" />
-            </button>
-          </div>
-        )}
 
         {/* Empty state */}
         {records && records.length === 0 && (isSearching || isStructured || yearFilter) && (
