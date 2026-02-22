@@ -12,7 +12,7 @@ const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 function getStoredTheme(): Theme {
   if (typeof window === "undefined") return "light";
-  return (localStorage.getItem("bnlgpt-theme") as Theme) ?? "light";
+  return (localStorage.getItem("nsrgpt-theme") as Theme) ?? "light";
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
@@ -20,7 +20,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   const setTheme = (t: Theme) => {
     setThemeState(t);
-    localStorage.setItem("bnlgpt-theme", t);
+    localStorage.setItem("nsrgpt-theme", t);
   };
 
   const toggle = () => setTheme(theme === "light" ? "dark" : "light");

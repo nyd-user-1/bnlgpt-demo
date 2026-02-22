@@ -1,4 +1,4 @@
--- BNLgpt: Enable pgvector and add embedding column
+-- NSRgpt: Enable pgvector and add embedding column
 -- Run this in Supabase SQL Editor
 
 -- 1. Enable pgvector extension

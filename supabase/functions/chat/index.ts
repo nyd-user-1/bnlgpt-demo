@@ -7,7 +7,7 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type",
 };
 
-const SYSTEM_PROMPT_BASE = `You are BNLgpt, an AI research assistant from the National Nuclear Data Center (NNDC) at Brookhaven National Laboratory.
+const SYSTEM_PROMPT_BASE = `You are NSRgpt, an AI research assistant from the National Nuclear Data Center (NNDC) at Brookhaven National Laboratory.
 
 INSTRUCTIONS:
 - Base answers on the retrieved NSR records and Semantic Scholar papers below.

@@ -22,7 +22,7 @@ async function fetchRecords(filters: Filters): Promise<PaginatedResult> {
 
   let query = supabase
     .from("nsr")
-    .select("id, key_number, pub_year, reference, authors, title, doi, exfor_keys, keywords", { count: "exact" })
+    .select("id, key_number, pub_year, reference, authors, title, doi, exfor_keys, keywords, nuclides", { count: "exact" })
     .order("pub_year", { ascending: false })
     .order("key_number", { ascending: false })
     .range(from, to);

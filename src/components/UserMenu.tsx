@@ -6,7 +6,6 @@ import {
   Settings,
   Zap,
   LogOut,
-  User,
 } from "lucide-react";
 import { useTheme } from "@/hooks/useTheme";
 
@@ -38,9 +37,7 @@ export function UserMenu() {
         }}
         className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors hover:bg-muted"
       >
-        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-nuclear text-nuclear-foreground text-xs font-bold">
-          <User className="h-4 w-4" />
-        </div>
+        <img src="/bnl-logo.png" alt="BNL" className="h-8 w-8 rounded-full object-cover" />
         <div className="text-left">
           <p className="text-sm font-medium leading-none">Account</p>
           <p className="text-xs text-muted-foreground mt-0.5">Settings</p>

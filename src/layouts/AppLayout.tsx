@@ -29,7 +29,7 @@ export function AppLayout() {
             onClick={() => navigate("/")}
             className="inline-flex items-center justify-center h-10 rounded-md px-3 text-foreground hover:bg-muted transition-colors font-semibold text-xl"
           >
-            BNLgpt
+            NSRgpt
           </button>
         </div>
 

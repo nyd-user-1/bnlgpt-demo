@@ -1,4 +1,4 @@
--- BNLgpt: Create NSR table with full schema
+-- NSRgpt: Create NSR table with full schema
 -- Run this in Supabase SQL Editor if you need to recreate the table
 
 DROP TABLE IF EXISTS nsr;

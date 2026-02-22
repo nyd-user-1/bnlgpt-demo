@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowUp, FlaskConical, Hash } from "lucide-react";
+import { ArrowUp, Atom, FlaskConical, Hash } from "lucide-react";
 import type { NsrRecord } from "@/types/nsr";
 
 interface NsrRecordCardProps {
@@ -81,7 +81,30 @@ export const NsrRecordCard = memo(function NsrRecordCard({ record }: NsrRecordCa
           </div>
         )}
 
-        {/* Row 3: DOI (col 1) | EXFOR badges (col 2) */}
+        {/* Row 3: Nuclides (col-span-2) */}
+        {record.nuclides && record.nuclides.length > 0 && (
+          <div className="col-span-2">
+            <span className="text-muted-foreground">Nuclides</span>
+            <div className="flex flex-wrap gap-1.5 mt-0.5">
+              {record.nuclides.slice(0, 8).map((nuc) => (
+                <span
+                  key={nuc}
+                  className="inline-flex items-center gap-1 rounded-full bg-foreground/10 px-2 py-0.5 text-[11px] font-medium text-foreground/80"
+                >
+                  <Atom className="h-3 w-3" />
+                  {nuc}
+                </span>
+              ))}
+              {record.nuclides.length > 8 && (
+                <span className="inline-flex items-center rounded-full bg-foreground/10 px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+                  +{record.nuclides.length - 8}
+                </span>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Row 4: DOI (col 1) | EXFOR badges (col 2) */}
         {(record.doi || record.exfor_keys) && (
           <>
             <div>
@@ -135,7 +158,7 @@ export const NsrRecordCard = memo(function NsrRecordCard({ record }: NsrRecordCa
       <button
         onClick={handleSendToChat}
         className="absolute bottom-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-foreground text-background shadow-lg transition-all hover:scale-110 opacity-0 group-hover:opacity-100"
-        title="Ask BNLgpt about this reference"
+        title="Ask NSRgpt about this reference"
       >
         <ArrowUp className="h-4 w-4" />
       </button>

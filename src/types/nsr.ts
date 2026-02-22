@@ -8,5 +8,6 @@ export interface NsrRecord {
   doi: string | null;
   exfor_keys: string | null;
   keywords: string | null;
+  nuclides?: string[] | null;
   similarity?: number;
 }
