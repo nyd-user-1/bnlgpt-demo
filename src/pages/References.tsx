@@ -289,7 +289,7 @@ export default function References() {
   return (
     <div className="h-full flex flex-col">
       {/* Sticky search + filter bar */}
-      <div className="sticky top-0 z-10 bg-background px-6 pt-6 pb-2 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.06)]">
+      <div className="sticky top-0 z-10 bg-background px-6 pt-6 pb-2">
         {/* Search bar */}
         <div className="mb-4">
           <SearchInput
@@ -304,29 +304,6 @@ export default function References() {
 
         {/* Filter bar */}
         <div className="flex flex-wrap items-center gap-2">
-          <FilterDropdown
-            label="Year"
-            options={YEAR_OPTIONS}
-            value={yearFilter}
-            onChange={setYearFilter}
-          />
-          {/* Authors sort toggle */}
-          <button
-            onClick={() =>
-              setAuthorsSortAsc((prev) =>
-                prev === null ? true : prev ? false : null
-              )
-            }
-            className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm transition-colors ${
-              authorsSortAsc !== null
-                ? "bg-foreground text-background font-medium"
-                : "text-muted-foreground hover:bg-muted hover:text-foreground"
-            }`}
-          >
-            Authors
-            <ArrowUpDown className="h-3.5 w-3.5" />
-          </button>
-
           {/* Nuclide filter */}
           <TextFilter
             label="Nuclide"
@@ -360,6 +337,29 @@ export default function References() {
             onChange={handleZMaxChange}
             onSubmit={handleStructuredSearch}
           />
+
+          <FilterDropdown
+            label="Year"
+            options={YEAR_OPTIONS}
+            value={yearFilter}
+            onChange={setYearFilter}
+          />
+          {/* Authors sort toggle */}
+          <button
+            onClick={() =>
+              setAuthorsSortAsc((prev) =>
+                prev === null ? true : prev ? false : null
+              )
+            }
+            className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm transition-colors ${
+              authorsSortAsc !== null
+                ? "bg-foreground text-background font-medium"
+                : "text-muted-foreground hover:bg-muted hover:text-foreground"
+            }`}
+          >
+            Authors
+            <ArrowUpDown className="h-3.5 w-3.5" />
+          </button>
 
           {/* Clear structured filters */}
           {isStructured && (
