@@ -163,6 +163,8 @@ export default function References() {
   const search = useNsrSearch(deferredQuery);
   const browse = useNsrRecords({
     year: yearFilter ? Number(yearFilter) : undefined,
+    page,
+    pageSize: CARDS_PER_PAGE,
   });
   const structured = useNsrStructuredSearch(structuredParams);
 
@@ -235,6 +237,7 @@ export default function References() {
   let rawRecords: NsrRecord[] | null | undefined;
   let isLoading: boolean;
   let error: Error | null;
+  let browseTotalCount = 0;
 
   if (isStructured) {
     rawRecords = structured.data;
@@ -245,9 +248,10 @@ export default function References() {
     isLoading = search.isLoading;
     error = search.error;
   } else {
-    rawRecords = browse.data;
+    rawRecords = browse.data?.records;
     isLoading = browse.isLoading;
     error = browse.error;
+    browseTotalCount = browse.data?.totalCount ?? 0;
   }
 
   // Apply sort
@@ -266,15 +270,19 @@ export default function References() {
     return filtered;
   }, [rawRecords, authorsSortAsc]);
 
-  // Pagination
-  const totalRecords = records?.length ?? 0;
+  // Pagination — server-side for browse, client-side for search/structured
+  const isBrowsing = !isSearching && !isStructured;
+  const totalRecords = isBrowsing ? browseTotalCount : (records?.length ?? 0);
   const totalPages = Math.max(1, Math.ceil(totalRecords / CARDS_PER_PAGE));
   const currentPage = Math.min(page, totalPages);
+
+  // For search/structured, slice client-side. For browse, records are already paged from server.
   const pagedRecords = useMemo(() => {
     if (!records) return null;
+    if (isBrowsing) return records;
     const start = (currentPage - 1) * CARDS_PER_PAGE;
     return records.slice(start, start + CARDS_PER_PAGE);
-  }, [records, currentPage]);
+  }, [records, currentPage, isBrowsing]);
 
   // Reset page when data source changes
   useEffect(() => { setPage(1); }, [deferredQuery, yearFilter, structuredParams]);

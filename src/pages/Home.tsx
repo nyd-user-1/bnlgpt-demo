@@ -16,7 +16,7 @@ export default function Home() {
   const browse = useNsrRecords();
 
   const isSearching = deferredQuery.length >= 3;
-  const records = isSearching ? search.data?.records : browse.data;
+  const records = isSearching ? search.data?.records : browse.data?.records;
   const isLoading = isSearching ? search.isLoading : browse.isLoading;
   const error = isSearching ? search.error : browse.error;
 
