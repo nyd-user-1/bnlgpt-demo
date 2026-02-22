@@ -17,24 +17,54 @@ interface SamplePrompt {
 
 const SAMPLE_PROMPTS: SamplePrompt[] = [
   {
-    title: "Cross Section Analysis",
-    description: "What are the latest measurements of neutron capture cross sections for actinides?",
-    prompt: "What are the latest measurements of neutron capture cross sections for actinides?",
+    title: "Neutron Capture Cross Sections",
+    description: "Recent measurements for U-235, Pu-239, and Th-232",
+    prompt: "What are the most recent experimental measurements of neutron capture cross sections for U-235, Pu-239, and Th-232?",
   },
   {
-    title: "Nuclear Structure",
-    description: "Explain shell model predictions for doubly-magic nuclei like 208Pb",
-    prompt: "Explain shell model predictions for doubly-magic nuclei like 208Pb",
+    title: "Half-Life Conflicts Near N=82",
+    description: "Conflicting measurements near the neutron shell closure",
+    prompt: "Are there any conflicting experimental measurements of half-lives for nuclei near the N=82 neutron shell closure?",
   },
   {
-    title: "Reaction Mechanisms",
-    description: "Compare direct and compound nucleus reaction mechanisms in nuclear physics",
-    prompt: "Compare direct and compound nucleus reaction mechanisms in nuclear physics",
+    title: "Chiral EFT in Nuclear Matter",
+    description: "Applications of chiral effective field theory",
+    prompt: "How has chiral effective field theory been applied to nuclear matter calculations in recent literature?",
   },
   {
-    title: "Nuclear Astrophysics",
-    description: "How do nuclear reactions in stellar environments produce heavy elements?",
-    prompt: "How do nuclear reactions in stellar environments produce heavy elements through the r-process and s-process?",
+    title: "Structure of Pb-208",
+    description: "Key experimental and theoretical papers",
+    prompt: "What are the most important experimental and theoretical papers related to the structure of Pb-208?",
+  },
+  {
+    title: "Ni-64(p,n) Reaction",
+    description: "Experimental techniques for cross section measurement",
+    prompt: "What experimental techniques have been used to measure the Ni-64(p,n) reaction cross section?",
+  },
+  {
+    title: "R-Process Nucleosynthesis",
+    description: "Critical nuclear reactions in recent studies",
+    prompt: "What nuclear reactions are considered most critical to r-process nucleosynthesis according to recent studies?",
+  },
+  {
+    title: "Neutron-Rich Calcium Isotopes",
+    description: "Leading authors and institutions",
+    prompt: "Which authors and institutions have published the most research on neutron-rich calcium isotopes?",
+  },
+  {
+    title: "Medical Isotope Cu-64",
+    description: "Production methods and yields",
+    prompt: "What recent studies exist on production methods and yields for the medical isotope Cu-64?",
+  },
+  {
+    title: "Direct vs. Compound Reactions",
+    description: "Experimental evidence in medium-mass nuclei",
+    prompt: "What experimental evidence supports direct reaction mechanisms versus compound nucleus formation in medium-mass nuclei?",
+  },
+  {
+    title: "Neutron Drip Line Discoveries",
+    description: "New experimental discoveries near the drip line",
+    prompt: "What new experimental discoveries have been reported for nuclei near the neutron drip line?",
   },
 ];
 
