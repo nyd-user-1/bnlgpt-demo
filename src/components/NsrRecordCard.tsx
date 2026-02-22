@@ -68,8 +68,8 @@ export const NsrRecordCard = memo(function NsrRecordCard({ record }: NsrRecordCa
             <p className="font-medium truncate">
               {(() => {
                 const names = record.authors.split(";").map((n) => n.trim());
-                if (names.length <= 4) return record.authors;
-                return names.slice(0, 4).join("; ") + "; et al.";
+                if (names.length <= 3) return record.authors;
+                return names.slice(0, 3).join("; ") + "; et al.";
               })()}
             </p>
           </div>
