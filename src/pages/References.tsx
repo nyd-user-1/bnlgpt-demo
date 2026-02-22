@@ -2,6 +2,7 @@ import { useState, useDeferredValue, useMemo, useRef, useEffect } from "react";
 import { ArrowUpDown, ChevronDown, ChevronLeft, ChevronRight, Search } from "lucide-react";
 import { SearchInput } from "@/components/SearchInput";
 import { NsrRecordCard } from "@/components/NsrRecordCard";
+import { NuclideCombobox } from "@/components/NuclideCombobox";
 import { ReactionCombobox } from "@/components/ReactionCombobox";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useNsrSearch } from "@/hooks/useNsrSearch";
@@ -125,18 +126,6 @@ function TextFilter({ label, placeholder, value, onChange, onSubmit }: TextFilte
 // All years in the database (2000-2026)
 const YEAR_OPTIONS = Array.from({ length: 27 }, (_, i) => String(2026 - i));
 
-/** Normalize user nuclide input: "o-16" → "16O", "pb208" → "208Pb" */
-function normalizeNuclide(raw: string): string {
-  const s = raw.trim();
-  // Already in ASymbol form: "16O"
-  const m1 = s.match(/^(\d+)([A-Za-z]{1,2})$/);
-  if (m1) return `${m1[1]}${m1[2][0].toUpperCase()}${m1[2].slice(1).toLowerCase()}`;
-  // Symbol-first: "O16", "Pb208"
-  const m2 = s.match(/^([A-Za-z]{1,2})[-]?(\d+)$/);
-  if (m2) return `${m2[2]}${m2[1][0].toUpperCase()}${m2[1].slice(1).toLowerCase()}`;
-  return s;
-}
-
 /* ------------------------------------------------------------------ */
 /*  Page                                                               */
 /* ------------------------------------------------------------------ */
@@ -178,10 +167,7 @@ export default function References() {
   };
 
   const handleStructuredSearch = () => {
-    const nuclides = nuclideInput
-      .split(/[,;\s]+/)
-      .map(normalizeNuclide)
-      .filter(Boolean);
+    const nuclides = nuclideInput.trim() ? [nuclideInput.trim()] : [];
     const reactions = reactionInput.trim() ? [reactionInput.trim()] : [];
     const zMin = zMinInput ? Number(zMinInput) : undefined;
     const zMax = zMaxInput ? Number(zMaxInput) : undefined;
@@ -311,9 +297,7 @@ export default function References() {
         {/* Filter bar */}
         <div className="flex flex-wrap items-center gap-2">
           {/* Nuclide filter */}
-          <TextFilter
-            label="Nuclide"
-            placeholder="e.g. 6He"
+          <NuclideCombobox
             value={nuclideInput}
             onChange={handleNuclideChange}
             onSubmit={handleStructuredSearch}
