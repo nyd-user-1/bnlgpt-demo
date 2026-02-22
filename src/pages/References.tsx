@@ -8,7 +8,7 @@ import { useNsrRecords } from "@/hooks/useNsrRecords";
 import { useNsrStructuredSearch } from "@/hooks/useNsrStructuredSearch";
 import type { NsrRecord } from "@/types/nsr";
 
-const CARDS_PER_PAGE = 18;
+const CARDS_PER_PAGE = 99;
 
 /* ------------------------------------------------------------------ */
 /*  Dropdown filter component                                          */
