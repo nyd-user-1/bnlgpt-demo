@@ -24,6 +24,31 @@
   --radius-lg: 1rem;
 }
 
+/*
+ * Bloomberg Terminal–inspired dark theme
+ * Activated by adding .dark to <html>
+ */
+.dark {
+  --color-background: oklch(0.1 0.005 250);
+  --color-foreground: oklch(0.87 0.02 85);
+  --color-card: oklch(0.14 0.007 250);
+  --color-card-foreground: oklch(0.87 0.02 85);
+  --color-primary: oklch(0.87 0.02 85);
+  --color-primary-foreground: oklch(0.1 0.005 250);
+  --color-secondary: oklch(0.18 0.008 250);
+  --color-secondary-foreground: oklch(0.8 0.015 85);
+  --color-muted: oklch(0.18 0.008 250);
+  --color-muted-foreground: oklch(0.6 0.015 250);
+  --color-accent: oklch(0.18 0.008 250);
+  --color-accent-foreground: oklch(0.8 0.015 85);
+  --color-destructive: oklch(0.65 0.25 25);
+  --color-border: oklch(0.25 0.01 250);
+  --color-input: oklch(0.25 0.01 250);
+  --color-ring: oklch(0.75 0.18 145);
+  --color-nuclear: oklch(0.75 0.18 145);
+  --color-nuclear-foreground: oklch(0.1 0.005 250);
+}
+
 @layer base {
   * {
     border-color: var(--color-border);

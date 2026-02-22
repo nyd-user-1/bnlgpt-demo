@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { useChatSessions } from "@/hooks/useChatSessions";
+import { UserMenu } from "@/components/UserMenu";
 import { supabase } from "@/integrations/supabase/client";
 
 /* ------------------------------------------------------------------ */
@@ -237,6 +238,11 @@ export function Sidebar({ isOpen }: SidebarProps) {
             )}
           </div>
         </nav>
+
+        {/* User menu at bottom */}
+        <div className="border-t px-3 py-2">
+          <UserMenu />
+        </div>
       </div>
     </aside>
   );
