@@ -289,7 +289,7 @@ export default function References() {
   return (
     <div className="h-full flex flex-col">
       {/* Sticky search + filter bar */}
-      <div className="sticky top-0 z-10 bg-background px-6 pt-6 pb-2">
+      <div className="sticky top-0 z-10 bg-background px-6 pt-6 pb-2 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.06)]">
         {/* Search bar */}
         <div className="mb-4">
           <SearchInput
