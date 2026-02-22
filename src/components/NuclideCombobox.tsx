@@ -105,12 +105,25 @@ export function NuclideCombobox({ value, onChange, onSubmit }: NuclideComboboxPr
       }
     }
     if (e.key === "Escape") {
-      setOpen(false);
+      if (open) {
+        setOpen(false);
+      } else {
+        clearSelection();
+      }
     }
   };
 
   return (
-    <div className="relative" ref={ref}>
+    <div
+      className="relative"
+      ref={ref}
+      onKeyDown={(e) => {
+        if (e.key === "Escape" && value && !open) {
+          e.preventDefault();
+          clearSelection();
+        }
+      }}
+    >
       <div className="inline-flex items-center gap-1.5 rounded-lg border px-2 py-1">
         <span className="text-xs text-muted-foreground font-medium">Nuclide</span>
 
@@ -120,6 +133,9 @@ export function NuclideCombobox({ value, onChange, onSubmit }: NuclideComboboxPr
             onClick={() => {
               setOpen(true);
               setTimeout(() => inputRef.current?.focus(), 0);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Escape") clearSelection();
             }}
             className="inline-flex items-center gap-1 rounded-full bg-foreground/10 px-2 py-0.5 text-xs font-medium text-foreground"
           >
