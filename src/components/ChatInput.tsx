@@ -237,7 +237,7 @@ export function ChatInput({ onSubmit, isLoading, initialValue }: ChatInputProps)
 
   return (
     <div className="max-w-[720px] mx-auto w-full">
-      <div className="rounded-2xl bg-[#fafafa] border-0 p-3 shadow-lg">
+      <div className="rounded-2xl bg-[#f4f4f4] border-0 p-3 shadow-lg">
         {/* Textarea */}
         <textarea
           ref={textareaRef}
@@ -374,10 +374,10 @@ export function ChatInput({ onSubmit, isLoading, initialValue }: ChatInputProps)
               type="button"
               onClick={handleSubmit}
               disabled={!value.trim() && !isLoading}
-              className={`h-9 w-9 rounded-lg flex items-center justify-center transition-colors ${
+              className={`h-10 w-10 rounded-xl flex items-center justify-center transition-colors ${
                 isLoading
                   ? "bg-destructive hover:bg-destructive/90 text-white"
-                  : "bg-foreground hover:bg-foreground/90 text-background"
+                  : "bg-black hover:bg-black/85 text-white"
               } disabled:opacity-30`}
             >
               {isLoading ? (
