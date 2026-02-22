@@ -1,5 +1,6 @@
 -- Distinct value RPCs for + menu categories.
 -- Each returns paginated distinct values with record counts, supporting ILIKE search.
+-- SECURITY DEFINER ensures RLS doesn't block the anon role.
 
 -- Nuclides: unnest the nuclides TEXT[] array, deduplicate, sort, search, paginate
 CREATE OR REPLACE FUNCTION get_distinct_nuclides(
@@ -8,7 +9,7 @@ CREATE OR REPLACE FUNCTION get_distinct_nuclides(
   p_offset INT  DEFAULT 0
 )
 RETURNS TABLE(value TEXT, record_count BIGINT)
-LANGUAGE sql STABLE
+LANGUAGE sql STABLE SECURITY DEFINER
 AS $$
   SELECT
     u.val                 AS value,
@@ -30,7 +31,7 @@ CREATE OR REPLACE FUNCTION get_distinct_reactions(
   p_offset INT  DEFAULT 0
 )
 RETURNS TABLE(value TEXT, record_count BIGINT)
-LANGUAGE sql STABLE
+LANGUAGE sql STABLE SECURITY DEFINER
 AS $$
   SELECT
     u.val                 AS value,
@@ -52,7 +53,7 @@ CREATE OR REPLACE FUNCTION get_distinct_authors(
   p_offset INT  DEFAULT 0
 )
 RETURNS TABLE(value TEXT, record_count BIGINT)
-LANGUAGE sql STABLE
+LANGUAGE sql STABLE SECURITY DEFINER
 AS $$
   SELECT
     TRIM(a.name)          AS value,
@@ -67,3 +68,6 @@ AS $$
   LIMIT p_limit
   OFFSET p_offset;
 $$;
+
+-- Reload PostgREST schema cache so it discovers the new functions
+NOTIFY pgrst, 'reload schema';

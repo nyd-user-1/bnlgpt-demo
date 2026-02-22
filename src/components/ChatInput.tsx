@@ -186,10 +186,11 @@ export function ChatInput({ onSubmit, isLoading, initialValue }: ChatInputProps)
   // ---- fetch functions ----
   const fetchNuclidesForSelection = useCallback(async (offset: number) => {
     setNuclidesLoading(true);
-    const { data } = await supabase.rpc("get_distinct_nuclides", {
+    const { data, error } = await supabase.rpc("get_distinct_nuclides", {
       p_limit: PAGE_SIZE,
       p_offset: offset,
     });
+    if (error) console.error("get_distinct_nuclides error:", error);
     if (data) {
       setAvailableNuclides((prev) => (offset === 0 ? data : [...prev, ...data]));
       setNuclidesHasMore(data.length === PAGE_SIZE);
@@ -199,10 +200,11 @@ export function ChatInput({ onSubmit, isLoading, initialValue }: ChatInputProps)
 
   const fetchReactionsForSelection = useCallback(async (offset: number) => {
     setReactionsLoading(true);
-    const { data } = await supabase.rpc("get_distinct_reactions", {
+    const { data, error } = await supabase.rpc("get_distinct_reactions", {
       p_limit: PAGE_SIZE,
       p_offset: offset,
     });
+    if (error) console.error("get_distinct_reactions error:", error);
     if (data) {
       setAvailableReactions((prev) => (offset === 0 ? data : [...prev, ...data]));
       setReactionsHasMore(data.length === PAGE_SIZE);
@@ -212,10 +214,11 @@ export function ChatInput({ onSubmit, isLoading, initialValue }: ChatInputProps)
 
   const fetchAuthorsForSelection = useCallback(async (offset: number) => {
     setAuthorsLoading(true);
-    const { data } = await supabase.rpc("get_distinct_authors", {
+    const { data, error } = await supabase.rpc("get_distinct_authors", {
       p_limit: PAGE_SIZE,
       p_offset: offset,
     });
+    if (error) console.error("get_distinct_authors error:", error);
     if (data) {
       setAvailableAuthors((prev) => (offset === 0 ? data : [...prev, ...data]));
       setAuthorsHasMore(data.length === PAGE_SIZE);
@@ -254,11 +257,12 @@ export function ChatInput({ onSubmit, isLoading, initialValue }: ChatInputProps)
             ? "get_distinct_reactions"
             : "get_distinct_authors";
 
-      const { data } = await supabase.rpc(rpcName, {
+      const { data, error } = await supabase.rpc(rpcName, {
         p_search: drawerSearch,
         p_limit: PAGE_SIZE,
         p_offset: 0,
       });
+      if (error) console.error(`${rpcName} search error:`, error);
       setDrawerSearchResults(data ?? []);
       setDrawerSearchLoading(false);
     }, SEARCH_DEBOUNCE);
