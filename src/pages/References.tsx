@@ -2,6 +2,7 @@ import { useState, useDeferredValue, useMemo, useRef, useEffect } from "react";
 import { ArrowUpDown, ChevronDown, ChevronLeft, ChevronRight, Search } from "lucide-react";
 import { SearchInput } from "@/components/SearchInput";
 import { NsrRecordCard } from "@/components/NsrRecordCard";
+import { ReactionCombobox } from "@/components/ReactionCombobox";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useNsrSearch } from "@/hooks/useNsrSearch";
 import { useNsrRecords } from "@/hooks/useNsrRecords";
@@ -322,9 +323,7 @@ export default function References() {
           />
 
           {/* Reaction filter */}
-          <TextFilter
-            label="Reaction"
-            placeholder="e.g. (p,n)"
+          <ReactionCombobox
             value={reactionInput}
             onChange={handleReactionChange}
             onSubmit={handleStructuredSearch}
