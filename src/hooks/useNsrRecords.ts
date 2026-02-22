@@ -13,7 +13,7 @@ async function fetchRecords(filters: Filters): Promise<NsrRecord[]> {
     .select("id, key_number, pub_year, reference, authors, title, doi, exfor_keys, keywords")
     .order("pub_year", { ascending: false })
     .order("key_number", { ascending: false })
-    .limit(500);
+    .limit(1000);
 
   if (filters.year) {
     query = query.eq("pub_year", filters.year);
