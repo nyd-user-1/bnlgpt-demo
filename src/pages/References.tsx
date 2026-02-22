@@ -380,48 +380,40 @@ export default function References() {
           )}
 
           {/* Inline pagination (far right) */}
-          {totalPages > 1 && (
-            <div className="ml-auto inline-flex items-center gap-1.5">
+          {totalPages > 0 && (
+            <div className="ml-auto inline-flex items-center gap-1.5 text-xs text-muted-foreground">
               <button
                 onClick={() => goToPage(currentPage - 1)}
                 disabled={currentPage <= 1}
-                className="text-xs text-muted-foreground hover:text-foreground disabled:opacity-30 transition-colors"
+                className="inline-flex items-center justify-center h-6 w-6 rounded border hover:bg-muted disabled:opacity-30 transition-colors"
               >
                 <ChevronLeft className="h-3.5 w-3.5" />
               </button>
-
-              {Array.from({ length: totalPages }, (_, i) => i + 1)
-                .filter((p) => p === 1 || p === totalPages || Math.abs(p - currentPage) <= 1)
-                .reduce<(number | "...")[]>((acc, p, idx, arr) => {
-                  if (idx > 0 && p - (arr[idx - 1]) > 1) acc.push("...");
-                  acc.push(p);
-                  return acc;
-                }, [])
-                .map((item, idx) =>
-                  item === "..." ? (
-                    <span key={`dots-${idx}`} className="text-xs text-muted-foreground">...</span>
-                  ) : (
-                    <button
-                      key={item}
-                      onClick={() => goToPage(item)}
-                      className={`text-xs transition-colors ${
-                        item === currentPage
-                          ? "text-foreground font-medium"
-                          : "text-muted-foreground hover:text-foreground"
-                      }`}
-                    >
-                      {item}
-                    </button>
-                  )
-                )}
-
+              <span>Page</span>
+              <input
+                type="text"
+                value={currentPage}
+                onChange={(e) => {
+                  const val = Number(e.target.value);
+                  if (val >= 1 && val <= totalPages) goToPage(val);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    const val = Number((e.target as HTMLInputElement).value);
+                    if (val >= 1 && val <= totalPages) goToPage(val);
+                  }
+                }}
+                className="h-6 w-10 rounded border bg-transparent text-center text-xs text-foreground outline-none focus:ring-1 focus:ring-foreground/20"
+              />
+              <span>of {totalPages}</span>
               <button
                 onClick={() => goToPage(currentPage + 1)}
                 disabled={currentPage >= totalPages}
-                className="text-xs text-muted-foreground hover:text-foreground disabled:opacity-30 transition-colors"
+                className="inline-flex items-center justify-center h-6 w-6 rounded border hover:bg-muted disabled:opacity-30 transition-colors"
               >
                 <ChevronRight className="h-3.5 w-3.5" />
               </button>
+              <span className="rounded border px-2 py-0.5">{totalRecords.toLocaleString()} rows</span>
             </div>
           )}
         </div>
