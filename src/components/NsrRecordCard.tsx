@@ -65,7 +65,13 @@ export const NsrRecordCard = memo(function NsrRecordCard({ record }: NsrRecordCa
         {record.authors && (
           <div className="col-span-2">
             <span className="text-muted-foreground">Authors</span>
-            <p className="font-medium truncate">{record.authors}</p>
+            <p className="font-medium truncate">
+              {(() => {
+                const names = record.authors.split(";").map((n) => n.trim());
+                if (names.length <= 4) return record.authors;
+                return names.slice(0, 4).join("; ") + "; et al.";
+              })()}
+            </p>
           </div>
         )}
 
