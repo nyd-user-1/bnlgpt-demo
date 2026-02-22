@@ -182,10 +182,7 @@ export default function References() {
       .split(/[,;\s]+/)
       .map(normalizeNuclide)
       .filter(Boolean);
-    const reactions = reactionInput
-      .split(/[,;]+/)
-      .map((s) => s.trim())
-      .filter(Boolean);
+    const reactions = reactionInput.trim() ? [reactionInput.trim()] : [];
     const zMin = zMinInput ? Number(zMinInput) : undefined;
     const zMax = zMaxInput ? Number(zMaxInput) : undefined;
 
