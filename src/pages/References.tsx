@@ -301,13 +301,6 @@ export default function References() {
           value={yearFilter}
           onChange={setYearFilter}
         />
-        <FilterDropdown
-          label="Reference"
-          options={referenceOptions}
-          value={referenceFilter}
-          onChange={setReferenceFilter}
-        />
-
         {/* Authors sort toggle */}
         <button
           onClick={() =>
