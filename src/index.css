@@ -26,27 +26,41 @@
 
 /*
  * Bloomberg Terminal–inspired dark theme
- * Activated by adding .dark to <html>
+ * Amber-on-black: amber is the baseline, white is promotion,
+ * dim amber is demotion, cyan is interactive, green/red are semantic.
  */
 .dark {
-  --color-background: oklch(0.1 0.005 250);
-  --color-foreground: oklch(0.87 0.02 85);
-  --color-card: oklch(0.14 0.007 250);
-  --color-card-foreground: oklch(0.87 0.02 85);
-  --color-primary: oklch(0.87 0.02 85);
-  --color-primary-foreground: oklch(0.1 0.005 250);
-  --color-secondary: oklch(0.18 0.008 250);
-  --color-secondary-foreground: oklch(0.8 0.015 85);
-  --color-muted: oklch(0.18 0.008 250);
-  --color-muted-foreground: oklch(0.6 0.015 250);
-  --color-accent: oklch(0.18 0.008 250);
-  --color-accent-foreground: oklch(0.8 0.015 85);
-  --color-destructive: oklch(0.65 0.25 25);
-  --color-border: oklch(0.25 0.01 250);
-  --color-input: oklch(0.25 0.01 250);
-  --color-ring: oklch(0.75 0.18 145);
-  --color-nuclear: oklch(0.75 0.18 145);
-  --color-nuclear-foreground: oklch(0.1 0.005 250);
+  /* Background layers — pure black, panels barely distinguishable */
+  --color-background: #000000;
+  --color-card: #0A0A0A;
+  --color-card-foreground: #FF9933;
+
+  /* Body text — warm amber, the Bloomberg signature */
+  --color-foreground: #FF9933;
+
+  /* White reserved for headers, active states, key identifiers */
+  --color-primary: #FFFFFF;
+  --color-primary-foreground: #000000;
+
+  /* Dark surfaces for hover, inputs, secondary panels */
+  --color-secondary: #111111;
+  --color-secondary-foreground: #FF9933;
+  --color-muted: #1A1A1A;
+  --color-muted-foreground: #8B7332;
+  --color-accent: #1A1A1A;
+  --color-accent-foreground: #FF9933;
+
+  /* Semantic: red for errors/alerts */
+  --color-destructive: #FF3333;
+
+  /* Borders — thin, subtle dark gray grid lines */
+  --color-border: #222222;
+  --color-input: #1A1A1A;
+
+  /* Interactive elements — Bloomberg cyan for links/clickables */
+  --color-ring: #00BFFF;
+  --color-nuclear: #00BFFF;
+  --color-nuclear-foreground: #000000;
 }
 
 @layer base {
