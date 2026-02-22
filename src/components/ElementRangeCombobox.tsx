@@ -44,7 +44,7 @@ export function ElementRangeCombobox({ value, onChange }: ElementRangeComboboxPr
   return (
     <div className="relative" ref={ref}>
       <div className="inline-flex items-center gap-1.5 rounded-lg border px-2 py-1">
-        <span className="text-xs text-muted-foreground font-medium">Element Range</span>
+        <span className="text-xs text-muted-foreground font-medium">Range</span>
 
         {selected && !open ? (
           <button
@@ -54,21 +54,28 @@ export function ElementRangeCombobox({ value, onChange }: ElementRangeComboboxPr
             Z {selected.value}
           </button>
         ) : (
-          <button
+          <span
             onClick={() => setOpen(!open)}
-            className="text-muted-foreground hover:text-foreground"
+            className="w-24 text-sm text-muted-foreground/50 cursor-pointer"
           >
-            <ChevronDown className={`h-3 w-3 transition-transform ${open ? "rotate-180" : ""}`} />
-          </button>
+            e.g. Light
+          </span>
         )}
 
-        {selected && (
+        {selected ? (
           <button
             onClick={() => onChange(null)}
             className="text-muted-foreground hover:text-foreground"
             title="Clear"
           >
             <X className="h-3 w-3" />
+          </button>
+        ) : (
+          <button
+            onClick={() => setOpen(!open)}
+            className="text-muted-foreground hover:text-foreground"
+          >
+            <ChevronDown className={`h-3 w-3 transition-transform ${open ? "rotate-180" : ""}`} />
           </button>
         )}
       </div>
