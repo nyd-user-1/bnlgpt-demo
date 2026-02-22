@@ -178,16 +178,6 @@ export function Sidebar({ isOpen }: SidebarProps) {
         {/* Navigation */}
         <nav className="flex-1 overflow-y-auto px-3 pt-2 space-y-1">
           <button
-            onClick={() => navigate("/")}
-            className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-              location.pathname === "/" ? "bg-muted" : "hover:bg-muted"
-            }`}
-          >
-            <SquarePen className="h-4 w-4" />
-            New Chat
-          </button>
-
-          <button
             onClick={() => navigate("/references")}
             className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
               location.pathname === "/references"
@@ -197,6 +187,16 @@ export function Sidebar({ isOpen }: SidebarProps) {
           >
             <Atom className="h-4 w-4" />
             References
+          </button>
+
+          <button
+            onClick={() => navigate("/")}
+            className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+              location.pathname === "/" ? "bg-muted" : "hover:bg-muted"
+            }`}
+          >
+            <SquarePen className="h-4 w-4" />
+            New Chat
           </button>
 
           <button
