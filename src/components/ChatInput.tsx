@@ -1,8 +1,12 @@
-import { useState, useRef, useEffect } from "react";
-import { ArrowUp, Plus, Square, ChevronDown, ChevronRight, ArrowLeft, Lightbulb, Atom, Zap, FlaskConical } from "lucide-react";
+import { useState, useRef, useEffect, useCallback } from "react";
+import {
+  ArrowUp, Plus, Square, ChevronDown, ChevronRight, ArrowLeft,
+  Lightbulb, Atom, Zap, Users, X,
+} from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 /* ------------------------------------------------------------------ */
-/*  Sample prompts data                                                */
+/*  Sample prompts (hardcoded – client-side only)                      */
 /* ------------------------------------------------------------------ */
 
 interface SamplePrompt {
@@ -11,108 +15,56 @@ interface SamplePrompt {
   prompt: string;
 }
 
-interface PromptCategory {
-  label: string;
-  icon: React.ReactNode;
-  prompts: SamplePrompt[];
-}
-
-const PROMPT_CATEGORIES: PromptCategory[] = [
+const SAMPLE_PROMPTS: SamplePrompt[] = [
   {
-    label: "Sample Questions",
-    icon: <Lightbulb className="h-5 w-5" />,
-    prompts: [
-      {
-        title: "Cross Section Analysis",
-        description: "What are the latest measurements of neutron capture cross sections for actinides?",
-        prompt: "What are the latest measurements of neutron capture cross sections for actinides?",
-      },
-      {
-        title: "Nuclear Structure",
-        description: "Explain shell model predictions for doubly-magic nuclei like 208Pb",
-        prompt: "Explain shell model predictions for doubly-magic nuclei like 208Pb",
-      },
-      {
-        title: "Reaction Mechanisms",
-        description: "Compare direct and compound nucleus reaction mechanisms in nuclear physics",
-        prompt: "Compare direct and compound nucleus reaction mechanisms in nuclear physics",
-      },
-      {
-        title: "Nuclear Astrophysics",
-        description: "How do nuclear reactions in stellar environments produce heavy elements?",
-        prompt: "How do nuclear reactions in stellar environments produce heavy elements through the r-process and s-process?",
-      },
-    ],
+    title: "Cross Section Analysis",
+    description: "What are the latest measurements of neutron capture cross sections for actinides?",
+    prompt: "What are the latest measurements of neutron capture cross sections for actinides?",
   },
   {
-    label: "Nuclides",
-    icon: <Atom className="h-5 w-5" />,
-    prompts: [
-      {
-        title: "Oxygen-16",
-        description: "What nuclear data is available for 16O and its reactions?",
-        prompt: "What nuclear data and recent measurements are available for oxygen-16 (16O)?",
-      },
-      {
-        title: "Lead-208",
-        description: "Summarize research on the doubly-magic nucleus 208Pb",
-        prompt: "Summarize the latest research on the doubly-magic nucleus lead-208 (208Pb)",
-      },
-      {
-        title: "Helium-6",
-        description: "What do we know about the halo nucleus 6He?",
-        prompt: "What do we know about the halo nucleus helium-6 (6He)? Summarize recent experimental results.",
-      },
-      {
-        title: "Uranium-238",
-        description: "Overview of 238U fission and capture data",
-        prompt: "Give me an overview of uranium-238 (238U) fission and neutron capture cross section data",
-      },
-    ],
+    title: "Nuclear Structure",
+    description: "Explain shell model predictions for doubly-magic nuclei like 208Pb",
+    prompt: "Explain shell model predictions for doubly-magic nuclei like 208Pb",
   },
   {
-    label: "Reactions",
-    icon: <Zap className="h-5 w-5" />,
-    prompts: [
-      {
-        title: "Neutron Capture",
-        description: "Explain (n,gamma) reactions and their importance",
-        prompt: "Explain neutron capture (n,gamma) reactions and their importance in nuclear science and technology",
-      },
-      {
-        title: "Elastic Scattering",
-        description: "What are the key features of (p,p) elastic scattering?",
-        prompt: "What are the key features of proton elastic scattering (p,p) and what can it tell us about nuclear structure?",
-      },
-      {
-        title: "Fission",
-        description: "Overview of nuclear fission mechanisms and data",
-        prompt: "Provide an overview of nuclear fission mechanisms, including recent data on fission fragment distributions",
-      },
-      {
-        title: "Transfer Reactions",
-        description: "How are (d,p) reactions used to study nuclear structure?",
-        prompt: "How are deuteron-induced transfer reactions (d,p) used to study single-particle structure in nuclei?",
-      },
-    ],
+    title: "Reaction Mechanisms",
+    description: "Compare direct and compound nucleus reaction mechanisms in nuclear physics",
+    prompt: "Compare direct and compound nucleus reaction mechanisms in nuclear physics",
   },
   {
-    label: "Experimental Methods",
-    icon: <FlaskConical className="h-5 w-5" />,
-    prompts: [
-      {
-        title: "Time-of-Flight",
-        description: "How does the time-of-flight technique measure neutron cross sections?",
-        prompt: "How does the time-of-flight technique work for measuring neutron cross sections?",
-      },
-      {
-        title: "Gamma Spectroscopy",
-        description: "What role does gamma-ray spectroscopy play in nuclear data?",
-        prompt: "What role does gamma-ray spectroscopy play in nuclear structure studies and nuclear data measurements?",
-      },
-    ],
+    title: "Nuclear Astrophysics",
+    description: "How do nuclear reactions in stellar environments produce heavy elements?",
+    prompt: "How do nuclear reactions in stellar environments produce heavy elements through the r-process and s-process?",
   },
 ];
+
+/* ------------------------------------------------------------------ */
+/*  + menu category types                                              */
+/* ------------------------------------------------------------------ */
+
+type DrawerCategory = "prompts" | "nuclides" | "reactions" | "authors";
+
+interface CategoryDef {
+  key: DrawerCategory;
+  label: string;
+  icon: React.ReactNode;
+}
+
+const CATEGORIES: CategoryDef[] = [
+  { key: "prompts", label: "Sample Questions", icon: <Lightbulb className="h-5 w-5" /> },
+  { key: "nuclides", label: "Nuclides", icon: <Atom className="h-5 w-5" /> },
+  { key: "reactions", label: "Reactions", icon: <Zap className="h-5 w-5" /> },
+  { key: "authors", label: "Authors", icon: <Users className="h-5 w-5" /> },
+];
+
+/* ------------------------------------------------------------------ */
+/*  DB item shape                                                      */
+/* ------------------------------------------------------------------ */
+
+interface DbItem {
+  value: string;
+  record_count: number;
+}
 
 /* ------------------------------------------------------------------ */
 /*  Model selector (visual only — we always use GPT-4o)                */
@@ -142,6 +94,15 @@ const MODEL_OPTIONS: ModelOption[] = [
 ];
 
 /* ------------------------------------------------------------------ */
+/*  Constants                                                          */
+/* ------------------------------------------------------------------ */
+
+const PAGE_SIZE = 30;
+const SCROLL_THRESHOLD = 60;
+const SEARCH_DEBOUNCE = 300;
+const MIN_SEARCH_LEN = 2;
+
+/* ------------------------------------------------------------------ */
 /*  Component                                                          */
 /* ------------------------------------------------------------------ */
 
@@ -157,15 +118,35 @@ export function ChatInput({ onSubmit, isLoading, initialValue }: ChatInputProps)
 
   // + menu state
   const [menuOpen, setMenuOpen] = useState(false);
-  const [activeCategory, setActiveCategory] = useState<PromptCategory | null>(null);
-  const [promptSearch, setPromptSearch] = useState("");
+  const [drawerCategory, setDrawerCategory] = useState<DrawerCategory | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  // Per-category DB items
+  const [availableNuclides, setAvailableNuclides] = useState<DbItem[]>([]);
+  const [nuclidesLoading, setNuclidesLoading] = useState(false);
+  const [nuclidesHasMore, setNuclidesHasMore] = useState(true);
+
+  const [availableReactions, setAvailableReactions] = useState<DbItem[]>([]);
+  const [reactionsLoading, setReactionsLoading] = useState(false);
+  const [reactionsHasMore, setReactionsHasMore] = useState(true);
+
+  const [availableAuthors, setAvailableAuthors] = useState<DbItem[]>([]);
+  const [authorsLoading, setAuthorsLoading] = useState(false);
+  const [authorsHasMore, setAuthorsHasMore] = useState(true);
+
+  // Drawer search
+  const [drawerSearch, setDrawerSearch] = useState("");
+  const [drawerSearchResults, setDrawerSearchResults] = useState<DbItem[] | null>(null);
+  const [drawerSearchLoading, setDrawerSearchLoading] = useState(false);
 
   // Model selector state
   const [modelMenuOpen, setModelMenuOpen] = useState(false);
   const [selectedModel, setSelectedModel] = useState("GPT-4o");
   const modelRef = useRef<HTMLDivElement>(null);
 
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  // ---- textarea auto-resize ----
   useEffect(() => {
     if (initialValue) setValue(initialValue);
   }, [initialValue]);
@@ -181,13 +162,11 @@ export function ChatInput({ onSubmit, isLoading, initialValue }: ChatInputProps)
     }
   }, [value]);
 
-  // Close menus on outside click
+  // ---- close menus on outside click ----
   useEffect(() => {
     function handleClick(e: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
-        setMenuOpen(false);
-        setActiveCategory(null);
-        setPromptSearch("");
+        closeMenu();
       }
     }
     if (menuOpen) document.addEventListener("mousedown", handleClick);
@@ -203,6 +182,121 @@ export function ChatInput({ onSubmit, isLoading, initialValue }: ChatInputProps)
     if (modelMenuOpen) document.addEventListener("mousedown", handleClick);
     return () => document.removeEventListener("mousedown", handleClick);
   }, [modelMenuOpen]);
+
+  // ---- fetch functions ----
+  const fetchNuclidesForSelection = useCallback(async (offset: number) => {
+    setNuclidesLoading(true);
+    const { data } = await supabase.rpc("get_distinct_nuclides", {
+      p_limit: PAGE_SIZE,
+      p_offset: offset,
+    });
+    if (data) {
+      setAvailableNuclides((prev) => (offset === 0 ? data : [...prev, ...data]));
+      setNuclidesHasMore(data.length === PAGE_SIZE);
+    }
+    setNuclidesLoading(false);
+  }, []);
+
+  const fetchReactionsForSelection = useCallback(async (offset: number) => {
+    setReactionsLoading(true);
+    const { data } = await supabase.rpc("get_distinct_reactions", {
+      p_limit: PAGE_SIZE,
+      p_offset: offset,
+    });
+    if (data) {
+      setAvailableReactions((prev) => (offset === 0 ? data : [...prev, ...data]));
+      setReactionsHasMore(data.length === PAGE_SIZE);
+    }
+    setReactionsLoading(false);
+  }, []);
+
+  const fetchAuthorsForSelection = useCallback(async (offset: number) => {
+    setAuthorsLoading(true);
+    const { data } = await supabase.rpc("get_distinct_authors", {
+      p_limit: PAGE_SIZE,
+      p_offset: offset,
+    });
+    if (data) {
+      setAvailableAuthors((prev) => (offset === 0 ? data : [...prev, ...data]));
+      setAuthorsHasMore(data.length === PAGE_SIZE);
+    }
+    setAuthorsLoading(false);
+  }, []);
+
+  // ---- open a drawer category ----
+  const openDrawer = useCallback(
+    (cat: DrawerCategory) => {
+      setDrawerCategory(cat);
+      setDrawerSearch("");
+      setDrawerSearchResults(null);
+      if (cat === "nuclides" && availableNuclides.length === 0) fetchNuclidesForSelection(0);
+      if (cat === "reactions" && availableReactions.length === 0) fetchReactionsForSelection(0);
+      if (cat === "authors" && availableAuthors.length === 0) fetchAuthorsForSelection(0);
+    },
+    [availableNuclides.length, availableReactions.length, availableAuthors.length,
+     fetchNuclidesForSelection, fetchReactionsForSelection, fetchAuthorsForSelection],
+  );
+
+  // ---- server-side search with debounce ----
+  useEffect(() => {
+    if (!drawerCategory || drawerCategory === "prompts") return;
+    if (drawerSearch.length < MIN_SEARCH_LEN) {
+      setDrawerSearchResults(null);
+      return;
+    }
+
+    setDrawerSearchLoading(true);
+    const timer = setTimeout(async () => {
+      const rpcName =
+        drawerCategory === "nuclides"
+          ? "get_distinct_nuclides"
+          : drawerCategory === "reactions"
+            ? "get_distinct_reactions"
+            : "get_distinct_authors";
+
+      const { data } = await supabase.rpc(rpcName, {
+        p_search: drawerSearch,
+        p_limit: PAGE_SIZE,
+        p_offset: 0,
+      });
+      setDrawerSearchResults(data ?? []);
+      setDrawerSearchLoading(false);
+    }, SEARCH_DEBOUNCE);
+
+    return () => clearTimeout(timer);
+  }, [drawerSearch, drawerCategory]);
+
+  // ---- infinite scroll ----
+  const handlePopoverScroll = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el || !drawerCategory || drawerCategory === "prompts") return;
+    if (drawerSearch.length >= MIN_SEARCH_LEN) return; // no pagination during search
+
+    const nearBottom = el.scrollHeight - el.scrollTop - el.clientHeight < SCROLL_THRESHOLD;
+    if (!nearBottom) return;
+
+    if (drawerCategory === "nuclides" && !nuclidesLoading && nuclidesHasMore) {
+      fetchNuclidesForSelection(availableNuclides.length);
+    } else if (drawerCategory === "reactions" && !reactionsLoading && reactionsHasMore) {
+      fetchReactionsForSelection(availableReactions.length);
+    } else if (drawerCategory === "authors" && !authorsLoading && authorsHasMore) {
+      fetchAuthorsForSelection(availableAuthors.length);
+    }
+  }, [
+    drawerCategory, drawerSearch,
+    nuclidesLoading, nuclidesHasMore, availableNuclides.length,
+    reactionsLoading, reactionsHasMore, availableReactions.length,
+    authorsLoading, authorsHasMore, availableAuthors.length,
+    fetchNuclidesForSelection, fetchReactionsForSelection, fetchAuthorsForSelection,
+  ]);
+
+  // ---- helpers ----
+  const closeMenu = () => {
+    setMenuOpen(false);
+    setDrawerCategory(null);
+    setDrawerSearch("");
+    setDrawerSearchResults(null);
+  };
 
   const handleSubmit = () => {
     const trimmed = value.trim();
@@ -220,20 +314,46 @@ export function ChatInput({ onSubmit, isLoading, initialValue }: ChatInputProps)
 
   const handleSelectPrompt = (prompt: string) => {
     setValue(prompt);
-    setMenuOpen(false);
-    setActiveCategory(null);
-    setPromptSearch("");
+    closeMenu();
     textareaRef.current?.focus();
   };
 
-  const filteredPrompts = activeCategory
-    ? activeCategory.prompts.filter(
-        (p) =>
-          !promptSearch ||
-          p.title.toLowerCase().includes(promptSearch.toLowerCase()) ||
-          p.description.toLowerCase().includes(promptSearch.toLowerCase())
-      )
-    : [];
+  // ---- what to render in the drawer ----
+  const getDrawerItems = (): DbItem[] => {
+    if (drawerSearchResults !== null) return drawerSearchResults;
+    if (drawerCategory === "nuclides") return availableNuclides;
+    if (drawerCategory === "reactions") return availableReactions;
+    if (drawerCategory === "authors") return availableAuthors;
+    return [];
+  };
+
+  const isDrawerLoading = () => {
+    if (drawerSearchLoading) return true;
+    if (drawerCategory === "nuclides") return nuclidesLoading;
+    if (drawerCategory === "reactions") return reactionsLoading;
+    if (drawerCategory === "authors") return authorsLoading;
+    return false;
+  };
+
+  const handleDbItemClick = (item: DbItem) => {
+    let prompt = "";
+    if (drawerCategory === "nuclides") {
+      prompt = `Tell me about nuclide ${item.value} and its nuclear data`;
+    } else if (drawerCategory === "reactions") {
+      prompt = `Tell me about ${item.value} reactions in nuclear physics`;
+    } else if (drawerCategory === "authors") {
+      prompt = `What research has ${item.value} published in nuclear science?`;
+    }
+    handleSelectPrompt(prompt);
+  };
+
+  // client-side filtered sample prompts
+  const filteredPrompts = SAMPLE_PROMPTS.filter(
+    (p) =>
+      !drawerSearch ||
+      p.title.toLowerCase().includes(drawerSearch.toLowerCase()) ||
+      p.description.toLowerCase().includes(drawerSearch.toLowerCase()),
+  );
 
   return (
     <div className="max-w-[720px] mx-auto w-full">
@@ -256,60 +376,93 @@ export function ChatInput({ onSubmit, isLoading, initialValue }: ChatInputProps)
             <button
               type="button"
               onClick={() => {
-                setMenuOpen(!menuOpen);
-                setActiveCategory(null);
-                setPromptSearch("");
+                if (menuOpen) {
+                  closeMenu();
+                } else {
+                  setMenuOpen(true);
+                  setDrawerCategory(null);
+                  setDrawerSearch("");
+                  setDrawerSearchResults(null);
+                }
               }}
               className="h-9 w-9 rounded-lg flex items-center justify-center transition-colors text-muted-foreground hover:bg-[#e8e8e8] hover:text-foreground"
             >
               <Plus className="h-5 w-5" />
             </button>
 
-            {menuOpen && (
-              <div className="absolute bottom-full left-0 mb-2 w-[320px] rounded-xl border bg-background shadow-xl animate-in fade-in slide-in-from-bottom-2 duration-150 overflow-hidden">
-                {!activeCategory ? (
-                  /* Category list */
-                  <div className="py-1">
-                    {PROMPT_CATEGORIES.map((cat) => (
-                      <button
-                        key={cat.label}
-                        onClick={() => setActiveCategory(cat)}
-                        className="flex w-full items-center gap-3 px-4 py-3 text-sm font-medium hover:bg-muted transition-colors"
-                      >
-                        <span className="text-muted-foreground">{cat.icon}</span>
-                        {cat.label}
-                        <ChevronRight className="h-4 w-4 ml-auto text-muted-foreground" />
-                      </button>
-                    ))}
-                  </div>
-                ) : (
-                  /* Prompt list with search */
-                  <div>
-                    <div className="flex items-center gap-2 px-3 py-2.5 border-b">
-                      <button
-                        onClick={() => {
-                          setActiveCategory(null);
-                          setPromptSearch("");
-                        }}
-                        className="text-muted-foreground hover:text-foreground"
-                      >
-                        <ArrowLeft className="h-4 w-4" />
-                      </button>
-                      <input
-                        type="text"
-                        value={promptSearch}
-                        onChange={(e) => setPromptSearch(e.target.value)}
-                        placeholder="Search..."
-                        autoFocus
-                        className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground/50"
-                      />
-                    </div>
-                    <div className="max-h-[280px] overflow-y-auto py-1">
-                      {filteredPrompts.map((p) => (
+            {menuOpen && !drawerCategory && (
+              /* -------- Category list -------- */
+              <div className="absolute bottom-full left-0 mb-2 w-56 rounded-2xl border border-border/60 bg-background shadow-xl animate-in fade-in slide-in-from-bottom-2 duration-150 overflow-hidden">
+                <div className="py-1">
+                  {CATEGORIES.map((cat, i) => (
+                    <button
+                      key={cat.key}
+                      onClick={() => openDrawer(cat.key)}
+                      className={`flex w-full items-center gap-3 px-4 py-3 text-sm font-medium hover:bg-muted transition-colors ${
+                        i > 0 ? "border-t border-border/40" : ""
+                      }`}
+                    >
+                      <span className="text-muted-foreground">{cat.icon}</span>
+                      {cat.label}
+                      <ChevronRight className="h-4 w-4 ml-auto text-muted-foreground" />
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {menuOpen && drawerCategory && (
+              /* -------- Drawer -------- */
+              <div className="absolute bottom-full left-0 mb-2 w-80 rounded-2xl border border-border/60 bg-background shadow-xl animate-in fade-in slide-in-from-bottom-2 duration-150 overflow-hidden">
+                {/* Header: back + search + clear */}
+                <div className="flex items-center gap-2 px-3 py-2.5 border-b border-border/40">
+                  <button
+                    onClick={() => {
+                      setDrawerCategory(null);
+                      setDrawerSearch("");
+                      setDrawerSearchResults(null);
+                    }}
+                    className="text-muted-foreground hover:text-foreground shrink-0"
+                  >
+                    <ArrowLeft className="h-4 w-4" />
+                  </button>
+                  <input
+                    type="text"
+                    value={drawerSearch}
+                    onChange={(e) => setDrawerSearch(e.target.value)}
+                    placeholder={`Search ${CATEGORIES.find((c) => c.key === drawerCategory)?.label ?? ""}...`}
+                    autoFocus
+                    className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground/50"
+                  />
+                  {drawerSearch && (
+                    <button
+                      onClick={() => {
+                        setDrawerSearch("");
+                        setDrawerSearchResults(null);
+                      }}
+                      className="text-muted-foreground hover:text-foreground shrink-0"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  )}
+                </div>
+
+                {/* Scrollable list */}
+                <div
+                  ref={scrollRef}
+                  onScroll={handlePopoverScroll}
+                  className="max-h-[320px] overflow-y-auto"
+                >
+                  {drawerCategory === "prompts" ? (
+                    /* Sample Questions — client-side */
+                    <>
+                      {filteredPrompts.map((p, i) => (
                         <button
                           key={p.title}
                           onClick={() => handleSelectPrompt(p.prompt)}
-                          className="flex w-full flex-col items-start px-4 py-3 hover:bg-muted transition-colors border-b border-border/50 last:border-0"
+                          className={`flex w-full flex-col items-start px-4 py-3 hover:bg-muted transition-colors ${
+                            i > 0 ? "border-t border-border/40" : ""
+                          }`}
                         >
                           <span className="text-sm font-semibold text-foreground">
                             {p.title}
@@ -320,13 +473,37 @@ export function ChatInput({ onSubmit, isLoading, initialValue }: ChatInputProps)
                         </button>
                       ))}
                       {filteredPrompts.length === 0 && (
-                        <p className="px-4 py-3 text-xs text-muted-foreground">
-                          No matches
-                        </p>
+                        <p className="px-4 py-3 text-xs text-muted-foreground">No matches</p>
                       )}
-                    </div>
-                  </div>
-                )}
+                    </>
+                  ) : (
+                    /* DB-backed category (nuclides / reactions / authors) */
+                    <>
+                      {getDrawerItems().map((item, i) => (
+                        <button
+                          key={item.value}
+                          onClick={() => handleDbItemClick(item)}
+                          className={`flex w-full flex-col items-start px-4 py-3 hover:bg-muted transition-colors ${
+                            i > 0 ? "border-t border-border/40" : ""
+                          }`}
+                        >
+                          <span className="text-sm font-semibold text-foreground">
+                            {item.value}
+                          </span>
+                          <span className="text-xs text-muted-foreground">
+                            {item.record_count.toLocaleString()} record{item.record_count !== 1 ? "s" : ""}
+                          </span>
+                        </button>
+                      ))}
+                      {isDrawerLoading() && (
+                        <p className="px-4 py-3 text-xs text-muted-foreground">Loading…</p>
+                      )}
+                      {!isDrawerLoading() && getDrawerItems().length === 0 && (
+                        <p className="px-4 py-3 text-xs text-muted-foreground">No matches</p>
+                      )}
+                    </>
+                  )}
+                </div>
               </div>
             )}
           </div>
