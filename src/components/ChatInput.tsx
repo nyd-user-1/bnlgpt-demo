@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { ArrowUp, Plus, Square, ChevronDown, ChevronRight, ArrowLeft } from "lucide-react";
+import { ArrowUp, Plus, Square, ChevronDown, ChevronRight, ArrowLeft, Lightbulb, Atom, Zap, FlaskConical } from "lucide-react";
 
 /* ------------------------------------------------------------------ */
 /*  Sample prompts data                                                */
@@ -13,14 +13,14 @@ interface SamplePrompt {
 
 interface PromptCategory {
   label: string;
-  icon: string;
+  icon: React.ReactNode;
   prompts: SamplePrompt[];
 }
 
 const PROMPT_CATEGORIES: PromptCategory[] = [
   {
     label: "Sample Questions",
-    icon: "\u2728",
+    icon: <Lightbulb className="h-5 w-5" />,
     prompts: [
       {
         title: "Cross Section Analysis",
@@ -46,7 +46,7 @@ const PROMPT_CATEGORIES: PromptCategory[] = [
   },
   {
     label: "Nuclides",
-    icon: "\u269B\uFE0F",
+    icon: <Atom className="h-5 w-5" />,
     prompts: [
       {
         title: "Oxygen-16",
@@ -72,7 +72,7 @@ const PROMPT_CATEGORIES: PromptCategory[] = [
   },
   {
     label: "Reactions",
-    icon: "\uD83D\uDD2C",
+    icon: <Zap className="h-5 w-5" />,
     prompts: [
       {
         title: "Neutron Capture",
@@ -98,7 +98,7 @@ const PROMPT_CATEGORIES: PromptCategory[] = [
   },
   {
     label: "Experimental Methods",
-    icon: "\uD83E\uDDEA",
+    icon: <FlaskConical className="h-5 w-5" />,
     prompts: [
       {
         title: "Time-of-Flight",
@@ -276,7 +276,7 @@ export function ChatInput({ onSubmit, isLoading, initialValue }: ChatInputProps)
                         onClick={() => setActiveCategory(cat)}
                         className="flex w-full items-center gap-3 px-4 py-3 text-sm font-medium hover:bg-muted transition-colors"
                       >
-                        <span className="text-base">{cat.icon}</span>
+                        <span className="text-muted-foreground">{cat.icon}</span>
                         {cat.label}
                         <ChevronRight className="h-4 w-4 ml-auto text-muted-foreground" />
                       </button>
@@ -378,7 +378,7 @@ export function ChatInput({ onSubmit, isLoading, initialValue }: ChatInputProps)
                 isLoading
                   ? "bg-destructive hover:bg-destructive/90 text-white"
                   : "bg-black hover:bg-black/85 text-white"
-              } disabled:opacity-30`}
+              }`}
             >
               {isLoading ? (
                 <Square className="h-4 w-4" fill="currentColor" />
