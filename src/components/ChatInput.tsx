@@ -124,6 +124,27 @@ const OPENAI_ICON = (
   </svg>
 );
 
+const ANTHROPIC_ICON = (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="#D97757">
+    <path d="M13.827 3.52h3.603L24 20.48h-3.603l-6.57-16.96zm-7.258 0h3.767L16.906 20.48h-3.674l-1.343-3.461H5.017l-1.344 3.46H0L6.57 3.522zm1.21 5.138l-2.6 6.862h5.2l-2.6-6.862z" />
+  </svg>
+);
+
+interface ModelOption {
+  label: string;
+  description: string;
+  icon: React.ReactNode;
+}
+
+const MODEL_OPTIONS: ModelOption[] = [
+  { label: "GPT-4o", description: "Most capable GPT model", icon: OPENAI_ICON },
+  { label: "GPT-4o Mini", description: "Fast and efficient", icon: OPENAI_ICON },
+  { label: "GPT-4 Turbo", description: "High capability, large context", icon: OPENAI_ICON },
+  { label: "Claude Sonnet 4.5", description: "Smart & balanced", icon: ANTHROPIC_ICON },
+  { label: "Claude Haiku 4.5", description: "Fast & efficient", icon: ANTHROPIC_ICON },
+  { label: "Claude Opus 4.5", description: "Maximum intelligence", icon: ANTHROPIC_ICON },
+];
+
 /* ------------------------------------------------------------------ */
 /*  Component                                                          */
 /* ------------------------------------------------------------------ */
@@ -144,6 +165,11 @@ export function ChatInput({ onSubmit, isLoading, initialValue }: ChatInputProps)
   const [promptSearch, setPromptSearch] = useState("");
   const menuRef = useRef<HTMLDivElement>(null);
 
+  // Model selector state
+  const [modelMenuOpen, setModelMenuOpen] = useState(false);
+  const [selectedModel, setSelectedModel] = useState("GPT-4o");
+  const modelRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (initialValue) setValue(initialValue);
   }, [initialValue]);
@@ -159,7 +185,7 @@ export function ChatInput({ onSubmit, isLoading, initialValue }: ChatInputProps)
     }
   }, [value]);
 
-  // Close menu on outside click
+  // Close menus on outside click
   useEffect(() => {
     function handleClick(e: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
@@ -171,6 +197,16 @@ export function ChatInput({ onSubmit, isLoading, initialValue }: ChatInputProps)
     if (menuOpen) document.addEventListener("mousedown", handleClick);
     return () => document.removeEventListener("mousedown", handleClick);
   }, [menuOpen]);
+
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (modelRef.current && !modelRef.current.contains(e.target as Node)) {
+        setModelMenuOpen(false);
+      }
+    }
+    if (modelMenuOpen) document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [modelMenuOpen]);
 
   const handleSubmit = () => {
     const trimmed = value.trim();
@@ -300,15 +336,42 @@ export function ChatInput({ onSubmit, isLoading, initialValue }: ChatInputProps)
           </div>
 
           <div className="flex items-center gap-2">
-            {/* Model selector (visual) */}
-            <button
-              type="button"
-              className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors rounded-lg px-2 py-1"
-            >
-              {OPENAI_ICON}
-              <span className="font-medium">GPT-4o</span>
-              <ChevronDown className="h-3 w-3" />
-            </button>
+            {/* Model selector */}
+            <div className="relative" ref={modelRef}>
+              <button
+                type="button"
+                onClick={() => setModelMenuOpen(!modelMenuOpen)}
+                className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors rounded-lg px-2 py-1"
+              >
+                {MODEL_OPTIONS.find((m) => m.label === selectedModel)?.icon}
+                <span className="font-medium">{selectedModel}</span>
+                <ChevronDown className={`h-3 w-3 transition-transform ${modelMenuOpen ? "rotate-180" : ""}`} />
+              </button>
+
+              {modelMenuOpen && (
+                <div className="absolute bottom-full right-0 mb-2 w-[260px] rounded-xl border bg-background shadow-xl animate-in fade-in slide-in-from-bottom-2 duration-150 overflow-hidden py-1">
+                  {MODEL_OPTIONS.map((m) => (
+                    <button
+                      key={m.label}
+                      onClick={() => {
+                        setSelectedModel(m.label);
+                        setModelMenuOpen(false);
+                      }}
+                      className="flex w-full items-center gap-3 px-4 py-3 text-sm hover:bg-muted transition-colors"
+                    >
+                      <span className="shrink-0">{m.icon}</span>
+                      <div className="flex-1 text-left">
+                        <span className="font-medium text-foreground">{m.label}</span>
+                        <span className="block text-xs text-muted-foreground">{m.description}</span>
+                      </div>
+                      {m.label === selectedModel && (
+                        <svg className="h-4 w-4 shrink-0 text-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
 
             {/* Send button */}
             <button
