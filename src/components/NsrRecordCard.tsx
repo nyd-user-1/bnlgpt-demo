@@ -10,6 +10,7 @@ interface NsrRecordCardProps {
   record: NsrRecord;
   searchQuery?: string;
   searchMode?: SearchMode;
+  onClick?: () => void;
 }
 
 function highlightText(text: string, query: string): ReactNode {
@@ -28,7 +29,7 @@ function highlightText(text: string, query: string): ReactNode {
   );
 }
 
-export const NsrRecordCard = memo(function NsrRecordCard({ record, searchQuery, searchMode }: NsrRecordCardProps) {
+export const NsrRecordCard = memo(function NsrRecordCard({ record, searchQuery, searchMode, onClick }: NsrRecordCardProps) {
   const navigate = useNavigate();
   const [copied, setCopied] = useState(false);
   const { emit } = useFeedEmitter();
@@ -87,7 +88,8 @@ export const NsrRecordCard = memo(function NsrRecordCard({ record, searchQuery, 
 
   return (
     <div
-      className="group relative rounded-lg border bg-muted/40 p-6 pb-16 min-h-[280px] transition-shadow hover:shadow-lg"
+      onClick={onClick}
+      className="group relative rounded-lg border bg-muted/40 p-6 pb-16 min-h-[280px] transition-shadow hover:shadow-lg cursor-pointer"
     >
       {/* Top row: hash icon + key number + year */}
       <div className="flex items-center gap-2 mb-3">

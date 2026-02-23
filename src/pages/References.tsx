@@ -11,6 +11,7 @@ import { useNsrSearch, type SearchMode } from "@/hooks/useNsrSearch";
 import { useNsrRecords } from "@/hooks/useNsrRecords";
 import { useNsrStructuredSearch } from "@/hooks/useNsrStructuredSearch";
 import { useFeedEmitter } from "@/hooks/useFeedEmitter";
+import { RecordDrawer } from "@/components/RecordDrawer";
 import type { NsrRecord } from "@/types/nsr";
 
 const CARDS_PER_PAGE = 99;
@@ -120,6 +121,10 @@ export default function References() {
   const [searchMode, setSearchMode] = useState<SearchMode>(initialMode);
 
   // Structured search inputs
+  // Record detail drawer
+  const [drawerRecord, setDrawerRecord] = useState<NsrRecord | null>(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
   const [nuclideInput, setNuclideInput] = useState(initialNuclide);
   const [reactionInput, setReactionInput] = useState(initialReaction);
   const [elementRange, setElementRange] = useState<string | null>(initialZRange);
@@ -550,6 +555,10 @@ export default function References() {
                 record={record}
                 searchQuery={isSearching ? deferredQuery : undefined}
                 searchMode={searchMode}
+                onClick={() => {
+                  setDrawerRecord(record);
+                  setDrawerOpen(true);
+                }}
               />
             ))}
           </div>
@@ -563,6 +572,12 @@ export default function References() {
           </p>
         )}
       </div>
+
+      <RecordDrawer
+        record={drawerRecord}
+        open={drawerOpen}
+        onOpenChange={setDrawerOpen}
+      />
     </div>
   );
 }
