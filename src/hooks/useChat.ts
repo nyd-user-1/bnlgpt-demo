@@ -1,5 +1,6 @@
 import { useState, useCallback, useRef } from "react";
 import { useChatPersistence } from "./useChatPersistence";
+import { supabase } from "@/integrations/supabase/client";
 import type { PersistedMessage } from "@/integrations/supabase/types";
 
 export interface MessageSources {
@@ -82,6 +83,15 @@ export function useChat() {
               timestamp: new Date().toISOString(),
             },
           ]);
+
+          // Fire-and-forget feed event
+          supabase
+            .rpc("insert_feed_event", {
+              p_event_type: "chat_started",
+              p_category: "chat",
+              p_display_text: `Started chat: "${title}"`,
+            })
+            .then(() => {}, () => {});
         } catch {
           // continue without persistence
         }

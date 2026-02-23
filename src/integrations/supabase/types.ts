@@ -62,6 +62,30 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["chat_sessions"]["Insert"]>;
         Relationships: [];
       };
+      research_feed: {
+        Row: {
+          id: string;
+          event_type: string;
+          category: string;
+          entity_type: string | null;
+          entity_value: string | null;
+          display_text: string;
+          metadata: Record<string, unknown>;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          event_type: string;
+          category?: string;
+          entity_type?: string | null;
+          entity_value?: string | null;
+          display_text: string;
+          metadata?: Record<string, unknown>;
+          created_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["research_feed"]["Insert"]>;
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: {
@@ -84,6 +108,17 @@ export interface Database {
           keywords: string | null;
           similarity: number;
         }[];
+      };
+      insert_feed_event: {
+        Args: {
+          p_event_type: string;
+          p_category?: string;
+          p_entity_type?: string | null;
+          p_entity_value?: string | null;
+          p_display_text?: string;
+          p_metadata?: Record<string, unknown>;
+        };
+        Returns: undefined;
       };
       search_nsr_structured: {
         Args: {

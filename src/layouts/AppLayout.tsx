@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import { List } from "lucide-react";
+import { List, Activity } from "lucide-react";
 import { Sidebar } from "@/components/Sidebar";
+import { ResearchFeed } from "@/components/ResearchFeed";
 
 export function AppLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [feedOpen, setFeedOpen] = useState(false);
   const navigate = useNavigate();
 
   return (
@@ -31,6 +33,13 @@ export function AppLayout() {
           >
             NSRgpt
           </button>
+
+          <button
+            onClick={() => setFeedOpen((o) => !o)}
+            className="inline-flex items-center justify-center h-10 w-10 rounded-md text-foreground hover:bg-muted transition-colors"
+          >
+            <Activity className="h-5 w-5" />
+          </button>
         </div>
 
         {/* Page content */}
@@ -38,6 +47,8 @@ export function AppLayout() {
           <Outlet />
         </main>
       </div>
+
+      <ResearchFeed isOpen={feedOpen} />
     </div>
   );
 }

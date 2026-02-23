@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ArrowUp, Copy, Check, Hash } from "lucide-react";
 import type { NsrRecord } from "@/types/nsr";
 import type { SearchMode } from "@/hooks/useNsrSearch";
+import { useFeedEmitter } from "@/hooks/useFeedEmitter";
 
 interface NsrRecordCardProps {
   record: NsrRecord;
@@ -30,6 +31,7 @@ function highlightText(text: string, query: string): ReactNode {
 export const NsrRecordCard = memo(function NsrRecordCard({ record, searchQuery, searchMode }: NsrRecordCardProps) {
   const navigate = useNavigate();
   const [copied, setCopied] = useState(false);
+  const { emit } = useFeedEmitter();
 
   const handleCopy = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -72,6 +74,14 @@ export const NsrRecordCard = memo(function NsrRecordCard({ record, searchQuery, 
     if (url) params.set("url", url);
 
     navigate(`/?${params.toString()}`);
+
+    emit({
+      event_type: "record_inquiry",
+      category: "chat",
+      entity_type: "nsr_record",
+      entity_value: record.key_number,
+      display_text: `Inquired about ${record.key_number}: "${record.title.slice(0, 60)}"`,
+    });
   };
 
   return (

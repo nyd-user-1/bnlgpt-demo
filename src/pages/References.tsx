@@ -9,6 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useNsrSearch, type SearchMode } from "@/hooks/useNsrSearch";
 import { useNsrRecords } from "@/hooks/useNsrRecords";
 import { useNsrStructuredSearch } from "@/hooks/useNsrStructuredSearch";
+import { useFeedEmitter } from "@/hooks/useFeedEmitter";
 import type { NsrRecord } from "@/types/nsr";
 
 const CARDS_PER_PAGE = 99;
@@ -128,6 +129,61 @@ export default function References() {
     pageSize: CARDS_PER_PAGE,
   });
   const structured = useNsrStructuredSearch(structuredParams);
+
+  // Feed emitter
+  const { emit } = useFeedEmitter();
+  const prevSearchQueryRef = useRef<string>("");
+  const prevStructuredRef = useRef<string>("");
+
+  // Emit semantic/keyword search events
+  useEffect(() => {
+    if (!search.data || !deferredQuery || deferredQuery.length < 3) return;
+    if (deferredQuery === prevSearchQueryRef.current) return;
+    prevSearchQueryRef.current = deferredQuery;
+    emit({
+      event_type: searchMode === "semantic" ? "semantic_search" : "keyword_search",
+      category: "search",
+      entity_type: "query",
+      entity_value: deferredQuery,
+      display_text: `Searched "${deferredQuery}"`,
+    });
+  }, [search.data, deferredQuery, searchMode, emit]);
+
+  // Emit structured filter events
+  useEffect(() => {
+    if (!structured.data || !structuredParams) return;
+    const key = JSON.stringify(structuredParams);
+    if (key === prevStructuredRef.current) return;
+    prevStructuredRef.current = key;
+
+    if (structuredParams.nuclides?.length) {
+      emit({
+        event_type: "nuclide_filter",
+        category: "search",
+        entity_type: "nuclide",
+        entity_value: structuredParams.nuclides.join(", "),
+        display_text: `Filtered by nuclide ${structuredParams.nuclides.join(", ")}`,
+      });
+    }
+    if (structuredParams.reactions?.length) {
+      emit({
+        event_type: "reaction_filter",
+        category: "search",
+        entity_type: "reaction",
+        entity_value: structuredParams.reactions.join(", "),
+        display_text: `Filtered by reaction ${structuredParams.reactions.join(", ")}`,
+      });
+    }
+    if (structuredParams.zMin != null && structuredParams.zMax != null) {
+      emit({
+        event_type: "element_range_filter",
+        category: "search",
+        entity_type: "element_range",
+        entity_value: `Z=${structuredParams.zMin}-${structuredParams.zMax}`,
+        display_text: `Filtered by element range Z=${structuredParams.zMin}-${structuredParams.zMax}`,
+      });
+    }
+  }, [structured.data, structuredParams, emit]);
 
   const clearStructuredSearch = () => {
     setStructuredParams(null);
