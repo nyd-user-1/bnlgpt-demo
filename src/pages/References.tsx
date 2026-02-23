@@ -144,13 +144,47 @@ export default function References() {
     return null;
   });
 
-  // Clear URL params after reading (so they don't persist on refresh)
+  // React to URL param changes (from feed item clicks while already on /references)
+  const paramKey = searchParams.toString();
   useEffect(() => {
-    if (searchParams.toString()) {
-      setSearchParams({}, { replace: true });
+    if (!paramKey) return;
+    const q = searchParams.get("q") ?? "";
+    const mode = (searchParams.get("mode") as SearchMode) || "semantic";
+    const nuclide = searchParams.get("nuclide") ?? "";
+    const reaction = searchParams.get("reaction") ?? "";
+    const zRange = searchParams.get("zRange");
+
+    // Apply search params
+    if (q) {
+      setQuery(q);
+      setSearchMode(mode);
+      setNuclideInput("");
+      setReactionInput("");
+      setElementRange(null);
+      setStructuredParams(null);
+    } else {
+      setQuery("");
+      setNuclideInput(nuclide);
+      setReactionInput(reaction);
+      setElementRange(zRange);
+      const nuclides = nuclide ? [nuclide] : [];
+      const reactions = reaction ? [reaction] : [];
+      const { zMin, zMax } = parseElementRange(zRange);
+      if (nuclides.length > 0 || reactions.length > 0 || zRange) {
+        setStructuredParams({
+          nuclides: nuclides.length > 0 ? nuclides : undefined,
+          reactions: reactions.length > 0 ? reactions : undefined,
+          zMin,
+          zMax,
+        });
+      }
     }
+    setPage(1);
+
+    // Clear URL params after applying
+    setSearchParams({}, { replace: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [paramKey]);
 
   const deferredQuery = useDeferredValue(query);
 

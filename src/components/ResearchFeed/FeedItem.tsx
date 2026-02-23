@@ -136,7 +136,7 @@ export function FeedItem({ event }: FeedItemProps) {
           ? "flex items-start gap-2.5 mx-2 my-1 px-3 py-2.5 rounded-md bg-green-800 border border-green-600"
           : `flex items-start gap-2.5 px-4 py-2.5${
               isClickable
-                ? " cursor-pointer hover:bg-muted/50 rounded-md transition-colors"
+                ? " cursor-pointer hover:bg-muted rounded-md transition-colors"
                 : ""
             }`
       }
