@@ -9,5 +9,6 @@ export interface NsrRecord {
   exfor_keys: string | null;
   keywords: string | null;
   nuclides?: string[] | null;
+  reactions?: string[] | null;
   similarity?: number;
 }

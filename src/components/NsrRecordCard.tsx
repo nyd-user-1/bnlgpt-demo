@@ -103,7 +103,29 @@ export const NsrRecordCard = memo(function NsrRecordCard({ record }: NsrRecordCa
           </div>
         )}
 
-        {/* Row 4: DOI (col 1) | EXFOR badges (col 2) */}
+        {/* Row 4: Reactions (col-span-2) */}
+        {record.reactions && record.reactions.length > 0 && (
+          <div className="col-span-2">
+            <span className="text-muted-foreground">Reactions</span>
+            <div className="flex flex-wrap gap-1.5 mt-0.5">
+              {record.reactions.slice(0, 3).map((rxn) => (
+                <span
+                  key={rxn}
+                  className="inline-flex items-center rounded-full bg-foreground/10 px-2 py-0.5 text-[11px] font-medium text-foreground/80"
+                >
+                  {rxn}
+                </span>
+              ))}
+              {record.reactions.length > 3 && (
+                <span className="inline-flex items-center rounded-full bg-foreground/10 px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+                  +{record.reactions.length - 3}
+                </span>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Row 5: DOI (col 1) | EXFOR badges (col 2) */}
         {(record.doi || record.exfor_keys) && (
           <>
             <div>
