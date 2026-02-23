@@ -82,7 +82,7 @@ export function RecordDrawer({
           </DrawerDescription>
         </DrawerHeader>
 
-        <div className="overflow-y-auto px-4 pb-6 pt-2 flex-1 min-h-0 scrollbar-thin">
+        <div className="overflow-y-auto px-4 pb-6 pt-2 flex-1 min-h-0 scrollbar-thin select-text" data-vaul-no-drag>
           {/* Loading state */}
           {s2Loading && (
             <div className="flex items-center justify-center py-8">
