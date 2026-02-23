@@ -89,7 +89,7 @@ export const NsrRecordCard = memo(function NsrRecordCard({ record, searchQuery, 
   return (
     <div
       onClick={onClick}
-      className="group relative rounded-lg border bg-muted/40 p-6 pb-16 min-h-[280px] transition-shadow hover:shadow-lg cursor-pointer"
+      className="group relative rounded-lg border border-transparent bg-muted/40 p-6 pb-16 min-h-[280px] transition-all hover:shadow-lg hover:border-border cursor-pointer"
     >
       {/* Top row: hash icon + key number + year */}
       <div className="flex items-center gap-2 mb-3">
