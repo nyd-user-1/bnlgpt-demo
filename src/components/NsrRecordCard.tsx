@@ -81,6 +81,7 @@ export const NsrRecordCard = memo(function NsrRecordCard({ record, searchQuery, 
       entity_type: "nsr_record",
       entity_value: record.key_number,
       display_text: `Inquired about ${record.key_number}: "${record.title.slice(0, 60)}"`,
+      metadata: { doi: record.doi },
     });
   };
 
