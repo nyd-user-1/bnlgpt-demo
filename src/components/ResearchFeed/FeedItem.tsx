@@ -81,17 +81,33 @@ export function FeedItem({ event }: FeedItemProps) {
           : "flex items-start gap-2.5 px-4 py-2.5"
       }
     >
-      <Icon className={`h-3.5 w-3.5 mt-0.5 flex-shrink-0 ${color}`} />
-      <span
-        className={`flex-1 text-xs leading-snug line-clamp-2 ${
-          isInsight ? "text-green-300 font-medium" : "text-foreground/90"
-        }`}
-      >
-        {event.display_text}
-      </span>
-      <span className="text-[10px] text-muted-foreground flex-shrink-0 mt-0.5">
-        {timeAgo(event.created_at)}
-      </span>
+      <Icon className={`h-3.5 w-3.5 mt-0.5 flex-shrink-0 ${isInsight ? "text-white" : color}`} />
+      {isInsight ? (
+        <div className="flex-1 min-w-0">
+          <div className="flex items-start justify-between gap-2">
+            <span className="text-xs font-semibold text-white leading-snug">
+              {event.display_text.split("(")[0].trim()}
+            </span>
+            <span className="text-[10px] text-white/70 flex-shrink-0 mt-0.5">
+              {timeAgo(event.created_at)}
+            </span>
+          </div>
+          {event.display_text.includes("(") && (
+            <span className="text-[10px] text-white/70 leading-snug">
+              ({event.display_text.split("(").slice(1).join("(")}
+            </span>
+          )}
+        </div>
+      ) : (
+        <>
+          <span className="flex-1 text-xs text-foreground/90 leading-snug line-clamp-2">
+            {event.display_text}
+          </span>
+          <span className="text-[10px] text-muted-foreground flex-shrink-0 mt-0.5">
+            {timeAgo(event.created_at)}
+          </span>
+        </>
+      )}
     </div>
   );
 }

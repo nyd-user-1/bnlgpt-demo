@@ -16,10 +16,7 @@ export function AppLayout() {
       {/* App wrapper — rounded border container */}
       <div
         className="flex flex-1 flex-col min-w-0 rounded-xl border bg-background overflow-hidden"
-        onClick={() => {
-          if (sidebarOpen) { setSidebarOpen(false); return; }
-          if (feedOpen) setFeedOpen(false);
-        }}
+        onClick={() => {}}
       >
         {/* Top bar — inside the wrapper */}
         <div className="flex items-center justify-between px-4 py-3 flex-shrink-0">
