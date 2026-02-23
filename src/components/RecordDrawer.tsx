@@ -7,12 +7,8 @@ import {
 } from "@/components/ui/drawer";
 import {
   Hash,
-  FileText,
-  Quote,
-  BookOpen,
   ExternalLink,
   Users,
-  Award,
   Download,
   ChevronLeft,
   ChevronRight,
@@ -50,15 +46,6 @@ export function RecordDrawer({
       <DrawerContent className="h-[482px] flex flex-col">
         <DrawerHeader className="pb-0 shrink-0">
           <div className="flex items-center gap-2">
-            {/* Prev/next navigation */}
-            <button
-              onClick={() => hasPrev && onNavigate(currentIndex - 1)}
-              disabled={!hasPrev}
-              className="inline-flex items-center justify-center h-7 w-7 rounded-md hover:bg-muted disabled:opacity-30 transition-colors"
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </button>
-
             <Hash className="h-4 w-4 text-muted-foreground" />
             <DrawerTitle className="text-base">
               {record.key_number}
@@ -67,6 +54,14 @@ export function RecordDrawer({
               {record.pub_year}
             </span>
 
+            {/* Prev/next navigation */}
+            <button
+              onClick={() => hasPrev && onNavigate(currentIndex - 1)}
+              disabled={!hasPrev}
+              className="inline-flex items-center justify-center h-7 w-7 rounded-md hover:bg-muted disabled:opacity-30 transition-colors"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
             <button
               onClick={() => hasNext && onNavigate(currentIndex + 1)}
               disabled={!hasNext}
@@ -75,26 +70,19 @@ export function RecordDrawer({
               <ChevronRight className="h-4 w-4" />
             </button>
 
-            {/* Badges pushed to right */}
-            <div className="ml-auto flex items-center gap-2">
-              {s2?.venue && (
-                <span className="inline-flex items-center rounded-full bg-foreground/10 px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground">
-                  {s2.venue}
-                </span>
-              )}
-              {s2?.is_open_access && (
-                <span className="inline-flex items-center rounded-full bg-green-500/20 px-2.5 py-0.5 text-[11px] font-medium text-green-400">
-                  Open Access
-                </span>
-              )}
-            </div>
+            {/* Open Access badge pushed to right */}
+            {s2?.is_open_access && (
+              <span className="ml-auto inline-flex items-center rounded-full bg-green-500/20 px-2.5 py-0.5 text-[11px] font-medium text-green-400">
+                Open Access
+              </span>
+            )}
           </div>
           <DrawerDescription className="text-foreground font-medium text-sm leading-snug mt-1">
             {record.title}
           </DrawerDescription>
         </DrawerHeader>
 
-        <div className="overflow-y-auto px-4 pb-6 pt-2 flex-1 min-h-0">
+        <div className="overflow-y-auto px-4 pb-6 pt-2 flex-1 min-h-0 scrollbar-thin">
           {/* Loading state */}
           {s2Loading && (
             <div className="flex items-center justify-center py-8">
@@ -132,20 +120,25 @@ export function RecordDrawer({
           {/* S2 data found */}
           {!s2Loading && s2 && s2.lookup_status === "found" && (
             <>
-              {/* Stats row */}
-              <div className="flex items-center gap-4 py-3 border-b border-border/50">
-                <div className="flex items-center gap-1.5 text-xs">
-                  <Quote className="h-3.5 w-3.5 text-nuclear" />
+              {/* Venue + Stats row */}
+              <div className="flex items-center gap-3 py-3 border-b border-border/50 text-xs">
+                {s2.venue && (
+                  <>
+                    <span className="inline-flex items-center rounded-full bg-foreground/10 px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground">
+                      {s2.venue}
+                    </span>
+                    <span className="text-border">|</span>
+                  </>
+                )}
+                <div className="flex items-center gap-1.5">
                   <span className="font-semibold">{s2.citation_count ?? "—"}</span>
                   <span className="text-muted-foreground">citations</span>
                 </div>
-                <div className="flex items-center gap-1.5 text-xs">
-                  <Award className="h-3.5 w-3.5 text-blue-400" />
+                <div className="flex items-center gap-1.5">
                   <span className="font-semibold">{s2.influential_citation_count ?? "—"}</span>
                   <span className="text-muted-foreground">influential</span>
                 </div>
-                <div className="flex items-center gap-1.5 text-xs">
-                  <BookOpen className="h-3.5 w-3.5 text-muted-foreground" />
+                <div className="flex items-center gap-1.5">
                   <span className="font-semibold">{s2.reference_count ?? "—"}</span>
                   <span className="text-muted-foreground">references</span>
                 </div>
@@ -154,12 +147,9 @@ export function RecordDrawer({
               {/* TLDR */}
               {s2.tldr && (
                 <div className="py-3 border-b border-border/50">
-                  <div className="flex items-center gap-1.5 mb-1.5">
-                    <FileText className="h-3.5 w-3.5 text-nuclear" />
-                    <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                      TL;DR
-                    </span>
-                  </div>
+                  <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-1.5 block">
+                    TL;DR
+                  </span>
                   <p className="text-sm text-foreground leading-relaxed">
                     {s2.tldr}
                   </p>
@@ -169,13 +159,10 @@ export function RecordDrawer({
               {/* Abstract */}
               {s2.abstract && (
                 <div className="py-3 border-b border-border/50">
-                  <div className="flex items-center gap-1.5 mb-1.5">
-                    <FileText className="h-3.5 w-3.5 text-muted-foreground" />
-                    <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                      Abstract
-                    </span>
-                  </div>
-                  <p className="text-sm text-muted-foreground leading-relaxed max-h-[7rem] overflow-y-auto">
+                  <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-1.5 block">
+                    Abstract
+                  </span>
+                  <p className="text-sm text-muted-foreground leading-relaxed max-h-[7rem] overflow-y-auto scrollbar-thin">
                     {s2.abstract}
                   </p>
                 </div>

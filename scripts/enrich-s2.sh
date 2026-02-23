@@ -5,7 +5,7 @@
 
 SUPABASE_URL="https://stsumwwmyijxutabzice.supabase.co/functions/v1/enrich-s2"
 ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN0c3Vtd3dteWlqeHV0YWJ6aWNlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MjM0NzksImV4cCI6MjA4NzE5OTQ3OX0.jTRjEfHDp5JaQUf14FWegYeDVIaYmswSV2eY4eRXfEA"
-BATCH_SIZE=100
+BATCH_SIZE=50
 
 echo "=== Semantic Scholar Enrichment Script ==="
 echo "Batch size: $BATCH_SIZE"
@@ -34,9 +34,9 @@ while true; do
   SUCCESS=$(echo "$RESPONSE" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('success',''))" 2>/dev/null)
 
   if [ "$SUCCESS" != "True" ]; then
-    echo "ERROR: Request failed. Response:"
-    echo "$RESPONSE"
-    exit 1
+    echo "  WARN: Request failed (502/timeout), retrying in 10s..."
+    sleep 10
+    continue
   fi
 
   TOTAL_PROCESSED=$((TOTAL_PROCESSED + PROCESSED))
