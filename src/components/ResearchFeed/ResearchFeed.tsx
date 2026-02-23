@@ -18,7 +18,7 @@ export function ResearchFeed({ isOpen }: ResearchFeedProps) {
         isOpen ? "overflow-visible" : "overflow-hidden"
       }`}
     >
-      <div className="w-[300px] h-full flex flex-col border-l bg-background">
+      <div className="w-[300px] h-full flex flex-col bg-background">
         <FeedHeader isConnected={isConnected} />
         <TrendingStrip items={trending} />
 
