@@ -1,14 +1,33 @@
-import { memo } from "react";
+import { memo, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { ArrowUp, Copy, Check, Hash } from "lucide-react";
 import type { NsrRecord } from "@/types/nsr";
+import type { SearchMode } from "@/hooks/useNsrSearch";
 
 interface NsrRecordCardProps {
   record: NsrRecord;
+  searchQuery?: string;
+  searchMode?: SearchMode;
 }
 
-export const NsrRecordCard = memo(function NsrRecordCard({ record }: NsrRecordCardProps) {
+function highlightText(text: string, query: string): ReactNode {
+  if (!query) return text;
+  const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const regex = new RegExp(`(${escaped})`, "gi");
+  const parts = text.split(regex);
+  return parts.map((part, i) =>
+    regex.test(part) ? (
+      <mark key={i} className="bg-nuclear/20 text-foreground rounded-sm px-0.5">
+        {part}
+      </mark>
+    ) : (
+      part
+    )
+  );
+}
+
+export const NsrRecordCard = memo(function NsrRecordCard({ record, searchQuery, searchMode }: NsrRecordCardProps) {
   const navigate = useNavigate();
   const [copied, setCopied] = useState(false);
 
@@ -70,7 +89,9 @@ export const NsrRecordCard = memo(function NsrRecordCard({ record }: NsrRecordCa
 
       {/* Title */}
       <p className="text-sm text-foreground leading-snug mb-3 line-clamp-2">
-        {record.title}
+        {searchMode === "keyword" && searchQuery
+          ? highlightText(record.title, searchQuery)
+          : record.title}
       </p>
 
       {/* Metadata grid */}
@@ -83,8 +104,12 @@ export const NsrRecordCard = memo(function NsrRecordCard({ record }: NsrRecordCa
               <p className="font-medium truncate">
                 {(() => {
                   const names = record.authors.split(";").map((n) => n.trim());
-                  if (names.length <= 3) return record.authors;
-                  return names.slice(0, 3).join("; ") + "; et al.";
+                  const display = names.length <= 3
+                    ? record.authors
+                    : names.slice(0, 3).join("; ") + "; et al.";
+                  return searchMode === "keyword" && searchQuery
+                    ? highlightText(display, searchQuery)
+                    : display;
                 })()}
               </p>
             </>

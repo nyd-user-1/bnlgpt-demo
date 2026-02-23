@@ -5,6 +5,8 @@ import type { NsrRecord } from "@/types/nsr";
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
+export type SearchMode = "semantic" | "keyword";
+
 interface SearchResult {
   records: NsrRecord[];
   count: number;
@@ -48,33 +50,22 @@ async function textSearch(query: string): Promise<NsrRecord[]> {
   return data ?? [];
 }
 
-/** Run both searches in parallel, merge and deduplicate (semantic first) */
-async function searchNsr(query: string): Promise<SearchResult> {
-  const [semanticResults, textResults] = await Promise.allSettled([
-    semanticSearch(query),
-    textSearch(query),
-  ]);
-
-  const semantic = semanticResults.status === "fulfilled" ? semanticResults.value : [];
-  const text = textResults.status === "fulfilled" ? textResults.value : [];
-
-  // Merge: semantic results first, then text results not already present
-  const seen = new Set(semantic.map((r) => r.id));
-  const merged = [...semantic];
-  for (const r of text) {
-    if (!seen.has(r.id)) {
-      seen.add(r.id);
-      merged.push(r);
-    }
+/** Run search based on mode */
+async function searchNsr(query: string, mode: SearchMode): Promise<SearchResult> {
+  if (mode === "keyword") {
+    const results = await textSearch(query);
+    return { records: results, count: results.length };
   }
 
-  return { records: merged, count: merged.length };
+  // semantic mode
+  const results = await semanticSearch(query);
+  return { records: results, count: results.length };
 }
 
-export function useNsrSearch(query: string) {
+export function useNsrSearch(query: string, mode: SearchMode = "semantic") {
   return useQuery({
-    queryKey: ["nsr-search", query],
-    queryFn: () => searchNsr(query),
+    queryKey: ["nsr-search", query, mode],
+    queryFn: () => searchNsr(query, mode),
     enabled: query.length >= 3,
     staleTime: 1000 * 60 * 5,
   });

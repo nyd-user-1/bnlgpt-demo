@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { ChevronDown, X } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 const ELEMENT_RANGES = [
   { label: "Light (Z 1–20)", value: "1-20" },
@@ -29,74 +29,44 @@ export function ElementRangeCombobox({ value, onChange }: ElementRangeComboboxPr
     return () => document.removeEventListener("mousedown", handleClick);
   }, [open]);
 
-  // Escape clears selection (document-level)
-  useEffect(() => {
-    if (!value) return;
-    function handleEsc(e: KeyboardEvent) {
-      if (e.key === "Escape") onChange(null);
-    }
-    document.addEventListener("keydown", handleEsc);
-    return () => document.removeEventListener("keydown", handleEsc);
-  }, [value, onChange]);
-
   const selected = ELEMENT_RANGES.find((r) => r.value === value);
 
   return (
     <div className="relative" ref={ref}>
-      <div className="inline-flex items-center gap-1.5 rounded-lg border px-2 py-1">
-        <span className="text-xs text-muted-foreground font-medium">Range</span>
+      <button
+        onClick={() => setOpen(!open)}
+        className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm transition-colors ${
+          value
+            ? "bg-foreground text-background font-medium"
+            : "text-muted-foreground hover:bg-muted hover:text-foreground"
+        }`}
+      >
+        {selected ? `Range: ${selected.label}` : "Range"}
+        <ChevronDown className={`h-3.5 w-3.5 transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
 
-        {selected && !open ? (
-          <button
-            onClick={() => setOpen(true)}
-            className="inline-flex items-center gap-1 rounded-full bg-foreground/10 px-2 py-0.5 text-xs font-medium text-foreground"
-          >
-            Z {selected.value}
-          </button>
-        ) : (
-          <span
-            onClick={() => setOpen(!open)}
-            className="w-24 text-sm text-muted-foreground/50 cursor-pointer"
-          >
-            e.g. Light
-          </span>
-        )}
-
-        {selected ? (
-          <button
-            onClick={() => onChange(null)}
-            className="text-muted-foreground hover:text-foreground"
-            title="Clear"
-          >
-            <X className="h-3 w-3" />
-          </button>
-        ) : (
-          <button
-            onClick={() => setOpen(!open)}
-            className="text-muted-foreground hover:text-foreground"
-          >
-            <ChevronDown className={`h-3 w-3 transition-transform ${open ? "rotate-180" : ""}`} />
-          </button>
-        )}
-      </div>
-
-      {/* Dropdown */}
       {open && (
-        <div className="absolute left-0 top-full mt-1 z-50 w-[240px] max-h-[240px] overflow-y-auto rounded-lg border bg-background shadow-md animate-in fade-in slide-in-from-top-1 duration-150">
+        <div className="absolute left-0 top-full mt-1 z-50 min-w-[180px] max-h-[280px] overflow-y-auto rounded-lg border bg-background shadow-md animate-in fade-in slide-in-from-top-1 duration-150">
+          {/* Clear option */}
+          {value && (
+            <button
+              onClick={() => { onChange(null); setOpen(false); }}
+              className="flex w-full items-center px-3 py-2 text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+            >
+              Clear filter
+            </button>
+          )}
           {ELEMENT_RANGES.map((range) => (
             <button
               key={range.value}
-              onClick={() => {
-                onChange(range.value);
-                setOpen(false);
-              }}
-              className={`flex w-full items-center px-3 py-1.5 text-sm transition-colors hover:bg-muted ${
-                value === range.value ? "bg-muted font-medium" : ""
+              onClick={() => { onChange(range.value); setOpen(false); }}
+              className={`flex w-full items-center px-3 py-2 text-sm transition-colors ${
+                value === range.value
+                  ? "bg-muted font-medium text-foreground"
+                  : "text-foreground hover:bg-muted"
               }`}
             >
-              <span className="inline-flex items-center rounded-full bg-foreground/10 px-2 py-0.5 text-xs font-medium text-foreground">
-                {range.label}
-              </span>
+              {range.label}
             </button>
           ))}
         </div>

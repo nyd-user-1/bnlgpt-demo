@@ -6,7 +6,7 @@ import { NuclideCombobox } from "@/components/NuclideCombobox";
 import { ReactionCombobox } from "@/components/ReactionCombobox";
 import { ElementRangeCombobox } from "@/components/ElementRangeCombobox";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useNsrSearch } from "@/hooks/useNsrSearch";
+import { useNsrSearch, type SearchMode } from "@/hooks/useNsrSearch";
 import { useNsrRecords } from "@/hooks/useNsrRecords";
 import { useNsrStructuredSearch } from "@/hooks/useNsrStructuredSearch";
 import type { NsrRecord } from "@/types/nsr";
@@ -106,6 +106,7 @@ export default function References() {
   const [yearFilter, setYearFilter] = useState<string | null>(null);
   const [authorsSortAsc, setAuthorsSortAsc] = useState<boolean | null>(null);
   const [page, setPage] = useState(1);
+  const [searchMode, setSearchMode] = useState<SearchMode>("semantic");
 
   // Structured search inputs
   const [nuclideInput, setNuclideInput] = useState("");
@@ -120,7 +121,7 @@ export default function References() {
 
   const deferredQuery = useDeferredValue(query);
 
-  const search = useNsrSearch(deferredQuery);
+  const search = useNsrSearch(deferredQuery, searchMode);
   const browse = useNsrRecords({
     year: yearFilter ? Number(yearFilter) : undefined,
     page,
@@ -317,6 +318,23 @@ export default function References() {
             <ArrowUpDown className="h-3.5 w-3.5" />
           </button>
 
+          {/* Search mode toggle */}
+          <div className="inline-flex rounded-lg overflow-hidden">
+            {(["semantic", "keyword"] as const).map((mode) => (
+              <button
+                key={mode}
+                onClick={() => setSearchMode(mode)}
+                className={`px-3 py-1.5 text-sm transition-colors ${
+                  searchMode === mode
+                    ? "bg-foreground text-background font-medium"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                }`}
+              >
+                {mode.charAt(0).toUpperCase() + mode.slice(1)}
+              </button>
+            ))}
+          </div>
+
           {/* Clear structured filters */}
           {isStructured && (
             <button
@@ -405,7 +423,12 @@ export default function References() {
         {pagedRecords && pagedRecords.length > 0 && (
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {pagedRecords.map((record) => (
-              <NsrRecordCard key={record.id} record={record} />
+              <NsrRecordCard
+                key={record.id}
+                record={record}
+                searchQuery={isSearching ? deferredQuery : undefined}
+                searchMode={searchMode}
+              />
             ))}
           </div>
         )}
