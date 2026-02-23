@@ -319,15 +319,15 @@ export default function References() {
           </button>
 
           {/* Search mode toggle */}
-          <div className="inline-flex rounded-lg overflow-hidden">
+          <div className="inline-flex items-center rounded border text-xs text-muted-foreground overflow-hidden">
             {(["semantic", "keyword"] as const).map((mode) => (
               <button
                 key={mode}
                 onClick={() => setSearchMode(mode)}
-                className={`px-3 py-1.5 text-sm transition-colors ${
+                className={`px-2 py-0.5 transition-colors ${
                   searchMode === mode
-                    ? "bg-foreground text-background font-medium"
-                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                    ? "bg-muted font-medium text-foreground"
+                    : "hover:bg-muted hover:text-foreground"
                 }`}
               >
                 {mode.charAt(0).toUpperCase() + mode.slice(1)}
