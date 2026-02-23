@@ -122,7 +122,7 @@ export default function References() {
 
   // Structured search inputs
   // Record detail drawer
-  const [drawerRecord, setDrawerRecord] = useState<NsrRecord | null>(null);
+  const [drawerIndex, setDrawerIndex] = useState(0);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const [nuclideInput, setNuclideInput] = useState(initialNuclide);
@@ -556,7 +556,8 @@ export default function References() {
                 searchQuery={isSearching ? deferredQuery : undefined}
                 searchMode={searchMode}
                 onClick={() => {
-                  setDrawerRecord(record);
+                  const idx = pagedRecords?.indexOf(record) ?? 0;
+                  setDrawerIndex(idx);
                   setDrawerOpen(true);
                 }}
               />
@@ -574,9 +575,11 @@ export default function References() {
       </div>
 
       <RecordDrawer
-        record={drawerRecord}
+        records={pagedRecords ?? []}
+        currentIndex={drawerIndex}
         open={drawerOpen}
         onOpenChange={setDrawerOpen}
+        onNavigate={setDrawerIndex}
       />
     </div>
   );

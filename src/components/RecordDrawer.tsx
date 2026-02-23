@@ -14,13 +14,17 @@ import {
   Users,
   Award,
   Download,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import type { NsrRecord } from "@/types/nsr";
 
 interface RecordDrawerProps {
-  record: NsrRecord | null;
+  records: NsrRecord[];
+  currentIndex: number;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onNavigate: (index: number) => void;
 }
 
 // Dummy S2 enrichment data — will be replaced with real API calls
@@ -43,16 +47,34 @@ const DUMMY_S2 = {
   ],
 };
 
-export function RecordDrawer({ record, open, onOpenChange }: RecordDrawerProps) {
+export function RecordDrawer({
+  records,
+  currentIndex,
+  open,
+  onOpenChange,
+  onNavigate,
+}: RecordDrawerProps) {
+  const record = records[currentIndex];
   if (!record) return null;
 
   const s2 = DUMMY_S2;
+  const hasPrev = currentIndex > 0;
+  const hasNext = currentIndex < records.length - 1;
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
       <DrawerContent className="max-h-[75vh]">
         <DrawerHeader className="pb-0">
           <div className="flex items-center gap-2">
+            {/* Prev/next navigation */}
+            <button
+              onClick={() => hasPrev && onNavigate(currentIndex - 1)}
+              disabled={!hasPrev}
+              className="inline-flex items-center justify-center h-7 w-7 rounded-md hover:bg-muted disabled:opacity-30 transition-colors"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+
             <Hash className="h-4 w-4 text-muted-foreground" />
             <DrawerTitle className="text-base">
               {record.key_number}
@@ -60,11 +82,28 @@ export function RecordDrawer({ record, open, onOpenChange }: RecordDrawerProps) 
             <span className="text-sm text-muted-foreground">
               {record.pub_year}
             </span>
-            {s2.isOpenAccess && (
-              <span className="ml-auto inline-flex items-center rounded-full bg-green-500/20 px-2 py-0.5 text-[11px] font-medium text-green-400">
-                Open Access
-              </span>
-            )}
+
+            <button
+              onClick={() => hasNext && onNavigate(currentIndex + 1)}
+              disabled={!hasNext}
+              className="inline-flex items-center justify-center h-7 w-7 rounded-md hover:bg-muted disabled:opacity-30 transition-colors"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
+
+            {/* Badges pushed to right */}
+            <div className="ml-auto flex items-center gap-2">
+              {s2.venue && (
+                <span className="inline-flex items-center rounded-full bg-foreground/10 px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground">
+                  {s2.venue}
+                </span>
+              )}
+              {s2.isOpenAccess && (
+                <span className="inline-flex items-center rounded-full bg-green-500/20 px-2.5 py-0.5 text-[11px] font-medium text-green-400">
+                  Open Access
+                </span>
+              )}
+            </div>
           </div>
           <DrawerDescription className="text-foreground font-medium text-sm leading-snug mt-1">
             {record.title}
@@ -89,11 +128,6 @@ export function RecordDrawer({ record, open, onOpenChange }: RecordDrawerProps) 
               <span className="font-semibold">{s2.referenceCount}</span>
               <span className="text-muted-foreground">references</span>
             </div>
-            {s2.venue && (
-              <div className="ml-auto text-xs text-muted-foreground">
-                {s2.venue}
-              </div>
-            )}
           </div>
 
           {/* TLDR */}
