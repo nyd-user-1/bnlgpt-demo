@@ -12,7 +12,7 @@ export default function Chat() {
     useChat();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [autoSubmitted, setAutoSubmitted] = useState(false);
-  const [sessionLoaded, setSessionLoaded] = useState(false);
+  const loadedSessionRef = useRef<string | null>(null);
 
   // Auto-scroll on new messages
   useEffect(() => {
@@ -21,11 +21,11 @@ export default function Chat() {
 
   // Load existing session from route param
   useEffect(() => {
-    if (routeSessionId && !sessionLoaded) {
-      setSessionLoaded(true);
+    if (routeSessionId && routeSessionId !== loadedSessionRef.current) {
+      loadedSessionRef.current = routeSessionId;
       loadSession(routeSessionId);
     }
-  }, [routeSessionId, sessionLoaded, loadSession]);
+  }, [routeSessionId, loadSession]);
 
   // Update URL when session is created (without remounting)
   useEffect(() => {

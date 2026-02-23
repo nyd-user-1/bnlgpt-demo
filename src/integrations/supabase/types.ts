@@ -155,4 +155,8 @@ export interface PersistedMessage {
   role: "user" | "assistant";
   content: string;
   timestamp: string;
+  sources?: {
+    nsr: Array<{ key_number: string; title: string; doi?: string | null; similarity: number }>;
+    s2: Array<{ title: string; url: string; authors: string; citations: number }>;
+  };
 }

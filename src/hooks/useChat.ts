@@ -38,6 +38,7 @@ function toPersistedMessages(msgs: Message[]): PersistedMessage[] {
       role: m.role,
       content: m.content,
       timestamp: new Date().toISOString(),
+      ...(m.sources ? { sources: m.sources } : {}),
     }));
 }
 
@@ -231,6 +232,7 @@ export function useChat() {
             id: m.id,
             role: m.role,
             content: m.content,
+            ...(m.sources ? { sources: m.sources as MessageSources } : {}),
           }))
         );
         return session;
