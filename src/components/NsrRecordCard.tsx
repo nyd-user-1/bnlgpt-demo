@@ -151,27 +151,24 @@ export const NsrRecordCard = memo(function NsrRecordCard({ record }: NsrRecordCa
           )}
         </div>
 
-        {/* Row 3: DOI (full width) */}
-        {record.doi && (
-          <div className="col-span-2">
-            <span className="text-muted-foreground">DOI</span>
-            <p className="font-medium truncate">
-              <a
-                href={`https://doi.org/${record.doi}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                className="text-nuclear hover:underline"
-              >
-                {record.doi}
-              </a>
-            </p>
-          </div>
-        )}
       </div>
 
-      {/* Action buttons */}
-      <div className="absolute bottom-4 right-4 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+      {/* Bottom bar: DOI left, action buttons right */}
+      <div className="absolute bottom-4 left-6 right-4 flex items-center justify-between">
+        {record.doi ? (
+          <a
+            href={`https://doi.org/${record.doi}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            className="text-xs text-nuclear hover:underline truncate max-w-[60%]"
+          >
+            {record.doi}
+          </a>
+        ) : (
+          <span />
+        )}
+        <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
         <button
           onClick={handleCopy}
           className="flex h-10 w-10 items-center justify-center rounded-full bg-muted text-foreground shadow-lg transition-all hover:scale-110"
@@ -186,6 +183,7 @@ export const NsrRecordCard = memo(function NsrRecordCard({ record }: NsrRecordCa
         >
           <ArrowUp className="h-4 w-4" />
         </button>
+        </div>
       </div>
     </div>
   );
