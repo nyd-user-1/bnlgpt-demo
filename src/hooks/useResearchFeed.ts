@@ -22,7 +22,10 @@ export function useResearchFeed() {
       .order("created_at", { ascending: false })
       .limit(MAX_EVENTS)
       .then(({ data }) => {
-        if (data) setEvents(data as unknown as FeedEvent[]);
+        if (data) {
+          setEvents(data as unknown as FeedEvent[]);
+          setIsConnected(true);
+        }
       });
 
     // Realtime subscription
