@@ -75,36 +75,29 @@ Deno.serve(async (req) => {
     const batchSize = Math.min(Math.max(body.batch_size || 100, 1), 500);
     const startTime = Date.now();
 
-    // Find NSR records with DOIs that don't yet have an nsr_s2 row
+    // Find the highest nsr_id already in nsr_s2 so we can skip past it
+    const { data: maxRow } = await supabase
+      .from("nsr_s2")
+      .select("nsr_id")
+      .order("nsr_id", { ascending: false })
+      .limit(1)
+      .single();
+
+    const startAfter = maxRow?.nsr_id ?? 0;
+
+    // Find NSR records with DOIs that haven't been processed yet
     const { data: records, error: fetchError } = await supabase
       .from("nsr")
       .select("id, doi")
       .not("doi", "is", null)
       .not("doi", "eq", "")
+      .gt("id", startAfter)
       .order("id", { ascending: true })
       .limit(batchSize);
 
     if (fetchError) throw fetchError;
-    if (!records || records.length === 0) {
-      return new Response(
-        JSON.stringify({ success: true, processed: 0, found: 0, not_found: 0, errors: 0 }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
 
-    // Filter out records that already have an nsr_s2 row
-    const nsrIds = records.map((r: { id: number }) => r.id);
-    const { data: existing } = await supabase
-      .from("nsr_s2")
-      .select("nsr_id")
-      .in("nsr_id", nsrIds);
-
-    const existingIds = new Set(
-      (existing || []).map((e: { nsr_id: number }) => e.nsr_id)
-    );
-    const toProcess = records.filter(
-      (r: { id: number }) => !existingIds.has(r.id)
-    );
+    const toProcess = records ?? [];
 
     if (toProcess.length === 0) {
       return new Response(
