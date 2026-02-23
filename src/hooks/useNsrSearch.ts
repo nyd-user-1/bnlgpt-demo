@@ -35,14 +35,14 @@ async function semanticSearch(query: string): Promise<NsrRecord[]> {
   return (await res.json()) as NsrRecord[];
 }
 
-/** Text search via Supabase — matches across all major fields */
+/** Text search via Supabase — matches key_number, title, authors */
 async function textSearch(query: string): Promise<NsrRecord[]> {
   const pattern = `%${query}%`;
 
   const { data, error } = await supabase
     .from("nsr")
     .select("id, key_number, pub_year, reference, authors, title, doi, exfor_keys, keywords, nuclides, reactions")
-    .or(`key_number.ilike.${pattern},title.ilike.${pattern},authors.ilike.${pattern},reference.ilike.${pattern},keywords.ilike.${pattern}`)
+    .or(`key_number.ilike.${pattern},title.ilike.${pattern},authors.ilike.${pattern}`)
     .order("pub_year", { ascending: false })
     .limit(20);
 
