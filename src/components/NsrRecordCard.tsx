@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowUp, Atom, FlaskConical, Hash } from "lucide-react";
+import { ArrowUp, FlaskConical, Hash } from "lucide-react";
 import type { NsrRecord } from "@/types/nsr";
 
 interface NsrRecordCardProps {
@@ -86,18 +86,17 @@ export const NsrRecordCard = memo(function NsrRecordCard({ record }: NsrRecordCa
           <div className="col-span-2">
             <span className="text-muted-foreground">Nuclides</span>
             <div className="flex flex-wrap gap-1.5 mt-0.5">
-              {record.nuclides.slice(0, 8).map((nuc) => (
+              {record.nuclides.slice(0, 3).map((nuc) => (
                 <span
                   key={nuc}
-                  className="inline-flex items-center gap-1 rounded-full bg-foreground/10 px-2 py-0.5 text-[11px] font-medium text-foreground/80"
+                  className="inline-flex items-center rounded-full bg-foreground/10 px-2 py-0.5 text-[11px] font-medium text-foreground/80"
                 >
-                  <Atom className="h-3 w-3" />
                   {nuc}
                 </span>
               ))}
-              {record.nuclides.length > 8 && (
+              {record.nuclides.length > 3 && (
                 <span className="inline-flex items-center rounded-full bg-foreground/10 px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
-                  +{record.nuclides.length - 8}
+                  +{record.nuclides.length - 3}
                 </span>
               )}
             </div>
