@@ -6,6 +6,7 @@ import {
   MoreHorizontal,
   Pencil,
   Trash2,
+  MessageSquare,
 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { useChatSessions } from "@/hooks/useChatSessions";
@@ -100,13 +101,14 @@ function ChatSessionItem({
     <div className="group relative" ref={menuRef}>
       <button
         onClick={onNavigate}
-        className={`flex w-full items-center rounded-lg px-3 py-2 pr-10 text-sm transition-colors ${
+        className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 pr-10 text-sm transition-colors ${
           isActive
             ? "bg-muted font-medium"
             : "text-muted-foreground hover:bg-muted hover:text-foreground"
         }`}
       >
-        <span className="truncate">{title}</span>
+        <MessageSquare className="h-3.5 w-3.5 flex-shrink-0 text-muted-foreground" />
+        <span className="truncate">{title.replace(/^Tell me about\s*/i, "")}</span>
       </button>
 
       {/* Hover ... button */}
@@ -240,7 +242,7 @@ export function Sidebar({ isOpen }: SidebarProps) {
         </nav>
 
         {/* User menu at bottom */}
-        <div className="border-t px-3 py-2">
+        <div className="px-3 py-2">
           <UserMenu />
         </div>
       </div>

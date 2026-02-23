@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import {
   Search,
   MessageSquare,
@@ -18,6 +19,16 @@ const INSIGHT_TYPES = new Set([
   "high_impact_paper",
 ]);
 
+const CLICKABLE_TYPES = new Set([
+  "chat_started",
+  "record_inquiry",
+  "semantic_search",
+  "keyword_search",
+  "nuclide_filter",
+  "reaction_filter",
+  "element_range_filter",
+]);
+
 function timeAgo(iso: string): string {
   const diff = Date.now() - new Date(iso).getTime();
   const seconds = Math.floor(diff / 1000);
@@ -28,6 +39,43 @@ function timeAgo(iso: string): string {
   if (hours < 24) return `${hours}h ago`;
   const days = Math.floor(hours / 24);
   return `${days}d ago`;
+}
+
+function buildFeedItemPath(event: FeedEvent): string | null {
+  const { event_type, entity_value, metadata } = event;
+
+  switch (event_type) {
+    case "chat_started": {
+      const sid = metadata?.session_id as string | undefined;
+      return sid ? `/c/${sid}` : null;
+    }
+    case "record_inquiry":
+      return entity_value
+        ? `/references?q=${encodeURIComponent(entity_value)}&mode=keyword`
+        : null;
+    case "semantic_search":
+      return entity_value
+        ? `/references?q=${encodeURIComponent(entity_value)}&mode=semantic`
+        : null;
+    case "keyword_search":
+      return entity_value
+        ? `/references?q=${encodeURIComponent(entity_value)}&mode=keyword`
+        : null;
+    case "nuclide_filter":
+      return entity_value
+        ? `/references?nuclide=${encodeURIComponent(entity_value)}`
+        : null;
+    case "reaction_filter":
+      return entity_value
+        ? `/references?reaction=${encodeURIComponent(entity_value)}`
+        : null;
+    case "element_range_filter":
+      return entity_value
+        ? `/references?zRange=${encodeURIComponent(entity_value)}`
+        : null;
+    default:
+      return null;
+  }
 }
 
 const ICON_MAP: Record<string, typeof Search> = {
@@ -69,16 +117,28 @@ interface FeedItemProps {
 }
 
 export function FeedItem({ event }: FeedItemProps) {
+  const navigate = useNavigate();
   const Icon = ICON_MAP[event.event_type] ?? Search;
   const color = COLOR_MAP[event.event_type] ?? "text-muted-foreground";
   const isInsight = INSIGHT_TYPES.has(event.event_type);
+  const isClickable = CLICKABLE_TYPES.has(event.event_type);
+
+  const handleClick = () => {
+    const path = buildFeedItemPath(event);
+    if (path) navigate(path);
+  };
 
   return (
     <div
+      onClick={isClickable ? handleClick : undefined}
       className={
         isInsight
           ? "flex items-start gap-2.5 mx-2 my-1 px-3 py-2.5 rounded-md bg-green-800 border border-green-600"
-          : "flex items-start gap-2.5 px-4 py-2.5"
+          : `flex items-start gap-2.5 px-4 py-2.5${
+              isClickable
+                ? " cursor-pointer hover:bg-muted/50 rounded-md transition-colors"
+                : ""
+            }`
       }
     >
       <Icon className={`h-3.5 w-3.5 mt-0.5 flex-shrink-0 ${isInsight ? "text-white" : color}`} />

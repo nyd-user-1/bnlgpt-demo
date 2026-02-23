@@ -91,6 +91,7 @@ export function useChat() {
               p_event_type: "chat_started",
               p_category: "chat",
               p_display_text: `Started chat: "${title}"`,
+              p_metadata: { session_id: sessionId },
             })
             .then(() => {}, () => {});
         } catch {

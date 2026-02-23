@@ -1,4 +1,5 @@
 import { useState, useDeferredValue, useMemo, useRef, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { ArrowUpDown, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { SearchInput } from "@/components/SearchInput";
 import { NsrRecordCard } from "@/components/NsrRecordCard";
@@ -103,22 +104,53 @@ function parseElementRange(v: string | null): { zMin?: number; zMax?: number } {
 /* ------------------------------------------------------------------ */
 
 export default function References() {
-  const [query, setQuery] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Read initial state from URL params (from feed item clicks)
+  const initialQ = searchParams.get("q") ?? "";
+  const initialMode = (searchParams.get("mode") as SearchMode) || "semantic";
+  const initialNuclide = searchParams.get("nuclide") ?? "";
+  const initialReaction = searchParams.get("reaction") ?? "";
+  const initialZRange = searchParams.get("zRange");
+
+  const [query, setQuery] = useState(initialQ);
   const [yearFilter, setYearFilter] = useState<string | null>(null);
   const [authorsSortAsc, setAuthorsSortAsc] = useState<boolean | null>(null);
   const [page, setPage] = useState(1);
-  const [searchMode, setSearchMode] = useState<SearchMode>("semantic");
+  const [searchMode, setSearchMode] = useState<SearchMode>(initialMode);
 
   // Structured search inputs
-  const [nuclideInput, setNuclideInput] = useState("");
-  const [reactionInput, setReactionInput] = useState("");
-  const [elementRange, setElementRange] = useState<string | null>(null);
+  const [nuclideInput, setNuclideInput] = useState(initialNuclide);
+  const [reactionInput, setReactionInput] = useState(initialReaction);
+  const [elementRange, setElementRange] = useState<string | null>(initialZRange);
   const [structuredParams, setStructuredParams] = useState<{
     nuclides?: string[];
     reactions?: string[];
     zMin?: number;
     zMax?: number;
-  } | null>(null);
+  } | null>(() => {
+    // Initialize structured params from URL if present
+    const nuclides = initialNuclide ? [initialNuclide] : [];
+    const reactions = initialReaction ? [initialReaction] : [];
+    const { zMin, zMax } = parseElementRange(initialZRange);
+    if (nuclides.length > 0 || reactions.length > 0 || initialZRange) {
+      return {
+        nuclides: nuclides.length > 0 ? nuclides : undefined,
+        reactions: reactions.length > 0 ? reactions : undefined,
+        zMin,
+        zMax,
+      };
+    }
+    return null;
+  });
+
+  // Clear URL params after reading (so they don't persist on refresh)
+  useEffect(() => {
+    if (searchParams.toString()) {
+      setSearchParams({}, { replace: true });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const deferredQuery = useDeferredValue(query);
 
