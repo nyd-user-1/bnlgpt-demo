@@ -8,7 +8,7 @@ interface ResearchFeedProps {
 }
 
 export function ResearchFeed({ isOpen }: ResearchFeedProps) {
-  const { events, isConnected, trending } = useResearchFeed();
+  const { events, trending } = useResearchFeed();
 
   return (
     <aside
@@ -19,7 +19,7 @@ export function ResearchFeed({ isOpen }: ResearchFeedProps) {
       }`}
     >
       <div className="w-[300px] h-full flex flex-col bg-background">
-        <FeedHeader isConnected={isConnected} />
+        <FeedHeader />
         <TrendingStrip items={trending} />
 
         <div className="flex-1 overflow-y-auto divide-y divide-border/50">
