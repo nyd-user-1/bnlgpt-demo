@@ -77,7 +77,7 @@ export function FeedItem({ event }: FeedItemProps) {
     <div
       className={
         isInsight
-          ? "flex items-start gap-2.5 mx-2 my-1 px-3 py-2.5 rounded-md bg-green-500/15 border border-green-500/30"
+          ? "flex items-start gap-2.5 mx-2 my-1 px-3 py-2.5 rounded-md bg-green-800 border border-green-600"
           : "flex items-start gap-2.5 px-4 py-2.5"
       }
     >
