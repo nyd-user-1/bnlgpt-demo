@@ -75,21 +75,22 @@
   }
 }
 
-/* Minimal scrollbar — Claude-style thin track */
-.scrollbar-thin {
+/* Global minimal scrollbar — Claude-style pill thumb */
+* {
   scrollbar-width: thin;
-  scrollbar-color: var(--color-border) transparent;
+  scrollbar-color: var(--color-muted-foreground) transparent;
 }
-.scrollbar-thin::-webkit-scrollbar {
-  width: 4px;
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
 }
-.scrollbar-thin::-webkit-scrollbar-track {
+*::-webkit-scrollbar-track {
   background: transparent;
 }
-.scrollbar-thin::-webkit-scrollbar-thumb {
-  background: var(--color-border);
+*::-webkit-scrollbar-thumb {
+  background: var(--color-muted-foreground);
   border-radius: 9999px;
 }
-.scrollbar-thin::-webkit-scrollbar-thumb:hover {
-  background: var(--color-muted-foreground);
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--color-foreground);
 }

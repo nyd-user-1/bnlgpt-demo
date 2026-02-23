@@ -82,7 +82,7 @@ export function RecordDrawer({
           </DrawerDescription>
         </DrawerHeader>
 
-        <div className="overflow-y-auto px-4 pb-6 pt-2 flex-1 min-h-0 scrollbar-thin select-text" data-vaul-no-drag>
+        <div className="overflow-y-auto px-4 pb-6 pt-2 flex-1 min-h-0 select-text" data-vaul-no-drag>
           {/* Loading state */}
           {s2Loading && (
             <div className="flex items-center justify-center py-8">
@@ -162,7 +162,7 @@ export function RecordDrawer({
                   <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-1.5 block">
                     Abstract
                   </span>
-                  <p className="text-sm text-muted-foreground leading-relaxed max-h-[7rem] overflow-y-auto scrollbar-thin">
+                  <p className="text-sm text-muted-foreground leading-relaxed max-h-[7rem] overflow-y-auto">
                     {s2.abstract}
                   </p>
                 </div>
