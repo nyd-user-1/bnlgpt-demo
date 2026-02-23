@@ -74,9 +74,19 @@ export function FeedItem({ event }: FeedItemProps) {
   const isInsight = INSIGHT_TYPES.has(event.event_type);
 
   return (
-    <div className={`flex items-start gap-2.5 px-4 py-2.5${isInsight ? " border-l-2 border-orange-500" : ""}`}>
+    <div
+      className={
+        isInsight
+          ? "flex items-start gap-2.5 mx-2 my-1 px-3 py-2.5 rounded-md bg-green-500/15 border border-green-500/30"
+          : "flex items-start gap-2.5 px-4 py-2.5"
+      }
+    >
       <Icon className={`h-3.5 w-3.5 mt-0.5 flex-shrink-0 ${color}`} />
-      <span className="flex-1 text-xs text-foreground/90 leading-snug line-clamp-2">
+      <span
+        className={`flex-1 text-xs leading-snug line-clamp-2 ${
+          isInsight ? "text-green-300 font-medium" : "text-foreground/90"
+        }`}
+      >
         {event.display_text}
       </span>
       <span className="text-[10px] text-muted-foreground flex-shrink-0 mt-0.5">
