@@ -35,6 +35,21 @@ async function semanticSearch(query: string): Promise<NsrRecord[]> {
   return (await res.json()) as NsrRecord[];
 }
 
+/** Key number search — matches only key_number column */
+async function keyNumberSearch(query: string): Promise<NsrRecord[]> {
+  const pattern = `%${query}%`;
+
+  const { data, error } = await supabase
+    .from("nsr")
+    .select("id, key_number, pub_year, reference, authors, title, doi, exfor_keys, keywords, nuclides, reactions")
+    .ilike("key_number", pattern)
+    .order("key_number", { ascending: true })
+    .limit(20);
+
+  if (error) throw new Error(error.message);
+  return data ?? [];
+}
+
 /** Text search via Supabase — matches key_number, title, authors */
 async function textSearch(query: string): Promise<NsrRecord[]> {
   const pattern = `%${query}%`;
@@ -52,6 +67,14 @@ async function textSearch(query: string): Promise<NsrRecord[]> {
 
 /** Run search based on mode */
 async function searchNsr(query: string, mode: SearchMode): Promise<SearchResult> {
+  // # prefix → key_number only search
+  if (query.startsWith("#")) {
+    const keyQuery = query.slice(1).trim();
+    if (!keyQuery) return { records: [], count: 0 };
+    const results = await keyNumberSearch(keyQuery);
+    return { records: results, count: results.length };
+  }
+
   if (mode === "keyword") {
     const results = await textSearch(query);
     return { records: results, count: results.length };

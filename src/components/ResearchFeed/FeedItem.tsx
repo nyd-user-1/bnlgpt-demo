@@ -7,14 +7,12 @@ import {
   FlaskConical,
   Layers,
   TrendingUp,
-  Users,
   Star,
 } from "lucide-react";
 import type { FeedEvent } from "@/types/feed";
 
 const INSIGHT_TYPES = new Set([
   "trending_nuclide",
-  "cross_interest",
   "new_in_field",
   "high_impact_paper",
 ]);
@@ -88,28 +86,10 @@ const ICON_MAP: Record<string, typeof Search> = {
   element_range_filter: Layers,
   // Insight types
   trending_nuclide: TrendingUp,
-  cross_interest: Users,
   new_in_field: FlaskConical,
   high_impact_paper: Star,
   s2_citation_update: ArrowUp,
   paper_ingested: Layers,
-};
-
-const COLOR_MAP: Record<string, string> = {
-  semantic_search: "text-nuclear",
-  keyword_search: "text-nuclear",
-  nuclide_filter: "text-nuclear",
-  reaction_filter: "text-nuclear",
-  element_range_filter: "text-nuclear",
-  chat_started: "text-foreground",
-  record_inquiry: "text-foreground",
-  // Insight types
-  trending_nuclide: "text-green-400",
-  cross_interest: "text-green-400",
-  new_in_field: "text-green-400",
-  high_impact_paper: "text-green-400",
-  s2_citation_update: "text-green-400",
-  paper_ingested: "text-green-400",
 };
 
 interface FeedItemProps {
@@ -119,7 +99,6 @@ interface FeedItemProps {
 export function FeedItem({ event }: FeedItemProps) {
   const navigate = useNavigate();
   const Icon = ICON_MAP[event.event_type] ?? Search;
-  const color = COLOR_MAP[event.event_type] ?? "text-muted-foreground";
   const isInsight = INSIGHT_TYPES.has(event.event_type);
   const isClickable = CLICKABLE_TYPES.has(event.event_type);
 
@@ -133,15 +112,15 @@ export function FeedItem({ event }: FeedItemProps) {
       onClick={isClickable ? handleClick : undefined}
       className={
         isInsight
-          ? "flex items-start gap-2.5 mx-2 my-1 px-3 py-2.5 rounded-md bg-green-800 border border-green-600"
-          : `flex items-start gap-2.5 px-4 py-2.5${
+          ? "group flex items-start gap-2.5 mx-2 my-1 px-3 py-2.5 rounded-md bg-green-800 border border-green-600"
+          : `group flex items-start gap-2.5 px-4 py-2.5${
               isClickable
                 ? " cursor-pointer hover:bg-muted rounded-md transition-colors"
                 : ""
             }`
       }
     >
-      <Icon className={`h-3.5 w-3.5 mt-0.5 flex-shrink-0 ${isInsight ? "text-white" : color}`} />
+      <Icon className={`h-3.5 w-3.5 mt-0.5 flex-shrink-0 ${isInsight ? "text-white" : "text-muted-foreground group-hover:text-foreground transition-colors"}`} />
       {isInsight ? (
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-2">
@@ -160,10 +139,10 @@ export function FeedItem({ event }: FeedItemProps) {
         </div>
       ) : (
         <>
-          <span className="flex-1 text-xs text-foreground/90 leading-snug line-clamp-2">
+          <span className="flex-1 text-xs text-muted-foreground group-hover:text-foreground leading-snug line-clamp-2 transition-colors">
             {event.display_text}
           </span>
-          <span className="text-[10px] text-muted-foreground flex-shrink-0 mt-0.5">
+          <span className="text-[10px] text-muted-foreground flex-shrink-0 mt-0.5 transition-colors">
             {timeAgo(event.created_at)}
           </span>
         </>

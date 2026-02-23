@@ -38,35 +38,7 @@ BEGIN
     );
   END LOOP;
 
-  -- ── Cross-interest ────────────────────────────────────────
-  -- Same entity_value appearing 2+ times in last 30 min where
-  -- the gap between events exceeds 60 seconds (beat dedup,
-  -- likely different users or separate research threads)
-  FOR rec IN
-    SELECT entity_value,
-           count(*) AS cnt,
-           max(created_at) - min(created_at) AS span
-    FROM research_feed
-    WHERE created_at > now() - interval '30 minutes'
-      AND entity_value IS NOT NULL
-      AND event_type IN (
-        'semantic_search', 'keyword_search',
-        'nuclide_filter', 'reaction_filter', 'element_range_filter',
-        'record_inquiry'
-      )
-    GROUP BY entity_value
-    HAVING count(*) >= 2
-       AND max(created_at) - min(created_at) > interval '60 seconds'
-  LOOP
-    PERFORM insert_feed_event(
-      'cross_interest',
-      'insight',
-      'entity',
-      rec.entity_value,
-      'Cross-interest: ' || rec.entity_value || ' researched by multiple users',
-      jsonb_build_object('count', rec.cnt, 'span_seconds', extract(epoch FROM rec.span)::int, 'window', '30m')
-    );
-  END LOOP;
+  -- cross_interest removed
 END;
 $$;
 
