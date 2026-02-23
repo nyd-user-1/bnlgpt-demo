@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowUp, FlaskConical, Hash } from "lucide-react";
+import { useState } from "react";
+import { ArrowUp, Copy, Check, FlaskConical, Hash } from "lucide-react";
 import type { NsrRecord } from "@/types/nsr";
 
 interface NsrRecordCardProps {
@@ -9,6 +10,23 @@ interface NsrRecordCardProps {
 
 export const NsrRecordCard = memo(function NsrRecordCard({ record }: NsrRecordCardProps) {
   const navigate = useNavigate();
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const text = [
+      `${record.key_number} (${record.pub_year})`,
+      record.title,
+      record.authors ?? "",
+      record.reference ?? "",
+      record.doi ? `DOI: ${record.doi}` : "",
+    ]
+      .filter(Boolean)
+      .join("\n");
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
 
   const handleSendToChat = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -59,7 +77,7 @@ export const NsrRecordCard = memo(function NsrRecordCard({ record }: NsrRecordCa
       <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
         {/* Row 1: Authors (col-span-2) */}
         {record.authors && (
-          <div className="col-span-2">
+          <div className="col-span-2 max-w-[340px]">
             <span className="text-muted-foreground">Authors</span>
             <p className="font-medium truncate">
               {(() => {
@@ -73,7 +91,7 @@ export const NsrRecordCard = memo(function NsrRecordCard({ record }: NsrRecordCa
 
         {/* Row 2: Reference (col-span-2) */}
         {record.reference && (
-          <div className="col-span-2">
+          <div className="col-span-2 max-w-[340px]">
             <span className="text-muted-foreground">Reference</span>
             <p className="font-medium truncate">
               {record.reference.replace(/\s*\(\d{4}\)\s*$/, "")}
@@ -175,14 +193,23 @@ export const NsrRecordCard = memo(function NsrRecordCard({ record }: NsrRecordCa
 
       </div>
 
-      {/* Send to chat button */}
-      <button
-        onClick={handleSendToChat}
-        className="absolute bottom-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-foreground text-background shadow-lg transition-all hover:scale-110 opacity-0 group-hover:opacity-100"
-        title="Ask NSRgpt about this reference"
-      >
-        <ArrowUp className="h-4 w-4" />
-      </button>
+      {/* Action buttons */}
+      <div className="absolute bottom-4 right-4 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+        <button
+          onClick={handleCopy}
+          className="flex h-10 w-10 items-center justify-center rounded-full bg-muted text-foreground shadow-lg transition-all hover:scale-110"
+          title="Copy reference details"
+        >
+          {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+        </button>
+        <button
+          onClick={handleSendToChat}
+          className="flex h-10 w-10 items-center justify-center rounded-full bg-foreground text-background shadow-lg transition-all hover:scale-110"
+          title="Ask NSRgpt about this reference"
+        >
+          <ArrowUp className="h-4 w-4" />
+        </button>
+      </div>
     </div>
   );
 });
