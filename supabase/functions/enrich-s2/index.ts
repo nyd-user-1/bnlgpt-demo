@@ -22,6 +22,7 @@ const S2_FIELDS = [
   "openAccessPdf",
   "fieldsOfStudy",
   "authors",
+  "authors.name",
   "authors.hIndex",
   "authors.affiliations",
   "citationStyles",

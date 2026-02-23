@@ -47,8 +47,8 @@ export function RecordDrawer({
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <DrawerContent className="max-h-[75vh]">
-        <DrawerHeader className="pb-0">
+      <DrawerContent className="h-[482px] flex flex-col">
+        <DrawerHeader className="pb-0 shrink-0">
           <div className="flex items-center gap-2">
             {/* Prev/next navigation */}
             <button
@@ -94,7 +94,7 @@ export function RecordDrawer({
           </DrawerDescription>
         </DrawerHeader>
 
-        <div className="overflow-y-auto px-4 pb-6 pt-2">
+        <div className="overflow-y-auto px-4 pb-6 pt-2 flex-1 min-h-0">
           {/* Loading state */}
           {s2Loading && (
             <div className="flex items-center justify-center py-8">
@@ -175,7 +175,7 @@ export function RecordDrawer({
                       Abstract
                     </span>
                   </div>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
+                  <p className="text-sm text-muted-foreground leading-relaxed max-h-[7rem] overflow-y-auto">
                     {s2.abstract}
                   </p>
                 </div>
