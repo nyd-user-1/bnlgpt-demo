@@ -25,7 +25,6 @@ const S2_FIELDS = [
   "authors.name",
   "authors.hIndex",
   "authors.affiliations",
-  "citationStyles",
 ].join(",");
 
 const TIMEOUT_MS = 45_000;
@@ -45,7 +44,6 @@ interface S2Paper {
   openAccessPdf?: { url: string } | null;
   fieldsOfStudy?: string[] | null;
   authors?: { name: string; hIndex?: number; affiliations?: string[] }[];
-  citationStyles?: { bibtex?: string } | null;
 }
 
 async function lookupBatch(dois: string[]): Promise<(S2Paper | null)[]> {
@@ -145,7 +143,6 @@ Deno.serve(async (req) => {
                       affiliations: a.affiliations ?? [],
                     }))
                   : null,
-                bibtex: paper.citationStyles?.bibtex ?? null,
                 s2_lookup_status: "found",
                 s2_looked_up_at: new Date().toISOString(),
               })

@@ -30,7 +30,6 @@ export interface NsrRecord {
   open_access_pdf_url?: string | null;
   fields_of_study?: string[] | null;
   s2_authors?: S2Author[] | null;
-  bibtex?: string | null;
   s2_lookup_status?: "pending" | "found" | "not_found" | "error" | null;
   s2_looked_up_at?: string | null;
 }

@@ -15,7 +15,6 @@ export interface S2Enrichment {
   open_access_pdf_url: string | null;
   fields_of_study: string[] | null;
   s2_authors: S2Author[] | null;
-  bibtex: string | null;
   s2_lookup_status: "pending" | "found" | "not_found" | "error" | null;
   s2_looked_up_at: string | null;
 }
@@ -33,8 +32,7 @@ const S2_COLUMNS = [
   "open_access_pdf_url",
   "fields_of_study",
   "s2_authors",
-  "bibtex",
-  "s2_lookup_status",
+"s2_lookup_status",
   "s2_looked_up_at",
 ].join(", ");
 
