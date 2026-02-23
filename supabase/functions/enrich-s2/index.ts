@@ -126,8 +126,8 @@ Deno.serve(async (req) => {
 
     if (insertError) throw insertError;
 
-    // Process in sub-batches of 500 (S2 limit)
-    const SUB_BATCH = 500;
+    // Process in sub-batches of 100 (S2 unauthenticated safe limit)
+    const SUB_BATCH = 100;
     let totalFound = 0;
     let totalNotFound = 0;
     let totalErrors = 0;
