@@ -37,7 +37,8 @@ export function useResearchFeed() {
         }
       )
       .subscribe((status) => {
-        setIsConnected(status === "SUBSCRIBED");
+        if (status === "SUBSCRIBED") setIsConnected(true);
+        else if (status === "CLOSED" || status === "CHANNEL_ERROR") setIsConnected(false);
       });
 
     return () => {
