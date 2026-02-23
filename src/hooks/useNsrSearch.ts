@@ -42,7 +42,7 @@ async function textSearch(query: string): Promise<NsrRecord[]> {
   const { data, error } = await supabase
     .from("nsr")
     .select("id, key_number, pub_year, reference, authors, title, doi, exfor_keys, keywords, nuclides, reactions")
-    .or(`key_number.ilike.${pattern},title.ilike.${pattern},authors.ilike.${pattern}`)
+    .or(`key_number.ilike.${pattern},title.ilike.${pattern},authors.ilike.${pattern},keywords.ilike.${pattern}`)
     .order("pub_year", { ascending: false })
     .limit(20);
 
