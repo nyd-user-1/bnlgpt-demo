@@ -76,23 +76,13 @@ Deno.serve(async (req) => {
     const batchSize = Math.min(Math.max(body.batch_size || 100, 1), 500);
     const startTime = Date.now();
 
-    // Find the highest nsr_id already in nsr_s2 so we can skip past it
-    const { data: maxRow } = await supabase
-      .from("nsr_s2")
-      .select("nsr_id")
-      .order("nsr_id", { ascending: false })
-      .limit(1)
-      .single();
-
-    const startAfter = maxRow?.nsr_id ?? 0;
-
-    // Find NSR records with DOIs that haven't been processed yet
+    // Find NSR records with DOIs that haven't been S2-enriched yet
     const { data: records, error: fetchError } = await supabase
       .from("nsr")
       .select("id, doi")
       .not("doi", "is", null)
       .not("doi", "eq", "")
-      .gt("id", startAfter)
+      .is("s2_lookup_status", null)
       .order("id", { ascending: true })
       .limit(batchSize);
 
@@ -107,18 +97,12 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Insert placeholder rows
-    const placeholders = toProcess.map((r: { id: number; doi: string }) => ({
-      nsr_id: r.id,
-      doi: r.doi,
-      lookup_status: "pending",
-    }));
-
-    const { error: insertError } = await supabase
-      .from("nsr_s2")
-      .upsert(placeholders, { onConflict: "nsr_id", ignoreDuplicates: true });
-
-    if (insertError) throw insertError;
+    // Mark as pending
+    const pendingIds = toProcess.map((r: { id: number }) => r.id);
+    await supabase
+      .from("nsr")
+      .update({ s2_lookup_status: "pending" })
+      .in("id", pendingIds);
 
     // Process in sub-batches of 100 (S2 unauthenticated safe limit)
     const SUB_BATCH = 100;
@@ -141,7 +125,7 @@ Deno.serve(async (req) => {
 
           if (paper && paper.paperId) {
             const { error: updateError } = await supabase
-              .from("nsr_s2")
+              .from("nsr")
               .update({
                 s2_paper_id: paper.paperId,
                 citation_count: paper.citationCount ?? null,
@@ -154,7 +138,7 @@ Deno.serve(async (req) => {
                 is_open_access: paper.isOpenAccess ?? false,
                 open_access_pdf_url: paper.openAccessPdf?.url ?? null,
                 fields_of_study: paper.fieldsOfStudy ?? null,
-                authors: paper.authors
+                s2_authors: paper.authors
                   ? paper.authors.map((a) => ({
                       name: a.name,
                       hIndex: a.hIndex ?? null,
@@ -162,21 +146,21 @@ Deno.serve(async (req) => {
                     }))
                   : null,
                 bibtex: paper.citationStyles?.bibtex ?? null,
-                lookup_status: "found",
-                looked_up_at: new Date().toISOString(),
+                s2_lookup_status: "found",
+                s2_looked_up_at: new Date().toISOString(),
               })
-              .eq("nsr_id", record.id);
+              .eq("id", record.id);
 
             if (updateError) totalErrors++;
             else totalFound++;
           } else {
             const { error: updateError } = await supabase
-              .from("nsr_s2")
+              .from("nsr")
               .update({
-                lookup_status: "not_found",
-                looked_up_at: new Date().toISOString(),
+                s2_lookup_status: "not_found",
+                s2_looked_up_at: new Date().toISOString(),
               })
-              .eq("nsr_id", record.id);
+              .eq("id", record.id);
 
             if (updateError) totalErrors++;
             else totalNotFound++;
@@ -186,12 +170,12 @@ Deno.serve(async (req) => {
         // Mark entire sub-batch as error
         for (const record of batch) {
           await supabase
-            .from("nsr_s2")
+            .from("nsr")
             .update({
-              lookup_status: "error",
-              looked_up_at: new Date().toISOString(),
+              s2_lookup_status: "error",
+              s2_looked_up_at: new Date().toISOString(),
             })
-            .eq("nsr_id", record.id);
+            .eq("id", record.id);
         }
         totalErrors += batch.length;
       }

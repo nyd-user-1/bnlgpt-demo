@@ -91,7 +91,7 @@ export function RecordDrawer({
           )}
 
           {/* No S2 data */}
-          {!s2Loading && (!s2 || s2.lookup_status === "not_found" || s2.lookup_status === "error") && (
+          {!s2Loading && (!s2 || s2.s2_lookup_status === "not_found" || s2.s2_lookup_status === "error") && (
             <>
               {/* Tags row (always show) */}
               <div className="py-3 border-b border-border/50">
@@ -118,7 +118,7 @@ export function RecordDrawer({
           )}
 
           {/* S2 data found */}
-          {!s2Loading && s2 && s2.lookup_status === "found" && (
+          {!s2Loading && s2 && s2.s2_lookup_status === "found" && (
             <>
               {/* Venue + Stats row */}
               <div className="flex items-center gap-3 py-3 border-b border-border/50 text-xs">
@@ -169,7 +169,7 @@ export function RecordDrawer({
               )}
 
               {/* Authors with S2 enrichment */}
-              {s2.authors && s2.authors.length > 0 && (
+              {s2.s2_authors && s2.s2_authors.length > 0 && (
                 <div className="py-3 border-b border-border/50">
                   <div className="flex items-center gap-1.5 mb-2">
                     <Users className="h-3.5 w-3.5 text-muted-foreground" />
@@ -178,7 +178,7 @@ export function RecordDrawer({
                     </span>
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    {s2.authors.map((author) => (
+                    {s2.s2_authors.map((author) => (
                       <div
                         key={author.name}
                         className="flex items-center gap-2 rounded-md border border-border/50 bg-muted/40 px-3 py-1.5"
