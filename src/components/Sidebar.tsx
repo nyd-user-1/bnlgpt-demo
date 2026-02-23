@@ -172,7 +172,7 @@ export function Sidebar({ isOpen }: SidebarProps) {
     <aside
       className={`${
         isOpen ? "w-[281px]" : "w-0"
-      } flex-shrink-0 transition-all duration-200 ease-in-out overflow-hidden`}
+      } flex-shrink-0 transition-all duration-200 ease-in-out z-50 ${isOpen ? "overflow-visible" : "overflow-hidden"}`}
     >
       <div className="w-[281px] h-full flex flex-col">
         {/* Navigation */}
