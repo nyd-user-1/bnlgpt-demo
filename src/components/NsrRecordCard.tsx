@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { ArrowUp, Copy, Check, FlaskConical, Hash } from "lucide-react";
+import { ArrowUp, Copy, Check, Hash } from "lucide-react";
 import type { NsrRecord } from "@/types/nsr";
 
 interface NsrRecordCardProps {
@@ -75,122 +75,99 @@ export const NsrRecordCard = memo(function NsrRecordCard({ record }: NsrRecordCa
 
       {/* Metadata grid */}
       <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
-        {/* Row 1: Authors (col-span-2) */}
-        {record.authors && (
-          <div className="col-span-2 max-w-[340px]">
-            <span className="text-muted-foreground">Authors</span>
+        {/* Row 1, Col 1: Authors */}
+        <div className="min-w-0">
+          {record.authors && (
+            <>
+              <span className="text-muted-foreground">Authors</span>
+              <p className="font-medium truncate">
+                {(() => {
+                  const names = record.authors.split(";").map((n) => n.trim());
+                  if (names.length <= 3) return record.authors;
+                  return names.slice(0, 3).join("; ") + "; et al.";
+                })()}
+              </p>
+            </>
+          )}
+        </div>
+
+        {/* Row 1, Col 2: Reference */}
+        <div className="min-w-0">
+          {record.reference && (
+            <>
+              <span className="text-muted-foreground">Reference</span>
+              <p className="font-medium truncate">
+                {record.reference.replace(/\s*\(\d{4}\)\s*$/, "")}
+              </p>
+            </>
+          )}
+        </div>
+
+        {/* Row 2, Col 1: Nuclides */}
+        <div className="min-w-0">
+          {record.nuclides && record.nuclides.length > 0 && (
+            <>
+              <span className="text-muted-foreground">Nuclides</span>
+              <div className="flex flex-wrap gap-1.5 mt-0.5">
+                {record.nuclides.slice(0, 3).map((nuc) => (
+                  <span
+                    key={nuc}
+                    className="inline-flex items-center rounded-full bg-foreground/10 px-2 py-0.5 text-[11px] font-medium text-foreground/80"
+                  >
+                    {nuc}
+                  </span>
+                ))}
+                {record.nuclides.length > 3 && (
+                  <span className="inline-flex items-center rounded-full bg-foreground/10 px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+                    +{record.nuclides.length - 3}
+                  </span>
+                )}
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* Row 2, Col 2: Reactions */}
+        <div className="min-w-0">
+          {record.reactions && record.reactions.length > 0 && (
+            <>
+              <span className="text-muted-foreground">Reactions</span>
+              <div className="flex flex-wrap gap-1.5 mt-0.5">
+                {record.reactions.slice(0, 3).map((rxn) => (
+                  <span
+                    key={rxn}
+                    className="inline-flex items-center rounded-full bg-foreground/10 px-2 py-0.5 text-[11px] font-medium text-foreground/80"
+                  >
+                    {rxn}
+                  </span>
+                ))}
+                {record.reactions.length > 3 && (
+                  <span className="inline-flex items-center rounded-full bg-foreground/10 px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+                    +{record.reactions.length - 3}
+                  </span>
+                )}
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* Row 3: DOI (full width) */}
+        {record.doi && (
+          <div className="col-span-2">
+            <span className="text-muted-foreground">DOI</span>
             <p className="font-medium truncate">
-              {(() => {
-                const names = record.authors.split(";").map((n) => n.trim());
-                if (names.length <= 3) return record.authors;
-                return names.slice(0, 3).join("; ") + "; et al.";
-              })()}
+              <a
+                href={`https://doi.org/${record.doi}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="text-nuclear hover:underline"
+              >
+                {record.doi}
+              </a>
             </p>
           </div>
         )}
-
-        {/* Row 2: Reference (col-span-2) */}
-        {record.reference && (
-          <div className="col-span-2 max-w-[340px]">
-            <span className="text-muted-foreground">Reference</span>
-            <p className="font-medium truncate">
-              {record.reference.replace(/\s*\(\d{4}\)\s*$/, "")}
-            </p>
-          </div>
-        )}
-
-        {/* Row 3: Nuclides (col-span-2) */}
-        {record.nuclides && record.nuclides.length > 0 && (
-          <div className="col-span-2">
-            <span className="text-muted-foreground">Nuclides</span>
-            <div className="flex flex-wrap gap-1.5 mt-0.5">
-              {record.nuclides.slice(0, 3).map((nuc) => (
-                <span
-                  key={nuc}
-                  className="inline-flex items-center rounded-full bg-foreground/10 px-2 py-0.5 text-[11px] font-medium text-foreground/80"
-                >
-                  {nuc}
-                </span>
-              ))}
-              {record.nuclides.length > 3 && (
-                <span className="inline-flex items-center rounded-full bg-foreground/10 px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
-                  +{record.nuclides.length - 3}
-                </span>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* Row 4: Reactions (col-span-2) */}
-        {record.reactions && record.reactions.length > 0 && (
-          <div className="col-span-2">
-            <span className="text-muted-foreground">Reactions</span>
-            <div className="flex flex-wrap gap-1.5 mt-0.5">
-              {record.reactions.slice(0, 3).map((rxn) => (
-                <span
-                  key={rxn}
-                  className="inline-flex items-center rounded-full bg-foreground/10 px-2 py-0.5 text-[11px] font-medium text-foreground/80"
-                >
-                  {rxn}
-                </span>
-              ))}
-              {record.reactions.length > 3 && (
-                <span className="inline-flex items-center rounded-full bg-foreground/10 px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
-                  +{record.reactions.length - 3}
-                </span>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* Row 5: DOI (col 1) | EXFOR badges (col 2) */}
-        {(record.doi || record.exfor_keys) && (
-          <>
-            <div>
-              {record.doi && (
-                <>
-                  <span className="text-muted-foreground">DOI</span>
-                  <p className="font-medium">
-                    <a
-                      href={`https://doi.org/${record.doi}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={(e) => e.stopPropagation()}
-                      className="text-nuclear hover:underline"
-                    >
-                      {record.doi}
-                    </a>
-                  </p>
-                </>
-              )}
-            </div>
-            <div>
-              {(() => {
-                const keys = record.exfor_keys
-                  ? record.exfor_keys.split(";").map((k) => k.trim()).filter(Boolean)
-                  : [];
-                if (keys.length === 0) return null;
-                return (
-                  <>
-                    <span className="text-muted-foreground">EXFOR</span>
-                    <div className="flex flex-wrap gap-1.5 mt-0.5">
-                      {keys.map((k) => (
-                        <span
-                          key={k}
-                          className="inline-flex items-center gap-1 rounded-full bg-nuclear/10 px-2 py-0.5 text-[11px] font-medium text-nuclear"
-                        >
-                          <FlaskConical className="h-3 w-3" />
-                          {k}
-                        </span>
-                      ))}
-                    </div>
-                  </>
-                );
-              })()}
-            </div>
-          </>
-        )}
-
       </div>
 
       {/* Action buttons */}
