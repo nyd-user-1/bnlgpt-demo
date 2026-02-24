@@ -6,6 +6,7 @@ import { AppLayout } from "@/layouts/AppLayout";
 import Chat from "@/pages/Chat";
 import References from "@/pages/References";
 import Resources from "@/pages/Resources";
+import Endf from "@/pages/Endf";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +21,7 @@ function App() {
               <Route path="/c/:sessionId" element={<Chat />} />
               <Route path="/references" element={<References />} />
               <Route path="/resources" element={<Resources />} />
+              <Route path="/endf" element={<Endf />} />
             </Route>
           </Routes>
           <Toaster />

@@ -2,6 +2,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import {
   SquarePen,
   Atom,
+  FileText,
   ChevronDown,
   MoreHorizontal,
   Pencil,
@@ -192,6 +193,18 @@ export function Sidebar({ isOpen }: SidebarProps) {
           >
             <Atom className="h-4 w-4" />
             References
+          </button>
+
+          <button
+            onClick={() => navigate("/endf")}
+            className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+              location.pathname === "/endf"
+                ? "bg-muted"
+                : "hover:bg-muted"
+            }`}
+          >
+            <FileText className="h-4 w-4" />
+            ENDF Reports
           </button>
 
           <button

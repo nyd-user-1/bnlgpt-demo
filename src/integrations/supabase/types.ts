@@ -62,6 +62,23 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["chat_sessions"]["Insert"]>;
         Relationships: [];
       };
+      endf_reports: {
+        Row: {
+          id: number;
+          seq_number: number;
+          report_number: string;
+          authors: string | null;
+          title: string;
+          report_date: string | null;
+          cross_reference: string | null;
+          pdf_url: string | null;
+        };
+        Insert: Omit<Database["public"]["Tables"]["endf_reports"]["Row"], "id"> & {
+          id?: number;
+        };
+        Update: Partial<Database["public"]["Tables"]["endf_reports"]["Insert"]>;
+        Relationships: [];
+      };
       research_feed: {
         Row: {
           id: string;
