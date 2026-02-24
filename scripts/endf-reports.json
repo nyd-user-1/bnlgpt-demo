@@ -1,0 +1,2846 @@
+[
+  {
+    "seq_number": 315,
+    "report_number": "ENDF-379",
+    "authors": "Dermott E. Cullen",
+    "title": "A Survey of ENDF/B-VIII Resonance Parameters (MF=2)",
+    "report_date": "Nov. 2020",
+    "cross_reference": "INDC(NDS)-0819",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-379.pdf"
+  },
+  {
+    "seq_number": 314,
+    "report_number": "ENDF-378",
+    "authors": "CSEWG Covariance Committee",
+    "title": "Guidance on Generating Neutron Reaction Data Covariances for the ENDF/B Library",
+    "report_date": "2011",
+    "cross_reference": "",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-378.pdf"
+  },
+  {
+    "seq_number": 313,
+    "report_number": "ENDF-377",
+    "authors": "Donald L. Smith",
+    "title": "Quality Assurance Requirements for ENDF/B-VII.1 Covariances",
+    "report_date": "2011",
+    "cross_reference": "",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-377.pdf"
+  },
+  {
+    "seq_number": 312,
+    "report_number": "ENDF-376",
+    "authors": "Russell D. Mosteller",
+    "title": "An Expanded Criticality Validation Suite for MCNP",
+    "report_date": "2010",
+    "cross_reference": "LA-UR-10-06230",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-376.pdf"
+  },
+  {
+    "seq_number": 311,
+    "report_number": "ENDF-375",
+    "authors": "V. Sobes, L. Leal, G. Arbanas",
+    "title": "User's Guide To SAMINT: A Code For Nuclear Data Adjustment With SAMMY Based On Integral Experiments",
+    "report_date": "Aug 2014",
+    "cross_reference": "ORNL/TM-2014/245",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-375.pdf"
+  },
+  {
+    "seq_number": 310,
+    "report_number": "ENDF-374",
+    "authors": "D.E. Cullen",
+    "title": "How Accurate Are Our Processed ENDF Cross Sections?",
+    "report_date": "May 2014",
+    "cross_reference": "INDC(NDS)-0666",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-374.pdf"
+  },
+  {
+    "seq_number": 309,
+    "report_number": "ENDF-373",
+    "authors": "D.E. Cullen",
+    "title": "PROGRAM ENDF2C: Convert ENDF Data to Standard FORTRAN, X and C++ Format (Version 2014-1) (The code is available here)",
+    "report_date": "Apr 2014",
+    "cross_reference": "IAEA-NDS-217",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-373.pdf"
+  },
+  {
+    "seq_number": 308,
+    "report_number": "ENDF-372",
+    "authors": "D.E. Cullen",
+    "title": "ENDF/X: an Extended ENDF Format (Evolution, not Revolution)",
+    "report_date": "Dec 2012",
+    "cross_reference": "INDC(NDS)-0659",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-372.pdf"
+  },
+  {
+    "seq_number": 307,
+    "report_number": "ENDF-371",
+    "authors": "D.E. Cullen",
+    "title": "ENDF/B-VII.1 vesus ENDF/B-VII.0: What's Different?",
+    "report_date": "Mar 2012",
+    "cross_reference": "LLNL-TR-548633",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-371.pdf"
+  },
+  {
+    "seq_number": 306,
+    "report_number": "ENDF-370",
+    "authors": "D.E. Cullen",
+    "title": "Doppler Broadening Update: Broadening near the Unresolved Resonance Region",
+    "report_date": "Jan 2012",
+    "cross_reference": "LLNL-TR-534931",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-370.pdf"
+  },
+  {
+    "seq_number": 305,
+    "report_number": "ENDF-369",
+    "authors": "D.E. Cullen",
+    "title": "A Short History of ENDF/B Unresolved Resonance Parameters",
+    "report_date": "Oct 2010",
+    "cross_reference": "LLNL-TR-461199",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-369.pdf"
+  },
+  {
+    "seq_number": 304,
+    "report_number": "ENDF-368",
+    "authors": "D.E. Cullen",
+    "title": "ENDF Cross Sections are not Uniquely Defined",
+    "report_date": "June 2010",
+    "cross_reference": "LLNL-TR-446331",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-368.pdf"
+  },
+  {
+    "seq_number": 303,
+    "report_number": "ENDF-367",
+    "authors": "N.M. Larson",
+    "title": "SAMMY User Guidance for ENDF Formats",
+    "report_date": "Mar-07",
+    "cross_reference": "ORNL/TM-2007/23",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-367.pdf"
+  },
+  {
+    "seq_number": 302,
+    "report_number": "ENDF-366",
+    "authors": "F.B.Guimaraes, C.Y.Fu, L.C.Leal",
+    "title": "Nuclear cross-section calculations in the 1 MeV to 5 GeV range with combined semi-classical and quantum mechanical models",
+    "report_date": "Feb-2002",
+    "cross_reference": "ORNL/TM-2001/191",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-366.pdf"
+  },
+  {
+    "seq_number": 301,
+    "report_number": "ENDF-365",
+    "authors": "L.C.Leal, H.Derrien, J.A.Harvey, K.H.Guber, N.M.Larson, R.R.Spencer",
+    "title": "R-Matrix resonance analysis and statistical properties of the resonance parameters of 233U in the neutron energy range from thermal to 600 eV",
+    "report_date": "Mar-2001",
+    "cross_reference": "ORNL/TM-2000/372",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-365.pdf"
+  },
+  {
+    "seq_number": 300,
+    "report_number": "ENDF-364-R1",
+    "authors": "N.M. Larson",
+    "title": "Updated Users' Guide for SAMMY: Multilevel R-matrix ...",
+    "report_date": "Sep-06",
+    "cross_reference": "ORNL/TM-9179/R7",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-364-R1.pdf"
+  },
+  {
+    "seq_number": 299,
+    "report_number": "ENDF-363",
+    "authors": "O. Bouland, R. Babut, N.M. Larson",
+    "title": "SAMQUA - A program for Generating All Possible Combinations of Quantum Numbers Leading to the Same Compound Nucleus State in the Framework of the R-Matrix Code SAMMY",
+    "report_date": "Apr-02",
+    "cross_reference": "JEF-DOC 929 OECD/NEA Publications",
+    "pdf_url": "http://www.oecd-nea.org/dbdata/nds_jefdoc/jefdoc-929.pdf"
+  },
+  {
+    "seq_number": 298,
+    "report_number": "ENDF-362",
+    "authors": "Soo-Youl Oh, Jonghwa Chang, S. Mughabghab",
+    "title": "Neutron Cross Section Evaluations of Fission Products Below the FastEnergy Region",
+    "report_date": "Apr-00",
+    "cross_reference": "BNL-NCS-67469",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-362.pdf"
+  },
+  {
+    "seq_number": 297,
+    "report_number": "ENDF-358",
+    "authors": "W.P. Poenitz, S.E. Aumeier",
+    "title": "The Simultaneous Evaluation of the Standards and Other Cross Sections ofImportance for Technology",
+    "report_date": "Sep-97",
+    "cross_reference": "ANL/NDM-139",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-358.pdf"
+  },
+  {
+    "seq_number": 296,
+    "report_number": "ENDF-XXX",
+    "authors": "R.E. Miller, D.L. Smith",
+    "title": "A Compilation of Information on the 32S(p,g)33Cl Reaction and Propertiesof Excited Levels in 33CL",
+    "report_date": "Jul-97",
+    "cross_reference": "ANL/NDM-143",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-XXX.pdf"
+  },
+  {
+    "seq_number": 295,
+    "report_number": "ENDF-356",
+    "authors": "R.E. MacFarlane",
+    "title": "New Thermal Neutron Scattering Files for ENDF/B-VI Release 2",
+    "report_date": "Mar-94",
+    "cross_reference": "LA-12639-MS",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-356.pdf"
+  },
+  {
+    "seq_number": 294,
+    "report_number": "ENDF-355",
+    "authors": "M.C. Moxon",
+    "title": "Comments on the ENDF/B-VI Evaluation for 235-U in the Neutron EnergyRegion from 1 to 20 eV",
+    "report_date": "Feb-93",
+    "cross_reference": "ORNL/TM-12304",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-355.pdf"
+  },
+  {
+    "seq_number": 293,
+    "report_number": "ENDF-354",
+    "authors": "L.W.Weston, D.C.Larson",
+    "title": "Compilation of Requests for Nuclear Data",
+    "report_date": "Jan-93",
+    "cross_reference": "ORNL/TM-12291",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-354.pdf"
+  },
+  {
+    "seq_number": 292,
+    "report_number": "ENDF-353",
+    "authors": "E.J.Axton",
+    "title": "An Evaluation of Kerma in Carbon and the Carbon Cross Sections",
+    "report_date": "Feb-92",
+    "cross_reference": "NISTIR 4838",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-353.pdf"
+  },
+  {
+    "seq_number": 291,
+    "report_number": "ENDF-352",
+    "authors": "J. Katakura, T.R. England",
+    "title": "Augmentation of ENDF/B Fission Product Gamma-Ray Spectra by Calculated Spectra",
+    "report_date": "Nov-91",
+    "cross_reference": "LA-12125-MS",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-352.pdf"
+  },
+  {
+    "seq_number": 290,
+    "report_number": "ENDF-351",
+    "authors": "A.D. Carlson, W.P. Poenitz, G.M. Hale, et al.",
+    "title": "The ENDF/B-VI Neutron Cross Section Measurements Standards",
+    "report_date": "May-93",
+    "cross_reference": "NISTIR 5177",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-351.pdf"
+  },
+  {
+    "seq_number": 289,
+    "report_number": "ENDF-350",
+    "authors": "D.M. Hetrick, D.C. Larson, C.Y. Fu",
+    "title": "Generation of Covariance Files for the Isotopes of Cr, Fe, Ni, Cu, and Pb in ENDF/B-VI",
+    "report_date": "Feb-91",
+    "cross_reference": "ORNL/TM-11763",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-350.pdf"
+  },
+  {
+    "seq_number": 289,
+    "report_number": "ENDF-349",
+    "authors": "T.R.England, B.F.Rider",
+    "title": "Evaluation and Compilation of Fission Product Yields",
+    "report_date": "Oct-94",
+    "cross_reference": "LA-UR-94-3106",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-349.pdf"
+  },
+  {
+    "seq_number": 288,
+    "report_number": "ENDF-347",
+    "authors": "C.M. Perey, F.G. Perey, J.A. Harvey, et al.",
+    "title": "58Ni+n Transmission, Differential Elastic Scattering and Capture Measurements and Analysis from 5 to 813 KeV",
+    "report_date": "Sep-88",
+    "cross_reference": "ORNL/TM-10841",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-347.pdf"
+  },
+  {
+    "seq_number": 287,
+    "report_number": "ENDF-346",
+    "authors": "D.M. Hetrick, C.Y. Fu, D.C. Larson",
+    "title": "Calculated Neutron-Induced Cross Sections for 52-Cr from 1 to 20MeV andComparisons with Experiments",
+    "report_date": "Sep-87",
+    "cross_reference": "ORNL/TM-10417",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-346.pdf"
+  },
+  {
+    "seq_number": 286,
+    "report_number": "ENDF-345",
+    "authors": "K. Shibata, D.M. Hetrick",
+    "title": "Calculated Neutron-Induced Cross Sections for 53-Cr from 1 to 20 MeV",
+    "report_date": "May-87",
+    "cross_reference": "ORNL/TM-10381",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-345.pdf"
+  },
+  {
+    "seq_number": 285,
+    "report_number": "ENDF-344",
+    "authors": "D.M. Hetrick, C.Y. Fu, D.C. Larson",
+    "title": "Calculated Neutron-Induced Cross Sections for 58,60-Ni from 1 to 20 MeV and Comparisons with Experiments",
+    "report_date": "Jun-87",
+    "cross_reference": "ORNL/TM-10219",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-344.pdf"
+  },
+  {
+    "seq_number": 284,
+    "report_number": "ENDF-343",
+    "authors": "L.W. Weston, E.D. Arthur",
+    "title": "Evaluation of the Neutron Cross Sections for PU-240",
+    "report_date": "Apr-87",
+    "cross_reference": "ORNL/TM-10386",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-343.pdf"
+  },
+  {
+    "seq_number": 283,
+    "report_number": "ENDF-342",
+    "authors": "M.S. Milgram, S. Thompson, R. Paulson",
+    "title": "Few Group Cross Sections for 274 Nuclides Based on ENDF/B-V",
+    "report_date": "Feb-87",
+    "cross_reference": "CRNL-2916",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-342.pdf"
+  },
+  {
+    "seq_number": 282,
+    "report_number": "ENDF-341",
+    "authors": "C.Y. Fu, D.M. Hetrick",
+    "title": "Update of ENDF/B-V Mod-3 Iron: Neutron Producting Reaction Cross Sections and Energy-Angle Correlations",
+    "report_date": "Jul-86",
+    "cross_reference": "ORNL/TM-9964",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-341.pdf"
+  },
+  {
+    "seq_number": 281,
+    "report_number": "ENDF-340",
+    "authors": "D.W. Muir",
+    "title": "Analysis of Central Worths and Other Integral Data from the Los Alamos Benchmark Assemblies",
+    "report_date": "Oct-84",
+    "cross_reference": "LA-10230-MS",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-340.pdf"
+  },
+  {
+    "seq_number": 280,
+    "report_number": "ENDF-339",
+    "authors": "N.M. Larson",
+    "title": "Updated Users' Guide for SAMMY: Multilevel R-Matrix Fits to Neutron...",
+    "report_date": "Jun-76",
+    "cross_reference": "ORNL/TM-9179/R1",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 279,
+    "report_number": "ENDF-338",
+    "authors": "D.K. Olsen",
+    "title": "Report to the 238U Discrepancy Task Force on SIOB Fits to the ORNL, CBNM,and JAERI Transmission Data",
+    "report_date": "May-84",
+    "cross_reference": "ORNL/TM-9023",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-338.pdf"
+  },
+  {
+    "seq_number": 278,
+    "report_number": "ENDF-337",
+    "authors": "D.M. Hetrick, C.Y. Fu, D.C. Larson",
+    "title": "Calculated Neutron-Induced Cross Sections for 63,65Cu from 1 to 20 MeV and Comparisons with Experiments",
+    "report_date": "Aug-84",
+    "cross_reference": "ORNL/TM-9083",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-337.pdf"
+  },
+  {
+    "seq_number": 277,
+    "report_number": "ENDF-336",
+    "authors": "E.D. Arthur, P.G. Young, D.G. Madland, R.E. MacFarlane",
+    "title": "Evaluation of n + 239Pu Nuclear Data for Revision 2 of ENDF/B-V",
+    "report_date": "Oct-83",
+    "cross_reference": "LA-9873-MS",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-336.pdf"
+  },
+  {
+    "seq_number": 276,
+    "report_number": "ENDF-335",
+    "authors": "R.W. Roussin, J.R. Knight, J.H. Hubbell, R.J. Howerton",
+    "title": "Description of the DLC-99/HUGO Package of Photon Interaction Data in ENDF/B-V Format",
+    "report_date": "Dec-83",
+    "cross_reference": "ORNL/RSIC-46",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-335.pdf"
+  },
+  {
+    "seq_number": 275,
+    "report_number": "ENDF-334",
+    "authors": "D.C. Larson, N.M. Larson, J.A. Harvey",
+    "title": "ORELA Flight Path 1: Determinations of Its Effective Length vs Energy., Experimental Energies, and Energy Resolution Function and Their Uncertainties",
+    "report_date": "Jun-84",
+    "cross_reference": "ORNL/TM-8880",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-334.pdf"
+  },
+  {
+    "seq_number": 274,
+    "report_number": "ENDF-333",
+    "authors": "D.C. Larson, N.M. Larson, J.A. Harvey, et al.",
+    "title": "Application of New Techniques to ORELA Neutron Transmission Measurementsand their Uncertainty Analysis: The Case of Natural Nickel ...",
+    "report_date": "Oct-83",
+    "cross_reference": "ORNL/TM-8203",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-333.pdf"
+  },
+  {
+    "seq_number": 273,
+    "report_number": "ENDF-332",
+    "authors": "T.R. England",
+    "title": "ENDF/B-V Summary Data for Fission and Actinides",
+    "report_date": "",
+    "cross_reference": "Not published",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 272,
+    "report_number": "ENDF-331",
+    "authors": "R.W. Peelle, T.W. Burrows",
+    "title": "An Annotated Bibliography Covering Generation and Use of Evalusted Cross Section Uncertainty Files",
+    "report_date": "Mar-83",
+    "cross_reference": "BNL-NCL-51684",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-331.pdf"
+  },
+  {
+    "seq_number": 271,
+    "report_number": "ENDF-330",
+    "authors": "C.M. Perey, J.A. Harvey, R.L. Macklin, et al.",
+    "title": "Neutron Transmission and Capture Measurements and Analysis of 60Ni from 1 to 450 keV",
+    "report_date": "Nov-82",
+    "cross_reference": "ORNL-5893",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-330.pdf"
+  },
+  {
+    "seq_number": 270,
+    "report_number": "ENDF-329",
+    "authors": "P.F. Rose",
+    "title": "Symposium Proceedings: Thermal Reactor Benchmark Calculation...",
+    "report_date": "",
+    "cross_reference": "",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 269,
+    "report_number": "ENDF-328",
+    "authors": "B.A. Magurno, R.R. Kinsey, F.M. Scheffel",
+    "title": "Guidebook for the ENDF/B-V Nuclear Data Files",
+    "report_date": "Jul-82",
+    "cross_reference": "EPRI NP-2510",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 268,
+    "report_number": "ENDF-327",
+    "authors": "C.R. Weisbin, D. Gilai, G. deSaussure, R.T. Santoro",
+    "title": "Meeting Cross Section Requirements for Nuclear Energy Design",
+    "report_date": "Jul-82",
+    "cross_reference": "ORNL/TM-8220",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-327.pdf"
+  },
+  {
+    "seq_number": 267,
+    "report_number": "ENDF-326",
+    "authors": "D.M. Hetrick, C.Y. Fu, D.C. Larson",
+    "title": "Evaluated Neutron-Induced Cross Sections for 40-Ca from 20 to 40 MeV",
+    "report_date": "Sep-82",
+    "cross_reference": "ORNL/TM-8290",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-326.pdf"
+  },
+  {
+    "seq_number": 266,
+    "report_number": "ENDF-325",
+    "authors": "C.Y. Fu",
+    "title": "Summary of ENDF/B-V Evaluations for Carbon, Calcium, Iron, Copper, and Lead and ENDF/B-V Rev.2 for Calcium and Iron",
+    "report_date": "Sep-82",
+    "cross_reference": "ORNL/TM-8283",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-325.pdf"
+  },
+  {
+    "seq_number": 265,
+    "report_number": "ENDF-324 Vol.4",
+    "authors": "D.W. Muir, R.E. MacFarlane",
+    "title": "The NJOY Nuclear Data Processing System, Volume IV: The ERRORR and COVR Modules",
+    "report_date": "Dec-85",
+    "cross_reference": "LA-9303-M Vol.4",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-324-Vol4.pdf"
+  },
+  {
+    "seq_number": 264,
+    "report_number": "ENDF-324 Vol.3",
+    "authors": "R.E. MacFarlane, D.W. Muir",
+    "title": "The NJOY Nuclear Data Processing System, Volume III: The GROUPR, GAMINR, and MODER Modules",
+    "report_date": "Oct-85",
+    "cross_reference": "LA-9303-M Vol.3",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-324-Vol3.pdf"
+  },
+  {
+    "seq_number": 263,
+    "report_number": "ENDF-324 Vol.2",
+    "authors": "R.E. MacFarlane, D.W. Muir, R.M. Boicourt",
+    "title": "The NJOY Nuclear Data Processing System, Volume II: The NJOY, RECONR,BROADR, HEATR, AND THERMR Modules",
+    "report_date": "May-82",
+    "cross_reference": "LA-9303-M Vol.2",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-324-Vol2.pdf"
+  },
+  {
+    "seq_number": 262,
+    "report_number": "ENDF-324 Vol.1",
+    "authors": "R.E. MacFarlane, D.W. Muir, R.M. Boicourt",
+    "title": "The NJOY Nuclear Data Processing System, Volume 1: User's Manual",
+    "report_date": "May-82",
+    "cross_reference": "LA-9303-M Vol.1",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-324-Vol1.pdf"
+  },
+  {
+    "seq_number": 261,
+    "report_number": "ENDF-323",
+    "authors": "N.M. Larson",
+    "title": "User's Guide for BAYES: A General-Purpose Computer Code for Fitting a Functional Form to Experimental Data",
+    "report_date": "Aug-82",
+    "cross_reference": "ORNL/TM-8185",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-323.pdf"
+  },
+  {
+    "seq_number": 260,
+    "report_number": "ENDF-322 #2",
+    "authors": "B.F. Rider",
+    "title": "Compilation of Fission Products Yields (Microfiche Only)",
+    "report_date": "Sep-80",
+    "cross_reference": "NEDO 12154-3(C)",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 259,
+    "report_number": "ENDF-322 #1",
+    "authors": "T.R. England, W.B. Wilson, R.E. Schenter, F.M. Mann",
+    "title": "Summary of ENDF/B-V Data for Fission Products and Actinides",
+    "report_date": "Dec-84",
+    "cross_reference": "EPRI NP 3787 LA-UR 83-1285",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-322-1.pdf"
+  },
+  {
+    "seq_number": 258,
+    "report_number": "ENDF-321",
+    "authors": "D.G. Madland",
+    "title": "New Fission Neutron Spectrum Representation for ENDF",
+    "report_date": "Apr-82",
+    "cross_reference": "LA-9285-MS",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-321.pdf"
+  },
+  {
+    "seq_number": 257,
+    "report_number": "ENDF-320",
+    "authors": "R.J. LaBauve, T.R. England, D.C. George",
+    "title": "Integral Data Testing of ENDF/B Fission Product Data and Comparisons of ENDF/B with other Fission Product Data Files",
+    "report_date": "Nov-81",
+    "cross_reference": "LA-9090-MS",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-320.pdf"
+  },
+  {
+    "seq_number": 256,
+    "report_number": "ENDF-319",
+    "authors": "D.K. Olsen",
+    "title": "An Evaluation of the Resolved-Resonance-Region Cross Sections of 232Th",
+    "report_date": "Mar-82",
+    "cross_reference": "ORNL/TM-8056",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-319.pdf"
+  },
+  {
+    "seq_number": 255,
+    "report_number": "ENDF-318",
+    "authors": "R.B. Kidman",
+    "title": "Los Alamos Benchmarks: Calculations Based on ENDF/B-V Data",
+    "report_date": "Nov-81",
+    "cross_reference": "LA-9037-MS",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-318.pdf"
+  },
+  {
+    "seq_number": 254,
+    "report_number": "ENDF-317",
+    "authors": "M.A. Bjerke, C.C. Webster",
+    "title": "Neutron Cross Section Libraries in the AMPX Master Interface Format for Thermal and Fast Reactors",
+    "report_date": "Dec-81",
+    "cross_reference": "ORNL/CSD/TM-164",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-317.pdf"
+  },
+  {
+    "seq_number": 253,
+    "report_number": "ENDF-316",
+    "authors": "F.M. Mann",
+    "title": "FTR Set 500, A Multigroup Cross-Section Set for FTR Analysis",
+    "report_date": "Feb-82",
+    "cross_reference": "HEDL-TME81-31",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-316.pdf"
+  },
+  {
+    "seq_number": 252,
+    "report_number": "ENDF-315",
+    "authors": "R. Gwin, R.R. Spencer, R.W. Ingle",
+    "title": "Measurement of the Average Number of Prompt Neutrons Emitted per Fissionof 233-U Relative to 252-Cf ...",
+    "report_date": "Nov-81",
+    "cross_reference": "ORNL/TM-7988",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-315.pdf"
+  },
+  {
+    "seq_number": 251,
+    "report_number": "ENDF-314",
+    "authors": "R.B. Kidman",
+    "title": "ENDF/B-V, LIB-V, CSEWG Benchmarks",
+    "report_date": "Aug-81",
+    "cross_reference": "LA-8950-MS",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-314.pdf"
+  },
+  {
+    "seq_number": 250,
+    "report_number": "ENDF-313",
+    "authors": "CSEWG Data Testing Committee",
+    "title": "Benchmark Testing of ENDF/B Data for Thermal Reactors",
+    "report_date": "Jul-81",
+    "cross_reference": "BNL-NCS-29891",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 249,
+    "report_number": "ENDF-312",
+    "authors": "G. De Saussure",
+    "title": "Representation of the Neutron Cross Sections of Several Fertile and...",
+    "report_date": "Sep-81",
+    "cross_reference": "ORNL/TM-7945",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 248,
+    "report_number": "ENDF-311",
+    "authors": "C.R. Weisbin, R.D. McKnight, J. Hardy Jr., et al.",
+    "title": "Benchmark Data Testing of ENDF/B-V",
+    "report_date": "Aug-82",
+    "cross_reference": "BNL-NCS-31531",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 247,
+    "report_number": "ENDF-310",
+    "authors": "J.G. Munoz-Cobos",
+    "title": "PAPIN. A Fortran-IV Program to Calculate Cross Sections Probability...",
+    "report_date": "Aug-81",
+    "cross_reference": "ORNL/TM-7883",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-310.ORNL-TM-7883.pdf"
+  },
+  {
+    "seq_number": 246,
+    "report_number": "ENDF-309",
+    "authors": "J.M. Kallfelz",
+    "title": "Preliminary Analysis and Sensitivity Study of Phenix...",
+    "report_date": "Sep-81",
+    "cross_reference": "ORNL/TM-7505",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 245,
+    "report_number": "ENDF-308",
+    "authors": "D.M. Hetrick, C.Y. Fu",
+    "title": "A Calculation of Neutron and Gamma-Ray Production Cross Sections for Calcium from 8 to 20 MeV",
+    "report_date": "Jun-81",
+    "cross_reference": "ORNL/TM-7752",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 244,
+    "report_number": "ENDF-307",
+    "authors": "D.K. Olsen",
+    "title": "Measurement of Neutron Transmission Spectra Through 232-Th from 8 meV...",
+    "report_date": "Apr-81",
+    "cross_reference": "ORNL/TM-7661",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 243,
+    "report_number": "ENDF-306",
+    "authors": "D.W. Muir, R.J. LaBauve",
+    "title": "COVFILS: A 30-Group Covariance Library Based on ENDF/B-V",
+    "report_date": "Mar-81",
+    "cross_reference": "LA-8733-MS",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-306.pdf"
+  },
+  {
+    "seq_number": 242,
+    "report_number": "ENDF-305",
+    "authors": "J.D. Smith III, B.L. Broadhead",
+    "title": "Multigroup Covariance Matrices for Fast Reactor Studies",
+    "report_date": "Apr-81",
+    "cross_reference": "ORNL/TM-7389",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-305,ENDF-295.pdf"
+  },
+  {
+    "seq_number": 241,
+    "report_number": "ENDF-304",
+    "authors": "E.D. Arthur, P.G. Young",
+    "title": "Evaluated Neutron-Induced Cross Sections for 54 and 56 Fe to 40 MeV",
+    "report_date": "Dec-80",
+    "cross_reference": "LA-8626-MS",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-304.pdf"
+  },
+  {
+    "seq_number": 240,
+    "report_number": "ENDF-303",
+    "authors": "D.M. Hetrick, C.Y. Fu",
+    "title": "GLUCS: A Generalized Least-Squares Program for Updating Cross-Section Evaluations with Correlated Data Sets",
+    "report_date": "Oct-80",
+    "cross_reference": "ORNL/TM-7341",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-303.ORNL-TM-7341.pdf"
+  },
+  {
+    "seq_number": 239,
+    "report_number": "ENDF-302",
+    "authors": "C.Y. Fu, F.G. Perey",
+    "title": "Evaluation of Neutron and Gamma-Ray Production Cross Section for Natural Iron (ENDF/B-V MAT 1326)",
+    "report_date": "Nov-80",
+    "cross_reference": "ORNL/TM-7523",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-302.pdf"
+  },
+  {
+    "seq_number": 238,
+    "report_number": "ENDF-301",
+    "authors": "A.D. Carlson, M.R. Bhat",
+    "title": "ENDF/B-V Cross Section Measurement Standards",
+    "report_date": "Oct-82",
+    "cross_reference": "BNL-NCS-51619",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-301.pdf"
+  },
+  {
+    "seq_number": 237,
+    "report_number": "ENDF-300",
+    "authors": "M.R. Bhat",
+    "title": "Standard Reference and Other Important Nuclear Data",
+    "report_date": "May-84",
+    "cross_reference": "BNL-NCS-51123 5/84",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 236,
+    "report_number": "ENDF-300",
+    "authors": "M.R. Bhat",
+    "title": "Standard Reference and Other Important Nuclear Data",
+    "report_date": "Feb-82",
+    "cross_reference": "BNL-NCS-51123 2/82",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 235,
+    "report_number": "ENDF-300",
+    "authors": "M.R. Bhat",
+    "title": "Standard Reference and Other Important Nuclear Data",
+    "report_date": "Mar-81",
+    "cross_reference": "BNL-NCS-51123 5/81",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 234,
+    "report_number": "ENDF-300",
+    "authors": "M.R. Bhat",
+    "title": "Standard Reference and Other Important Nuclear Data by the CSEWG",
+    "report_date": "Dec-79",
+    "cross_reference": "BNL-NCS-51123",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-300-1979.pdf"
+  },
+  {
+    "seq_number": 233,
+    "report_number": "ENDF-299",
+    "authors": "D.C. Larson",
+    "title": "An Evaluation Cross Sections for Neutron-Induced Reactions in Sodium",
+    "report_date": "Sep-80",
+    "cross_reference": "ORNL-5662",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-299.pdf"
+  },
+  {
+    "seq_number": 232,
+    "report_number": "ENDF-298",
+    "authors": "C.M. Perey, F.G. Perey",
+    "title": "Evaluation of Resonance Parameters for Neutron Interaction with Iron Isotopes for Energies up to 400 keV",
+    "report_date": "Sep-80",
+    "cross_reference": "ORNL/TM-6405",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-298.pdf"
+  },
+  {
+    "seq_number": 231,
+    "report_number": "ENDF-297",
+    "authors": "N.M. Larson, F.G. Perey, J.A. Harvey",
+    "title": "User's Guide for SAMMY: A Computer Model for Multilevel R-Matrix Fits to Neutron Data Using Bayes' Equstions",
+    "report_date": "Nov-80",
+    "cross_reference": "ORNL/TM-7485",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-297.pdf"
+  },
+  {
+    "seq_number": 230,
+    "report_number": "ENDF-296",
+    "authors": "R.W. Roussin, C.R. Weisbin, J.E. White, et al.",
+    "title": "VITAMIN C: The CTR Processed Multigroup Cross Section Library for Neutronics Studies",
+    "report_date": "Jul-80",
+    "cross_reference": "ORNL/RSIC-37",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-296.pdf"
+  },
+  {
+    "seq_number": 229,
+    "report_number": "ENDF-295",
+    "authors": "J.D. Smith III",
+    "title": "Processing ENDF/B-V Uncertainty Data into Multigroup Covariance Matrices",
+    "report_date": "Jun-80",
+    "cross_reference": "ORNL/TM-7221",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-305,ENDF-295.pdf"
+  },
+  {
+    "seq_number": 228,
+    "report_number": "ENDF-294",
+    "authors": "M. Divadeenam",
+    "title": "Ni Elemental Neutron Induced Reaction Cross Section Evaluation",
+    "report_date": "Mar-79",
+    "cross_reference": "BNL-NCS-51346",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-294.pdf"
+  },
+  {
+    "seq_number": 227,
+    "report_number": "ENDF-293",
+    "authors": "T. Burrows",
+    "title": "ENDF/B-V Actinide Decay Data",
+    "report_date": "",
+    "cross_reference": "",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 226,
+    "report_number": "ENDF-292",
+    "authors": "B.F. Rider",
+    "title": "Compilation Efficient Products Yield",
+    "report_date": "Sep-80",
+    "cross_reference": "NEDO 12154-3(B)",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 225,
+    "report_number": "ENDF-291 #2",
+    "authors": "J.D. Drischler",
+    "title": "The COVERX Service Module of the FORSS System",
+    "report_date": "Apr-80",
+    "cross_reference": "ORNL/TM-7181",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-291-2.ORNL-TM-7181.pdf"
+  },
+  {
+    "seq_number": 224,
+    "report_number": "ENDF-291 #1",
+    "authors": "J.L. Lucius, C.R. Weisbin, J.H. Marable, et al.",
+    "title": "A Users Manual for the FORSS Sensitivity and Uncertainty Analysis Code System",
+    "report_date": "Jan-84",
+    "cross_reference": "ORNL-5316",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-291-1.ORNL-5316.pdf"
+  },
+  {
+    "seq_number": 223,
+    "report_number": "ENDF-290",
+    "authors": "N.M. Larson, D.K. Olsen",
+    "title": "Preliminary Study of Pseudorandom Binary Sequence Pulsing of ORELA",
+    "report_date": "Mar-80",
+    "cross_reference": "ORNL/TM-6632",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-290.pdf"
+  },
+  {
+    "seq_number": 222,
+    "report_number": "ENDF-289",
+    "authors": "R. Gwin, R.R. Spencer, R.W. Ingle, et al.",
+    "title": "Measurement of the Average Number of Prompt Neutrons Emitted per Fissionof 235U Relative to 252Cf ...",
+    "report_date": "Jan-80",
+    "cross_reference": "ORNL/TM-7148",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-289.pdf"
+  },
+  {
+    "seq_number": 221,
+    "report_number": "ENDF-288",
+    "authors": "R.J. Barrett, W.E. Ford III, Y. Gohar, et al.",
+    "title": "Comparison of Photon-Production Processing Codes LAPHNGAS, MACK-IV, and NJOY",
+    "report_date": "Nov-79",
+    "cross_reference": "LA-8100-MS",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-288.pdf"
+  },
+  {
+    "seq_number": 220,
+    "report_number": "ENDF-287",
+    "authors": "W.E. Ford III, C.C. Webster, B.R. Diggs, et al.",
+    "title": "FCXSEC:Multigroup Cross-Section Libraries for Nuclear Fuel CycleShielding Calculations",
+    "report_date": "May-80",
+    "cross_reference": "ORNL/TM-7038",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-287.pdf"
+  },
+  {
+    "seq_number": 219,
+    "report_number": "ENDF-286",
+    "authors": "A. Prince, T.W. Burrows",
+    "title": "Evaluation of Natural Chromium Neutron Cross Sections for ENDF/B-V",
+    "report_date": "Feb-79",
+    "cross_reference": "BNL-NCS-51152",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-286.pdf"
+  },
+  {
+    "seq_number": 218,
+    "report_number": "ENDF-285",
+    "authors": "R.R. Spencer, R. Gwin, R. Ingle, H. Weaver",
+    "title": "Interim Report on the ORNL Absolute Measurements of nu p for 252Cf",
+    "report_date": "Sep-79",
+    "cross_reference": "ORNL/TM-6805",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-285.pdf"
+  },
+  {
+    "seq_number": 217,
+    "report_number": "ENDF-284",
+    "authors": "G.L. Morgan, G.T. Chapman",
+    "title": "The O(n,x gamma) Reaction Cross Section for Incident Neutron EnergiesBetween 6.5 and 20.0 MeV",
+    "report_date": "Sep-79",
+    "cross_reference": "ORNL-5575",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-284.pdf"
+  },
+  {
+    "seq_number": 216,
+    "report_number": "ENDF-283",
+    "authors": "P.G. Young, L. Stewart",
+    "title": "Evaluated Data for n+Berylium 9 Reactions",
+    "report_date": "Jul-79",
+    "cross_reference": "LA-7932-MS",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-283.pdf"
+  },
+  {
+    "seq_number": 215,
+    "report_number": "ENDF-282",
+    "authors": "G.L. Morgan",
+    "title": "The Th(n,x gamma) Reaction Cross Section for Incident Neutron EnergiesBetween 0.3 and 20.0 Mev",
+    "report_date": "Aug-79",
+    "cross_reference": "ORNL/TM-6758",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-282.pdf"
+  },
+  {
+    "seq_number": 214,
+    "report_number": "ENDF-281",
+    "authors": "D.K. Olsen, G.L. Morgan, J.W. McConnell",
+    "title": "Measurement of 238-U(n,n'gamma) and Li-7(n,n'gamma) Gamma-Ray Production Cross Sections",
+    "report_date": "May-79",
+    "cross_reference": "ORNL/TM-6832",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-281.pdf"
+  },
+  {
+    "seq_number": 213,
+    "report_number": "ENDF-280",
+    "authors": "D.M. Hetrick, D.C. Larson, C.Y. Fu",
+    "title": "Status of ENDF/B-V Neutron Emission Spectra Induced by 14 MeV Neutrons",
+    "report_date": "Apr-79",
+    "cross_reference": "ORNL/TM-6637",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-280.pdf"
+  },
+  {
+    "seq_number": 212,
+    "report_number": "ENDF-279",
+    "authors": "A. Prince",
+    "title": "ENDF/B-V Neutron Cross Section Evaluation for the Krypton Isotopes",
+    "report_date": "Jan-79",
+    "cross_reference": "BNL-NCS-51028",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-279.pdf"
+  },
+  {
+    "seq_number": 211,
+    "report_number": "ENDF-278",
+    "authors": "L. Stewart",
+    "title": "Summary of Fission Spectrum Workshop Held at NNCSC",
+    "report_date": "Oct-78",
+    "cross_reference": "LA-7739-C",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-278.pdf"
+  },
+  {
+    "seq_number": 210,
+    "report_number": "ENDF-277",
+    "authors": "F.C. Difilippo, R.B. Perez, G. deSaussure, et al.",
+    "title": "The U-238 Neutron Induced Fission Cross Section for Incident NeutronEnergies Between 5 eV and 3.5 MeV",
+    "report_date": "Feb-79",
+    "cross_reference": "ORNL/TM-6788",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-277.pdf"
+  },
+  {
+    "seq_number": 209,
+    "report_number": "ENDF-276",
+    "authors": "C.R. Weisbin",
+    "title": "Specifications for Adjusted Cross Sections and Covariance Libraries based...",
+    "report_date": "Feb-79",
+    "cross_reference": "ORNL-5517",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 208,
+    "report_number": "ENDF-275",
+    "authors": "J.L. Lucius, E.M. Oblow, G.W. Cunningham,III",
+    "title": "A Users Guide for the JULIET Module of the FORSS Sensitivity andUncertainty Analysis Code System",
+    "report_date": "Feb-79",
+    "cross_reference": "ORNL/TM-6594",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-275.pdf"
+  },
+  {
+    "seq_number": 207,
+    "report_number": "ENDF-274",
+    "authors": "C.R. Weisbin, R.W. Roussin, J.J. Wagschal, et al.",
+    "title": "VITAMIN-E: An ENDF/B-V Multigroup Cross Section Library for LMFBR Core and Shield, LWR Shield,...",
+    "report_date": "Dec-78",
+    "cross_reference": "ORNL-5505",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-274.pdf"
+  },
+  {
+    "seq_number": 206,
+    "report_number": "ENDF-273",
+    "authors": "G.L. Morgan",
+    "title": "Cross Sections for the Cu(n,xn) and Cu(n,x gamma) Reactions Between 1 and 20 Mev",
+    "report_date": "Feb-79",
+    "cross_reference": "ORNL-5499",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-273.pdf"
+  },
+  {
+    "seq_number": 205,
+    "report_number": "ENDF-272",
+    "authors": "R.E. MacFarlane, R.J. Barrett, D.W. Muir, R.M. Boicourt",
+    "title": "The NJOY Nuclear Data Processing System: Users Manual",
+    "report_date": "Dec-78",
+    "cross_reference": "LA-7584-M",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-272.pdf"
+  },
+  {
+    "seq_number": 204,
+    "report_number": "ENDF-271",
+    "authors": "F.M. Mann",
+    "title": "HEDL Evaluation of Thorium Cycle Cross Sections for ENDF/B-V",
+    "report_date": "Nov-78",
+    "cross_reference": "HEDL-TME-78-100",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 203,
+    "report_number": "ENDF-270",
+    "authors": "P.F. Rose, S. Pearlstein, O. Ozer",
+    "title": "Symposium Proceedings: Nuclear Data Problems for Thermal ReactorApplications",
+    "report_date": "Jun-79",
+    "cross_reference": "BNL-NCS-25047",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-270.pdf"
+  },
+  {
+    "seq_number": 202,
+    "report_number": "ENDF-269",
+    "authors": "J.U. Koppel, D.H. Houston",
+    "title": "Reference Manual for ENDF Thermal Neutron Scattering Data",
+    "report_date": "Jul-78",
+    "cross_reference": "GA-8774 Revised",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-269.pdf"
+  },
+  {
+    "seq_number": 201,
+    "report_number": "ENDF-268",
+    "authors": "M.R. Bhat",
+    "title": "Evaluation of Th-232 for ENDF/B-V",
+    "report_date": "Feb-81",
+    "cross_reference": "BNL-NCS-51360",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-268.pdf"
+  },
+  {
+    "seq_number": 200,
+    "report_number": "ENDF-267",
+    "authors": "C.Y. Fu",
+    "title": "Evaluation for Th-233(n,n')(n,2n) and (n,3n) Cross Section",
+    "report_date": "May-78",
+    "cross_reference": "ORNL/TM-6316",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 199,
+    "report_number": "ENDF-266",
+    "authors": "Y.D. Harker, J.W. Rogers, D.A. Millsap",
+    "title": "Fission Product and Reactor Dosimetry Studies at Coupled Fast Reactivity Measurements Facility",
+    "report_date": "Mar-78",
+    "cross_reference": "TREE-1259",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-266.pdf"
+  },
+  {
+    "seq_number": 198,
+    "report_number": "ENDF-265",
+    "authors": "C.R. Weisbin, J.H. Marable, J. Hardy Jr., R.D. McKnight",
+    "title": "Sensitivity Coefficient Compilation for CSEWG Data Testing Benchmarks",
+    "report_date": "Aug-78",
+    "cross_reference": "BNL-NCS-24853",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 197,
+    "report_number": "ENDF-264",
+    "authors": "R. Gwin, R.R. Spencer, R.W. Ingle, et al.",
+    "title": "Measurements of the Average Number of Prompt Neutrons Emitted per Fission of 239Pu and 235U",
+    "report_date": "May-78",
+    "cross_reference": "ORNL/TM-6246",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-264.pdf"
+  },
+  {
+    "seq_number": 196,
+    "report_number": "ENDF-263",
+    "authors": "M.L. Williams, C.R. Weisbin",
+    "title": "Sensitivity and Uncertainity Analysis for Functionals of the Time-Dependent Nuclide Density Field",
+    "report_date": "Apr-78",
+    "cross_reference": "ORNL-5393",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-263.pdf"
+  },
+  {
+    "seq_number": 195,
+    "report_number": "ENDF-262",
+    "authors": "R. Gwin",
+    "title": "Review and Combination of Experimental Results for Neutron-Emission per Fission of 232Th",
+    "report_date": "May-78",
+    "cross_reference": "ORNL/TM-6245",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-262.pdf"
+  },
+  {
+    "seq_number": 194,
+    "report_number": "ENDF-261",
+    "authors": "G. De Saussure, D.K. Olsen, R.B. Perey",
+    "title": "SIOB: A Fortran Code for Least Squares Shape Fitting Several Neutron Transmission Measurements Using ...",
+    "report_date": "May-78",
+    "cross_reference": "ORNL/TM-6286",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-261.pdf"
+  },
+  {
+    "seq_number": 193,
+    "report_number": "ENDF-260",
+    "authors": "G. De Saussure, R.L. Macklin",
+    "title": "Evaluation of the Th-232 Neutron Capture Cross Section above 3 keV",
+    "report_date": "Feb-78",
+    "cross_reference": "ORNL/TM-6161",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-260.pdf"
+  },
+  {
+    "seq_number": 192,
+    "report_number": "ENDF-259",
+    "authors": "F.G. Perey",
+    "title": "Contributions to Few-Channel Spectrum Unfolding",
+    "report_date": "Feb-78",
+    "cross_reference": "ORNL/TM-6267",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-259.pdf"
+  },
+  {
+    "seq_number": 191,
+    "report_number": "ENDF-258",
+    "authors": "R.E. Maerker, F.J. Muckenthaler, C.E. Clifford",
+    "title": "SB4. Measurements and Calculations of the ORNL CRBR Upper Axial Shield Experiment",
+    "report_date": "Jun-77",
+    "cross_reference": "ORNL-5259",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-258.pdf"
+  },
+  {
+    "seq_number": 190,
+    "report_number": "ENDF-257",
+    "authors": "G. De Saussure, D.K. Olsen, R.B. Perey, F.C. Difilippo",
+    "title": "Evaluation of the U-238 Neutron Cross Sections for Incident Neutron Energies up to 4 Kev",
+    "report_date": "Jan-78",
+    "cross_reference": "ORNL/TM-6152",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-257.pdf"
+  },
+  {
+    "seq_number": 189,
+    "report_number": "ENDF-256",
+    "authors": "J.D. Drischler, J.H. Marable, C.R. Weisbin",
+    "title": "COVERT and CAVALIER: Two Computer Codes for Estimating Uncertainties of Calculated Neutronics Parameters ...",
+    "report_date": "Aug-78",
+    "cross_reference": "ORNL/TM-6078",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-256.pdf"
+  },
+  {
+    "seq_number": 188,
+    "report_number": "ENDF-255",
+    "authors": "D.K. Olsen, G. deSaussure, R.B. Perey, et al.",
+    "title": "150-m Measurement of 0.880- to 100.0-keV Neutron Transmissions ThroughFour Samples of 238U",
+    "report_date": "Oct-77",
+    "cross_reference": "ORNL/TM-5915",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-255.pdf"
+  },
+  {
+    "seq_number": 187,
+    "report_number": "ENDF-254",
+    "authors": "F.G. Perey",
+    "title": "Least-Squares Dosimetry Unfolding: the Program STAY'SL",
+    "report_date": "Oct-77",
+    "cross_reference": "ORNL/TM-6062",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-254.pdf"
+  },
+  {
+    "seq_number": 186,
+    "report_number": "ENDF-253",
+    "authors": "E.T. Tomlinson, J.L. Lucius, J.D. Drischler",
+    "title": "A Compendium of Energy-Dependent Sensitivity Profiles for TRX-2 Thermal Lattice",
+    "report_date": "Mar-78",
+    "cross_reference": "ORNL-5336",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-253.pdf"
+  },
+  {
+    "seq_number": 185,
+    "report_number": "ENDF-252",
+    "authors": "E.T. Tomlinson, D. deSaussure, C.R. Weisbin",
+    "title": "Sensitivity Analysis of TRX-2 Lattice Parameters with Emphasis on Epithermal 238-U Capture",
+    "report_date": "Mar-77",
+    "cross_reference": "EPRI-NP-346",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-252.pdf"
+  },
+  {
+    "seq_number": 184,
+    "report_number": "ENDF-251",
+    "authors": "F.M. Mann",
+    "title": "HEDL Evaluation of Actinide Cross Section for ENDF/B-V",
+    "report_date": "Jun-77",
+    "cross_reference": "HEDL-TME-77-54",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 183,
+    "report_number": "ENDF-250",
+    "authors": "J.H. Marable, J.D. Drischler, C.R. Weisbin",
+    "title": "SENDIN and SENTINEL: Two Computer Codes to Assess the Effects of Nuclear Data Changes",
+    "report_date": "Jul-77",
+    "cross_reference": "ORNL/TM-5946",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-250.pdf"
+  },
+  {
+    "seq_number": 182,
+    "report_number": "ENDF-249",
+    "authors": "F.G. Perey",
+    "title": "Data Covariance Files for ENDF/B-V",
+    "report_date": "Jul-77",
+    "cross_reference": "ORNL/TM-5938",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-249.pdf"
+  },
+  {
+    "seq_number": 181,
+    "report_number": "ENDF-248",
+    "authors": "M.R. Bhat",
+    "title": "Evaluation of 235-U Neutron Cross Section and Gamma Ray Production Data for ENDF/B-V",
+    "report_date": "Mar-80",
+    "cross_reference": "BNL-NCS-51184",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-248.pdf"
+  },
+  {
+    "seq_number": 180,
+    "report_number": "ENDF-247",
+    "authors": "D.G. Madland, L. Stewart",
+    "title": "Light Ternary Fission Products: Probabilities and Charge Distributions",
+    "report_date": "Apr-77",
+    "cross_reference": "LA-6783-MS",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-247.pdf"
+  },
+  {
+    "seq_number": 179,
+    "report_number": "ENDF-246",
+    "authors": "A. Prince",
+    "title": "Evaluation of Chromium Neutron and Gamma Production Cross Sections for ENDF/IV",
+    "report_date": "Aug-76",
+    "cross_reference": "BNL-NCS-50593",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-246.pdf"
+  },
+  {
+    "seq_number": 178,
+    "report_number": "ENDF-245",
+    "authors": "F.M. Mann",
+    "title": "HAUSER*4: A Computer Code to Calculate Nuclear Cross Sections",
+    "report_date": "Sep-76",
+    "cross_reference": "HEDL-TME-76-80",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 177,
+    "report_number": "ENDF-244",
+    "authors": "G.M. Hale, L. Stewart, P.G. Young",
+    "title": "Light Element Standard Cross Standards for ENDF/B-IV",
+    "report_date": "Oct-76",
+    "cross_reference": "LA-6518-MS",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-244.pdf"
+  },
+  {
+    "seq_number": 176,
+    "report_number": "ENDF-243 Vol.II",
+    "authors": "P.F. Rose, T.W. Burrows",
+    "title": "ENDF/B Fission Product Decay Data",
+    "report_date": "Aug-76",
+    "cross_reference": "BNL-NCS-50545 Vol.II",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-243-Vol2.pdf"
+  },
+  {
+    "seq_number": 175,
+    "report_number": "ENDF-243 Vol.I",
+    "authors": "P.F. Rose, T.W. Burrows",
+    "title": "ENDF/B Fission Product Decay Data",
+    "report_date": "Aug-76",
+    "cross_reference": "BNL-NCS-50545 Vol.I",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-243-Vol1.pdf"
+  },
+  {
+    "seq_number": 174,
+    "report_number": "ENDF-242",
+    "authors": "M. Stamatelatos, T.R. England",
+    "title": "Beta-Energy Averaging and Beta Spectra",
+    "report_date": "Aug-76",
+    "cross_reference": "LA-6445-MS",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-242.pdf"
+  },
+  {
+    "seq_number": 173,
+    "report_number": "ENDF-241",
+    "authors": "D.G. Madland, T.R. England",
+    "title": "Distribution of Independent Fission-Product Yields to Isomeric States",
+    "report_date": "Nov-76",
+    "cross_reference": "LA-6595-MS",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-241.pdf"
+  },
+  {
+    "seq_number": 172,
+    "report_number": "ENDF-240",
+    "authors": "D.G. Madland, T.R. England",
+    "title": "The Influence of Pairing on the Distribution of Independent Yield Strengths in Neutron-induced Fission",
+    "report_date": "Jul-76",
+    "cross_reference": "LA-6430-MS",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-240.pdf"
+  },
+  {
+    "seq_number": 171,
+    "report_number": "ENDF-239",
+    "authors": "H. Henryson II",
+    "title": "MC2-2: A Code to Calculate Fast Neutron Spectra and Multigroup CrossSections",
+    "report_date": "Jun-76",
+    "cross_reference": "ANL-8144",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-239.pdf"
+  },
+  {
+    "seq_number": 170,
+    "report_number": "ENDF-238",
+    "authors": "R.A. Grimesey",
+    "title": "ETOP 14: A Fortran Code to Process ENDF/B Data into the 68-Group PHROG...",
+    "report_date": "Jul-76",
+    "cross_reference": "ANCR-1322",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 169,
+    "report_number": "ENDF-237",
+    "authors": "C.R. Weisbin, P.D. Soran, R.E. MacFarlane, et al.",
+    "title": "MINX: A Multigroup Interpretation of Nuclear X-Sections from ENDF/B",
+    "report_date": "Sep-76",
+    "cross_reference": "LA-6486-MS",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-237.pdf"
+  },
+  {
+    "seq_number": 168,
+    "report_number": "ENDF-236",
+    "authors": "C.R. Weisbin",
+    "title": "Application of FORSS Sensitivity and Uncertainty Methodology to Fast",
+    "report_date": "Dec-76",
+    "cross_reference": "ORNL/TM-5563",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 167,
+    "report_number": "ENDF-235",
+    "authors": "J.D. Drischler, C.R. Weisbin",
+    "title": "Compilation of Multigroup Cross-Section Covariance Matrices for Several Important Reactor Materials",
+    "report_date": "Oct-77",
+    "cross_reference": "ORNL-5318",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 166,
+    "report_number": "ENDF-234",
+    "authors": "J.H. Marable, J.L. Lucius, C.R. Weibin",
+    "title": "Compilation of Sensitivity Profiles for Several CSEWG Fast Reactor Benchmarks",
+    "report_date": "Mar-77",
+    "cross_reference": "ORNL-5262",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-234.pdf"
+  },
+  {
+    "seq_number": 165,
+    "report_number": "ENDF-233",
+    "authors": "R.W. Peelle",
+    "title": "An Evaluation for ENDF/B-IV of the Neutron Cross Sections for U-235 from 82 eV to 25 keV",
+    "report_date": "Jun-76",
+    "cross_reference": "ORNL-4955",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-233.pdf"
+  },
+  {
+    "seq_number": 164,
+    "report_number": "ENDF-232",
+    "authors": "A. Prince",
+    "title": "Evaluation of Neutron Cross Sections For the Krypton Isotopes",
+    "report_date": "Aug-74",
+    "cross_reference": "BNL-NCS-50503",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-232.pdf"
+  },
+  {
+    "seq_number": 163,
+    "report_number": "ENDF-231",
+    "authors": "Void See ENDF-265",
+    "title": "",
+    "report_date": "",
+    "cross_reference": "",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 162,
+    "report_number": "ENDF-230 Vol.II",
+    "authors": "E.M. Bohn, R. Maerker, B.A. Magurno, et al.",
+    "title": "Benchmark Testing of ENDF/B-IV",
+    "report_date": "Mar-76",
+    "cross_reference": "BNL-NCS-21118 Vol.II",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-230-Vol2.pdf"
+  },
+  {
+    "seq_number": 161,
+    "report_number": "ENDF-230 Vol.I",
+    "authors": "E.M. Bohn, R. Maerker, B.A. Magurno, et al.",
+    "title": "Benchmark Testing of ENDF/B-IV",
+    "report_date": "Mar-76",
+    "cross_reference": "BNL-NCS-21118 Vol.I",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-230-Vol1.pdf"
+  },
+  {
+    "seq_number": 160,
+    "report_number": "ENDF-229",
+    "authors": "S.F. Mughabghab, T.J. Krieger",
+    "title": "Neutron Cross Sections of 59Co Below 100 keV",
+    "report_date": "Apr-75",
+    "cross_reference": "BNL-NCS-50468",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-229.pdf"
+  },
+  {
+    "seq_number": 159,
+    "report_number": "ENDF-228",
+    "authors": "R.E. Maerker",
+    "title": "SB3. Experiment on Secondary Gamma-Ray Production Cross Sections Averaged ...",
+    "report_date": "Jan-76",
+    "cross_reference": "ORNL/TM-5204",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-228.pdf"
+  },
+  {
+    "seq_number": 158,
+    "report_number": "ENDF-227",
+    "authors": "R.E. Maerker",
+    "title": "SB2. Experiment on Secondary Gamma-Ray Production Cross Sections Arisingfrom Thermal-Neutron Capture ...",
+    "report_date": "Jan-76",
+    "cross_reference": "ORNL-TM-5203",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-227.pdf"
+  },
+  {
+    "seq_number": 157,
+    "report_number": "ENDF-226",
+    "authors": "R.E. Maerker",
+    "title": "Subject: Benchmark",
+    "report_date": "",
+    "cross_reference": "ORNL/TM-5202",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 156,
+    "report_number": "ENDF-225",
+    "authors": "B.A. Magurno",
+    "title": "ENDF/B-IV Cross Section Measurement Standards",
+    "report_date": "Aug-75",
+    "cross_reference": "BNL-NCS-50464",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-225.pdf"
+  },
+  {
+    "seq_number": 155,
+    "report_number": "ENDF-224",
+    "authors": "C.R. Weisbin",
+    "title": "Specification for Pseudo-Composition-Independent Fine-Group and...",
+    "report_date": "Dec-75",
+    "cross_reference": "ORNL/TM-5142",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 154,
+    "report_number": "ENDF-223",
+    "authors": "T.R. England, R.E. Schenter",
+    "title": "ENDF/B-IV Fission-Product Files: Summary of Major Nuclide Data",
+    "report_date": "Oct-75",
+    "cross_reference": "LA-6116-MS",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-223.pdf"
+  },
+  {
+    "seq_number": 153,
+    "report_number": "ENDF-222",
+    "authors": "G.L. Morgan",
+    "title": "Cr(n,x gamma)Reaction Cross Section for Incident Neutron Energies Between ...",
+    "report_date": "Jan-76",
+    "cross_reference": "ORNL/TM-5098",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 152,
+    "report_number": "ENDF-221",
+    "authors": "E. Newman, G.L. Morgan",
+    "title": "V(n,x gamma) Reaction Cross Section for Incident Neutron Energies Between 0.2 and 20.0 MeV",
+    "report_date": "Apr-76",
+    "cross_reference": "ORNL/TM-5299",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-221.pdf"
+  },
+  {
+    "seq_number": 151,
+    "report_number": "ENDF-220",
+    "authors": "G.L. Morgan, E. Newman",
+    "title": "The Mo(n,x gamma) Reaction Cross Section for Incident Neutron Energies Between 0.2 and 20.0 MeV",
+    "report_date": "Dec-75",
+    "cross_reference": "ORNL-TM-5097",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 150,
+    "report_number": "ENDF-219",
+    "authors": "J.K. Dickens, G.L. Morgan, E. Newman",
+    "title": "The Nb(n,x gamma) Reaction Cross Section for Incident Neutron Energies Between 0.65 and 20.0 MeV",
+    "report_date": "Sep-75",
+    "cross_reference": "ORNL-TM-4972",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-219.pdf"
+  },
+  {
+    "seq_number": 149,
+    "report_number": "ENDF-218",
+    "authors": "C.R. Weisbin, E.M. Oblow, J. Ching, et al.",
+    "title": "Cross Section and Method Uncertainties:the Applicati on of SensitivityAnalysis ...",
+    "report_date": "Aug-75",
+    "cross_reference": "ORNL-TM-4847",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-218.pdf"
+  },
+  {
+    "seq_number": 148,
+    "report_number": "ENDF-217",
+    "authors": "S. Pearlstein",
+    "title": "Seminar on 238-U Resonance Capture",
+    "report_date": "Mar-75",
+    "cross_reference": "BNL-NCS-50451",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-217.pdf"
+  },
+  {
+    "seq_number": 147,
+    "report_number": "ENDF-216",
+    "authors": "B.A. Magurno",
+    "title": "ENDF/B-IV Dosimetry File",
+    "report_date": "Apr-75",
+    "cross_reference": "BNL-NCS-50446",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-216.pdf"
+  },
+  {
+    "seq_number": 146,
+    "report_number": "ENDF-215",
+    "authors": "S.F. Mughabghab, A. Prince, M.D. Goldberg, et al.",
+    "title": "Evaluated Neutron Cross Sections of Au-197",
+    "report_date": "Oct-74",
+    "cross_reference": "BNL-50439",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-215.pdf"
+  },
+  {
+    "seq_number": 145,
+    "report_number": "ENDF-214",
+    "authors": "H. Takahashi",
+    "title": "Evaluation of the Neutron Cross Sections for Eu-152 and Eu-154",
+    "report_date": "Nov-74",
+    "cross_reference": "BNL-19456",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-214.pdf"
+  },
+  {
+    "seq_number": 144,
+    "report_number": "ENDF-213",
+    "authors": "H.Takahashi",
+    "title": "Evaluation of the Neutron and Gamma-Ray Production Cross Sections of Eu-151 and Eu-153",
+    "report_date": "Nov-74",
+    "cross_reference": "BNL-19455",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-213.pdf"
+  },
+  {
+    "seq_number": 143,
+    "report_number": "ENDF-212",
+    "authors": "M.R. Bhat, B.A. Magurno, S. Pearlstein, F.M. Scheffel",
+    "title": "Nuclear Data for CTR Related Projects",
+    "report_date": "Oct-74",
+    "cross_reference": "BNL-19344",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-212.pdf"
+  },
+  {
+    "seq_number": 142,
+    "report_number": "ENDF-211",
+    "authors": "Void-Not Used",
+    "title": "",
+    "report_date": "",
+    "cross_reference": "",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 141,
+    "report_number": "ENDF-210",
+    "authors": "C.W. Reich, R.G. Helmer, M.H. Putnam",
+    "title": "Radioactive-Nuclide Decay Data for ENDF/B",
+    "report_date": "Aug-74",
+    "cross_reference": "ANCR-1157",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-210.pdf"
+  },
+  {
+    "seq_number": 140,
+    "report_number": "ENDF-209",
+    "authors": "Void See ENDF-246",
+    "title": "",
+    "report_date": "",
+    "cross_reference": "",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 139,
+    "report_number": "ENDF-208",
+    "authors": "H. Takahashi",
+    "title": "Evaluation of the Neutron and Gamma-Ray Production Cross Sections for 55Mn",
+    "report_date": "Nov-74",
+    "cross_reference": "BNL-50442",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-208.pdf"
+  },
+  {
+    "seq_number": 138,
+    "report_number": "ENDF-207",
+    "authors": "M.R. Bhat",
+    "title": "Neutron and Gamma-Ray Production Cross Sections for Nickel",
+    "report_date": "Oct-74",
+    "cross_reference": "BNL-50435",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-207.pdf"
+  },
+  {
+    "seq_number": 137,
+    "report_number": "ENDF-206",
+    "authors": "W.E. Kinney, F.G. Perey",
+    "title": "Pb-206, Pb-207, and Pb-208 Neutron Elastic and Inelastic Scattering Cross From 5.50 To 8.50 MeV",
+    "report_date": "Jun-74",
+    "cross_reference": "ORNL-4909",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-206.pdf"
+  },
+  {
+    "seq_number": 136,
+    "report_number": "ENDF-205",
+    "authors": "F.G. Perey",
+    "title": "Nitrogen Neutron Elastic and Inelastic Scattering Cross Sections From 4.34...",
+    "report_date": "Mar-74",
+    "cross_reference": "ORNL-4905",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 135,
+    "report_number": "ENDF-204",
+    "authors": "W.E. Kinney, F.G. Perey",
+    "title": "Cu-63 and Cu-65 Neutron Elastic and Inelastic Scattering Cross Sections From 5.50 To 8.50 MeV",
+    "report_date": "Mar-74",
+    "cross_reference": "ORNL-4908",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-204.pdf"
+  },
+  {
+    "seq_number": 134,
+    "report_number": "ENDF-203",
+    "authors": "W.E. Kinney, F.G. Perey",
+    "title": "Fe-54 Neutron Elastic and Inelastic Scattering Cross Sections From 5.50 To 8.50 MeV",
+    "report_date": "Mar-74",
+    "cross_reference": "ORNL-4907",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-203.pdf"
+  },
+  {
+    "seq_number": 133,
+    "report_number": "ENDF-202 1991",
+    "authors": "R. McKnight",
+    "title": "Cross Sections Evaluation Working Group Benchmark Specification",
+    "report_date": "Sep-91",
+    "cross_reference": "BNL-19302 Upd. 9/91",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 132,
+    "report_number": "ENDF-202 1983 Vol.2 Suppl.",
+    "authors": "P.F. Rose",
+    "title": "Cross Section Evaluation Working Group Benchmark Specifications",
+    "report_date": "Sep-86",
+    "cross_reference": "BNL-19302 Vol.2 Suppl.",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 131,
+    "report_number": "ENDF-202 1983 Vol.2",
+    "authors": "P.F. Rose",
+    "title": "Cross Sections Evaluation Working Group Benchmark Specifications",
+    "report_date": "Dec-83",
+    "cross_reference": "BNL-19302 Vol.2",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 130,
+    "report_number": "ENDF-202 1982",
+    "authors": "H. Alter",
+    "title": "Cross Sections Evaluation Working Group Benchmark Specification",
+    "report_date": "Sep-82",
+    "cross_reference": "BNL-19302 Upd. 9/82",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 129,
+    "report_number": "ENDF-202 1981-2",
+    "authors": "H. Alter",
+    "title": "Cross Sections Evaluation Working Group Benchmark Specification",
+    "report_date": "Nov-81",
+    "cross_reference": "BNL-19302 Upd.11/81",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 128,
+    "report_number": "ENDF-202 1981-1",
+    "authors": "H. Alter",
+    "title": "Cross Sections Evaluation Working Group Benchmark Specification",
+    "report_date": "May-81",
+    "cross_reference": "BNL-19302 Upd. 5/81",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 127,
+    "report_number": "ENDF-202 1978-2",
+    "authors": "H. Alter",
+    "title": "Cross Sections Evaluation Working Group Benchmark Specification",
+    "report_date": "Oct-78",
+    "cross_reference": "BNL-19302 Upd. 10/78",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 126,
+    "report_number": "ENDF-202 1978-1",
+    "authors": "H. Alter",
+    "title": "Cross Sections Evaluation Working Group Benchmark Specification",
+    "report_date": "Feb-78",
+    "cross_reference": "BNL-19302 Upd. 2/78",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 125,
+    "report_number": "ENDF-202 1976",
+    "authors": "H. Alter",
+    "title": "Cross Sections Evaluation Working Group Benchmark Specification",
+    "report_date": "Oct-76",
+    "cross_reference": "BNL-19302 Upd. 10/76",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 124,
+    "report_number": "ENDF-202 1975",
+    "authors": "H. Alter",
+    "title": "Cross Sections Evaluation Working Group Benchmark Specification",
+    "report_date": "May-75",
+    "cross_reference": "BNL-19302 Upd. 5/75",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 123,
+    "report_number": "ENDF-202 1974 Vol.2",
+    "authors": "H. Alter",
+    "title": "Cross Sections Evaluation Working Group Benchmark Specification",
+    "report_date": "Nov-74",
+    "cross_reference": "BNL-19302 Vol. 2",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-202-Vol2.pdf"
+  },
+  {
+    "seq_number": 122,
+    "report_number": "ENDF-202 1974 Vol.1",
+    "authors": "H. Alter",
+    "title": "Cross Sections Evaluation Working Group Benchmark Specification",
+    "report_date": "Nov-74",
+    "cross_reference": "BNL-19302",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-202-Vol1.pdf"
+  },
+  {
+    "seq_number": 121,
+    "report_number": "ENDF-201 4th Ed. Suppl. 1",
+    "authors": "V. McLane",
+    "title": "ENDF/B-VI Summary Documentation Supplement 1, ENDF/HE-VI Summary Documentation",
+    "report_date": "Dec-96",
+    "cross_reference": "BNL-NCS-17541 4th Ed. Suppl.1",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-201-4th-SUPP.pdf"
+  },
+  {
+    "seq_number": 120,
+    "report_number": "ENDF-201 4th Ed.",
+    "authors": "P.F. Rose",
+    "title": "ENDF/B-VI Summary Documentation",
+    "report_date": "Oct-91",
+    "cross_reference": "BNL-NCS-17541 4th Ed.",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 119,
+    "report_number": "ENDF-201 1985",
+    "authors": "B.A. Magurno. P.G. Young",
+    "title": "ENDF/B-V.2 Summary Documentation",
+    "report_date": "Jan-85",
+    "cross_reference": "BNL-NCS-17541 3rd Ed. Suppl.1",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-201-1985.pdf"
+  },
+  {
+    "seq_number": 118,
+    "report_number": "ENDF-201 1979",
+    "authors": "R.R. Kinsey",
+    "title": "ENDF/B Summary Documentation",
+    "report_date": "Jul-79",
+    "cross_reference": "BNL-NCS-17541 3rd Ed.",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-201-1979.pdf"
+  },
+  {
+    "seq_number": 117,
+    "report_number": "ENDF-201 1975",
+    "authors": "D.I. Garber",
+    "title": "ENDF/B Summary Documentation",
+    "report_date": "Oct-75",
+    "cross_reference": "BNL-NCS-17541 2nd Ed.",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 116,
+    "report_number": "ENDF-201 1973",
+    "authors": "O. Ozer, D. Garber",
+    "title": "ENDF/B Summary Documentation",
+    "report_date": "May-73",
+    "cross_reference": "BNL-NCS-17541 1st Ed.",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-201-1973.pdf"
+  },
+  {
+    "seq_number": 115,
+    "report_number": "ENDF-200 2nd Edition",
+    "authors": "D.I. Garber, C. Brewster",
+    "title": "ENDF/B Cross Sections",
+    "report_date": "Oct-75",
+    "cross_reference": "BNL-17100 2nd Ed.",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 114,
+    "report_number": "ENDF-200",
+    "authors": "D.E. Cullen, P.J. Hlavac",
+    "title": "ENDF/B Cross Sections",
+    "report_date": "Nov-72",
+    "cross_reference": "BNL-17100",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 113,
+    "report_number": "ENDF-199",
+    "authors": "B. Hutchins",
+    "title": "Subject: Pu-239",
+    "report_date": "",
+    "cross_reference": "",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 112,
+    "report_number": "ENDF-198",
+    "authors": "W.E. Kinney, F.G. Perey",
+    "title": "Natural Chromium and Cr-52 Neutron Elastic and Inelastic Scattering Cross Sections from 4.07 to 8.56 MeV",
+    "report_date": "Jan-74",
+    "cross_reference": "ORNL-4806",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-198.pdf"
+  },
+  {
+    "seq_number": 111,
+    "report_number": "ENDF-197",
+    "authors": "W.E. Kinney, F.G. Perey",
+    "title": "Natural Nickel and Ni-60 Neutron Elastic and Inelastic Scattering Cross Sections from 4.07 to 8.56 MeV",
+    "report_date": "Jan-74",
+    "cross_reference": "ORNL-4807",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-197.pdf"
+  },
+  {
+    "seq_number": 110,
+    "report_number": "ENDF-196",
+    "authors": "D.R. Finch",
+    "title": "Standard Thermal Energy Group Structure for Generation of Thermal Group Constants from ENDF/B Data",
+    "report_date": "Mar-74",
+    "cross_reference": "DP-1346",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-196.pdf"
+  },
+  {
+    "seq_number": 109,
+    "report_number": "ENDF-195",
+    "authors": "F. Schmittroth",
+    "title": "Neutron Capture Calculations for En=3D100 keV to 4 MeV",
+    "report_date": "Nov-73",
+    "cross_reference": "HEDL-TME-73-79",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 108,
+    "report_number": "ENDF-194",
+    "authors": "F. Schmittroth, R.E. Schenter",
+    "title": "Fast Neutron Capture Cross Section for Fission Product Isotopes",
+    "report_date": "Aug-73",
+    "cross_reference": "HEDL-TME-73-63",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-194.pdf"
+  },
+  {
+    "seq_number": 107,
+    "report_number": "ENDF-193",
+    "authors": "Void-Not Used",
+    "title": "",
+    "report_date": "",
+    "cross_reference": "",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 106,
+    "report_number": "ENDF-192",
+    "authors": "C.R. Weisbin",
+    "title": "Specification of a Generally Useful Multigroup Structure for NeutronTranspor",
+    "report_date": "May-73",
+    "cross_reference": "LA-5277-MS",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-192.pdf"
+  },
+  {
+    "seq_number": 105,
+    "report_number": "ENDF-191",
+    "authors": "R.Q. Wright",
+    "title": "ADLER-III: A Program to Calculate Cross Sections from Adler-Adler Resonance Parameters",
+    "report_date": "Jun-73",
+    "cross_reference": "ORNL-TM-4257",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-191.pdf"
+  },
+  {
+    "seq_number": 104,
+    "report_number": "ENDF-190",
+    "authors": "A. Prince, M.K. Drake, P. Hlavac",
+    "title": "An Analysis of the Pu-239 Neutron Cross Sections from 20 keV to 20 MeV",
+    "report_date": "Apr-73",
+    "cross_reference": "BNL-50388",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-190.pdf"
+  },
+  {
+    "seq_number": 103,
+    "report_number": "ENDF-189",
+    "authors": "R.E. Maerker",
+    "title": "SDT12. The ORNL Benchmark Experiment for Neutron Transport Through Sodium",
+    "report_date": "Sep-74",
+    "cross_reference": "ORNL-TM-4223",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-189.pdf"
+  },
+  {
+    "seq_number": 102,
+    "report_number": "ENDF-188",
+    "authors": "R.E. Maerker",
+    "title": "SDT11. The ORNL Benchmark Experiment for Neutron Transport Through Iron and Stainless Steel, Part 1",
+    "report_date": "Sep-74",
+    "cross_reference": "ORNL-TM-4222",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-188.pdf"
+  },
+  {
+    "seq_number": 101,
+    "report_number": "ENDF-187",
+    "authors": "M.R. Bhat",
+    "title": "Multi-Level Effects in Reactor Calculations and the Probability TableMethod",
+    "report_date": "Apr-73",
+    "cross_reference": "BNL-50387",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-187.pdf"
+  },
+  {
+    "seq_number": 100,
+    "report_number": "ENDF-186",
+    "authors": "M.R. Bhat, M.D. Goldberg, R.R. Kinsey, et al.",
+    "title": "Neutron and Gamma Ray Production Cross Sections for Silicon",
+    "report_date": "Mar-73",
+    "cross_reference": "BNL-50379",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-186.pdf"
+  },
+  {
+    "seq_number": 99,
+    "report_number": "ENDF-185",
+    "authors": "M.R. Bhat, S.F. Mughabghab",
+    "title": "Evaluated Neutron Cross Sections for the Stable Isotopes of Xenon",
+    "report_date": "Feb-73",
+    "cross_reference": "BNL-50374",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-185.pdf"
+  },
+  {
+    "seq_number": 98,
+    "report_number": "ENDF-184",
+    "authors": "R.Q. Wright",
+    "title": "A Comparison of the Group Constants Generated by the ENDF/B Processing...",
+    "report_date": "Apr-73",
+    "cross_reference": "ORNL/TM-4041",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 97,
+    "report_number": "ENDF-183",
+    "authors": "H. Alter",
+    "title": "Report to the Cross Section Evaluation Working Group GEDANKEN Calculations",
+    "report_date": "Nov-72",
+    "cross_reference": "BNL-17510",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 96,
+    "report_number": "ENDF-182",
+    "authors": "D.J. Dudziak, G.E. Bosler",
+    "title": "LAPHAN: A Code to Compute the P0 to P4 Multigroup Photon-Production Matrices",
+    "report_date": "Jan-73",
+    "cross_reference": "LA-4963",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-182.pdf"
+  },
+  {
+    "seq_number": 95,
+    "report_number": "ENDF-181",
+    "authors": "P.F. Rose, H. Alter, R.K. Paschall, A.W. Thiele",
+    "title": "SDT9. CSEWG Shielding Benchmark Specifications Neutron AttenuationMeasurements in a Mockup of the FFTF Radial Shield",
+    "report_date": "Jan-73",
+    "cross_reference": "AI-AEC-13048",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-181.pdf"
+  },
+  {
+    "seq_number": 94,
+    "report_number": "ENDF-180",
+    "authors": "W.E. Ford III",
+    "title": "The Testing of Photon Production Data from ENDF/B-III Material 1135(Al)",
+    "report_date": "Jan-73",
+    "cross_reference": "ORNL-TM-4032",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 93,
+    "report_number": "ENDF-179",
+    "authors": "M.K. Drake",
+    "title": "ENDF/B-III Cross Section Measurement Standards",
+    "report_date": "Jul-72",
+    "cross_reference": "BNL-17188",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-179.pdf"
+  },
+  {
+    "seq_number": 92,
+    "report_number": "ENDF-178",
+    "authors": "F.G. Perey",
+    "title": "A Test of Neutron Total Cross Section Evaluations from 0.2 to 20 MeV for ...",
+    "report_date": "Dec-72",
+    "cross_reference": "ORNL-4823",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 91,
+    "report_number": "ENDF-177",
+    "authors": "R.E. Maerker",
+    "title": "SDT7. Experiment on Secondary Gamma-ray Production Cross Sections Arising ...",
+    "report_date": "Oct-72",
+    "cross_reference": "ORNL/TM-3974",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-177.pdf"
+  },
+  {
+    "seq_number": 90,
+    "report_number": "ENDF-176",
+    "authors": "R.E. Maerker",
+    "title": "SDT6. Experiment on Secondary Gamma-Ray Production Cross Sections Arising from Thermal-Neutron Capture in Iron, Stainless Steel, Nitrogen, and Sodium",
+    "report_date": "Oct-72",
+    "cross_reference": "ORNL/TM-3957",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-176.pdf"
+  },
+  {
+    "seq_number": 89,
+    "report_number": "ENDF-175",
+    "authors": "P.G. Young",
+    "title": "A Preliminary Evaluation of the Neutron and Photon-Production Cross Sections for Aluminum",
+    "report_date": "Dec-72",
+    "cross_reference": "LA-4726",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-175.pdf"
+  },
+  {
+    "seq_number": 88,
+    "report_number": "ENDF-174",
+    "authors": "D.G. Foster",
+    "title": "A Preliminary Evaluation of the Neutron and Photon Production Cross Sections of Oxygen",
+    "report_date": "Aug-72",
+    "cross_reference": "LA-4780",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-174.pdf"
+  },
+  {
+    "seq_number": 87,
+    "report_number": "ENDF-173",
+    "authors": "P.G. Young",
+    "title": "Evaluation of the Neutron and Gamma Ray Production Cross Sections for Nitrogen",
+    "report_date": "Sep-72",
+    "cross_reference": "LA-4725",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-173.pdf"
+  },
+  {
+    "seq_number": 86,
+    "report_number": "ENDF-172",
+    "authors": "W.E. Ford III",
+    "title": "Comparison of (n th,gamma) Yields from the Current ENDF/B-III Data with Published Data",
+    "report_date": "Aug-72",
+    "cross_reference": "ORNL-TM-3910",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-172.pdf"
+  },
+  {
+    "seq_number": 85,
+    "report_number": "ENDF-171",
+    "authors": "F. Schmittroth",
+    "title": "Neutron Resonance Spacings for Spherical Nuclei",
+    "report_date": "Jan-73",
+    "cross_reference": "HEDL-TME-73-30",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-171.pdf"
+  },
+  {
+    "seq_number": 84,
+    "report_number": "ENDF-170",
+    "authors": "R.E. Maerker",
+    "title": "SDT5. Stainless-Steel Broomstick Experiment",
+    "report_date": "Jul-72",
+    "cross_reference": "ORNL/TM-3871",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-170.pdf"
+  },
+  {
+    "seq_number": 83,
+    "report_number": "ENDF-169",
+    "authors": "R.E. Maerker",
+    "title": "SDT4. Sodium Broomstick Experiment",
+    "report_date": "Jul-72",
+    "cross_reference": "ORNL/TM-3870",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-169.pdf"
+  },
+  {
+    "seq_number": 82,
+    "report_number": "ENDF-168",
+    "authors": "R.E. Maerker",
+    "title": "SDT3. Nitrogen Broomstick Experiment",
+    "report_date": "Jul-72",
+    "cross_reference": "ORNL/TM-3869",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-168.pdf"
+  },
+  {
+    "seq_number": 81,
+    "report_number": "ENDF-167",
+    "authors": "R.E. Maerker",
+    "title": "SDT2. Oxygen Broomstick Experiment",
+    "report_date": "Jul-72",
+    "cross_reference": "ORNL/TM-3868",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-167.pdf"
+  },
+  {
+    "seq_number": 80,
+    "report_number": "ENDF-166",
+    "authors": "R.E. Maerker",
+    "title": "SDT1. Iron Broomstick Experiment",
+    "report_date": "Jul-72",
+    "cross_reference": "ORNL/TM-3867",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-166.pdf"
+  },
+  {
+    "seq_number": 79,
+    "report_number": "ENDF-165",
+    "authors": "Void-Not Used",
+    "title": "",
+    "report_date": "",
+    "cross_reference": "",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 78,
+    "report_number": "ENDF-164",
+    "authors": "R.E. Schenter",
+    "title": "FTR Set 300, Multigroup Cross Sections for FTR Design",
+    "report_date": "Oct-71",
+    "cross_reference": "HEDL-TME-71-153",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 77,
+    "report_number": "ENDF-163",
+    "authors": "M.R. Bhat, A. Prince",
+    "title": "Evaluated Neutron Cross Sections for Ag-107, Ag-109 and Cs-133",
+    "report_date": "Apr-73",
+    "cross_reference": "BNL-50383",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-163.pdf"
+  },
+  {
+    "seq_number": 76,
+    "report_number": "ENDF-162",
+    "authors": "O.D. Simpson, F.B. Simpson",
+    "title": "Evaluation of the Pu-239 Cross Sections in the Resonance Region for the ENDF/B-III Data File",
+    "report_date": "Dec-71",
+    "cross_reference": "ANCR-1045",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-162.pdf"
+  },
+  {
+    "seq_number": 75,
+    "report_number": "ENDF-161",
+    "authors": "J.R. Smith, R.C. Young",
+    "title": "U-235 Resolved Resonance Parameters for ENDF/B-III",
+    "report_date": "Dec-71",
+    "cross_reference": "ANCR-1044",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-161.pdf"
+  },
+  {
+    "seq_number": 74,
+    "report_number": "ENDF-160",
+    "authors": "A.D. MacKellar, R.E. Schenter",
+    "title": "Optical Model Studies for Fast Neutron Capture Cross Section Calculations",
+    "report_date": "Aug-72",
+    "cross_reference": "HEDL-TME-71-154",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 73,
+    "report_number": "ENDF-159",
+    "authors": "R.E. Schenter",
+    "title": "Cross Section Evaluations of Twenty-Seven Fission Product Isotopes for...",
+    "report_date": "Oct-71",
+    "cross_reference": "HEDL-TME-71-143",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 72,
+    "report_number": "ENDF-158",
+    "authors": "F.J.McCrosson, D.R.Finch, E.C.Olson",
+    "title": "Testing of ENDF/B-Thermos Cross Sections for H2O, D2O, C, ZrH2, (C2H4)x, Be, Be0, C6H6, and U02",
+    "report_date": "Oct-71",
+    "cross_reference": "DP-1276",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-158.pdf"
+  },
+  {
+    "seq_number": 71,
+    "report_number": "ENDF-157",
+    "authors": "M. Raymund",
+    "title": "Subject:PSYCHE Code",
+    "report_date": "",
+    "cross_reference": "",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 70,
+    "report_number": "ENDF-156",
+    "authors": "D.J. Dudziak",
+    "title": "LAPHANO: P0 Multigroup Photon Production Matrix and Source Code for ENDF",
+    "report_date": "Jan-72",
+    "cross_reference": "LA-4750-MS",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-156.pdf"
+  },
+  {
+    "seq_number": 69,
+    "report_number": "ENDF-155",
+    "authors": "D.J. Dudziak, J.M. Romero",
+    "title": "VIXEN: A Code to Check Physical Consistency of Photon-Production Data in Rived ENDF Format",
+    "report_date": "Oct-71",
+    "cross_reference": "LA-4739",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-155.pdf"
+  },
+  {
+    "seq_number": 68,
+    "report_number": "ENDF-154",
+    "authors": "Void-Not Used",
+    "title": "",
+    "report_date": "",
+    "cross_reference": "",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 67,
+    "report_number": "ENDF-153",
+    "authors": "B.R. Leonard Jr.",
+    "title": "Thermal Cross Sections of the Fissile and Fertile Nuclei for ENDF/B-II",
+    "report_date": "Jun-71",
+    "cross_reference": "BNWL-1586",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-153.pdf"
+  },
+  {
+    "seq_number": 66,
+    "report_number": "ENDF-152",
+    "authors": "H.C. Honeck, D.R. Finch",
+    "title": "FLANGE II(Version 71-1). A Code to Process Thermal Neutron Data from an ENDF/B tape",
+    "report_date": "Oct-71",
+    "cross_reference": "DP-1278",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-152.pdf"
+  },
+  {
+    "seq_number": 65,
+    "report_number": "ENDF-151",
+    "authors": "R.W. Roussin",
+    "title": "Preparation of Data Sets in ENDF Format for Na, Mg, Cl, and K for Use in ...",
+    "report_date": "May-71",
+    "cross_reference": "ORNL/TM-3429",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 64,
+    "report_number": "ENDF-150",
+    "authors": "E.H. Ottewitte, J.M. Otter, P.F. Rose, C.L. Dunford",
+    "title": "An Evaluation of Ta-181 and Ta-182 for the ENDF/B Data File",
+    "report_date": "Sep-71",
+    "cross_reference": "AI-AEC-12990",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-150.pdf"
+  },
+  {
+    "seq_number": 63,
+    "report_number": "ENDF-149",
+    "authors": "H. Alter",
+    "title": "Evaluation of Several ENDF/B-II Cross-Section Sets Using Monte Carlo...",
+    "report_date": "Jun-71",
+    "cross_reference": "AI-AEC-13001",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 62,
+    "report_number": "ENDF-148",
+    "authors": "M.R. Bhat",
+    "title": "ENDF/B Processing Codes for the Resonance Region",
+    "report_date": "Jun-71",
+    "cross_reference": "BNL-50296",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-148.pdf"
+  },
+  {
+    "seq_number": 61,
+    "report_number": "ENDF-147",
+    "authors": "H. Alter, R.S. Hubner",
+    "title": "Status of Fast Neutron Cross Section Data Testing using ENDF/B-II DataFiles",
+    "report_date": "May-71",
+    "cross_reference": "AI-AEC-12999",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 60,
+    "report_number": "ENDF-146 Suppl.",
+    "authors": "M. Raymund",
+    "title": "ETOT, A Fortran-IV Program to Process Data from the ENDF/B File to Thermal Library Format",
+    "report_date": "Nov-73",
+    "cross_reference": "WCAP-7363",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-146-SUPP.pdf"
+  },
+  {
+    "seq_number": 59,
+    "report_number": "ENDF-146",
+    "authors": "C.L. Beard, R.A. Dannels",
+    "title": "ETOT: A Fortran IV Program to Process Data from the ENDF/B File to Thermal Library Format",
+    "report_date": "Mar-71",
+    "cross_reference": "WCAP-7363",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-146.pdf"
+  },
+  {
+    "seq_number": 58,
+    "report_number": "ENDF-145",
+    "authors": "B.A. Hutchins, C.L. Cowen, M.D. Kelley, J.E. Turner",
+    "title": "ENDRUN-II: A Computer Code to Generate a Generalized Multigroup Data File from ENDF/B",
+    "report_date": "Mar-71",
+    "cross_reference": "GEAP-13704",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-145.pdf"
+  },
+  {
+    "seq_number": 57,
+    "report_number": "ENDF-144",
+    "authors": "A.Z. Livolsi",
+    "title": "Evaluation of Tc-99 and Rh-103 Neutron Cross Sections for ENDF/B-III",
+    "report_date": "Nov-71",
+    "cross_reference": "BAW-1367",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 56,
+    "report_number": "ENDF-143",
+    "authors": "R.B. Kidman, R.E. Schenter",
+    "title": "Group Constants for Fast Reactor Calculations",
+    "report_date": "Mar-71",
+    "cross_reference": "HEDL-TME-71-36",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 55,
+    "report_number": "ENDF-142",
+    "authors": "C.L. Thompson, J.R. Stockton, L.M. Petrie, et al.",
+    "title": "EDITOR, A Processing code for ENDF/B Format Data",
+    "report_date": "Feb-71",
+    "cross_reference": "ORNL-TM-3266",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-142.pdf"
+  },
+  {
+    "seq_number": 54,
+    "report_number": "ENDF-141",
+    "authors": "L. Stewart",
+    "title": "Evaluated Nuclear Data for Hydrogen in the ENDF/B-II Format",
+    "report_date": "Feb-71",
+    "cross_reference": "LA-4574",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-141.pdf"
+  },
+  {
+    "seq_number": 53,
+    "report_number": "ENDF-140",
+    "authors": "D.J. Dudziak",
+    "title": "PHOXE: A Fortran-IV Code to Check Format Syntax, Consistency, and Physical Realism of ENDF/B Photon Production Data",
+    "report_date": "Sep-70",
+    "cross_reference": "LA-4506-MS",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-140.pdf"
+  },
+  {
+    "seq_number": 52,
+    "report_number": "ENDF-139",
+    "authors": "S.K. Penny",
+    "title": "A Re-Evaluation of Natural Iron Neutron and Gamma-Ray Production Cross...",
+    "report_date": "Apr-71",
+    "cross_reference": "ORNL-4617",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 51,
+    "report_number": "ENDF-138",
+    "authors": "D.C. Irving",
+    "title": "Evaluation of the Cross Sections of Iron: ENDF/B MAT=1101",
+    "report_date": "Sep-70",
+    "cross_reference": "ORNL/TM-2891",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 50,
+    "report_number": "ENDF-137",
+    "authors": "D.C. Irving",
+    "title": "LEGCK: A Subroutine to Analyze Legendre Coefficients for Negativity in the...",
+    "report_date": "Sep-70",
+    "cross_reference": "ORNL/TM-2903",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 49,
+    "report_number": "ENDF-136",
+    "authors": "T.A. Pitterle",
+    "title": "Evaluation of U-238 Neutron Cross Sections for the ENDF/B Version II File",
+    "report_date": "Mar-71",
+    "cross_reference": "WARD-4181-1",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-136.pdf"
+  },
+  {
+    "seq_number": 48,
+    "report_number": "ENDF-135",
+    "authors": "J.T. Reynolds",
+    "title": "Evaluated Neutron Cross Sections for the Zirconium Isotopes",
+    "report_date": "Mar-70",
+    "cross_reference": "KAPL-M-7078 (Restrict)",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 47,
+    "report_number": "ENDF-134R",
+    "authors": "R.Q. Wright, S.N. Cramer, D.C. Irving",
+    "title": "UKE-III: A Computer Program for Translating Neutron Cross Section Data From the UKAEA Nuclear Data Library ...",
+    "report_date": "Oct-73",
+    "cross_reference": "ORNL-TM-2880 REV",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-134R.pdf"
+  },
+  {
+    "seq_number": 46,
+    "report_number": "ENDF-134",
+    "authors": "R.Q. Wright, S.N. Cramer, D.C. Irving",
+    "title": "UKE-III: A Computer Program for Translating Neutron Cross Section ...",
+    "report_date": "Mar-70",
+    "cross_reference": "ORNL-TM-2880",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 45,
+    "report_number": "ENDF-133",
+    "authors": "S. Kellman",
+    "title": "Description of the Generation of Data Decks by ETOG-1 for Use in Creating...",
+    "report_date": "Jan-70",
+    "cross_reference": "WCAP-3845-2",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 44,
+    "report_number": "ENDF-132",
+    "authors": "D.J. Dudziak, A.H. Marshall, R.E. Seamon",
+    "title": "LAPH: A Multigroup Photon Production Matrix and Source Vector Code forENDF/B",
+    "report_date": "May-70",
+    "cross_reference": "LA-4337",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-132.pdf"
+  },
+  {
+    "seq_number": 43,
+    "report_number": "ENDF-131",
+    "authors": "N.M. Green",
+    "title": "An Evaluation and Compilation of the Fission and Capture Cross Sections of...",
+    "report_date": "Feb-70",
+    "cross_reference": "ORNL/TM-2797",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 42,
+    "report_number": "ENDF-130",
+    "authors": "D.J. Dudziak",
+    "title": "Translation to ENDF/B and &quot;Physics&quot; Checking of Cross Sections for Shielding",
+    "report_date": "Nov-69",
+    "cross_reference": "DASA-2379",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-130.pdf"
+  },
+  {
+    "seq_number": 41,
+    "report_number": "ENDF-129",
+    "authors": "N. Azziz",
+    "title": "Iron, Nickel, and Chromium Neutron Cross Sections from 0-15 MeV",
+    "report_date": "Aug-69",
+    "cross_reference": "WCAP-7281",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 40,
+    "report_number": "ENDF-128",
+    "authors": "D.J. Dudziak, J.M. Cook",
+    "title": "LUTE and LATEX, Special-Purpose Codes to Translate from Modified UK to ENDF/B Format",
+    "report_date": "Aug-69",
+    "cross_reference": "NE-3383-102-69U",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-128.pdf"
+  },
+  {
+    "seq_number": 39,
+    "report_number": "ENDF-127",
+    "authors": "R.E. Schenter",
+    "title": "ETOX-A. Code to Calculate Group Constants for Nuclear Reactor Calculations",
+    "report_date": "May-69",
+    "cross_reference": "BNWL-1002",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-127.pdf"
+  },
+  {
+    "seq_number": 38,
+    "report_number": "ENDF-126",
+    "authors": "C.L. Dunford ,R.F. Berland, R.S. Hubner, R.J. Creasy",
+    "title": "SCORE II-An Interactive Neutron Evaluation System",
+    "report_date": "Mar-69",
+    "cross_reference": "AI-AEC-12757",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-126.pdf"
+  },
+  {
+    "seq_number": 37,
+    "report_number": "ENDF-125",
+    "authors": "E.M. Pennington",
+    "title": "ENDF/B Neutron Cross Section Data for Natural Helium",
+    "report_date": "Oct-68",
+    "cross_reference": "ANL-7462",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-125.pdf"
+  },
+  {
+    "seq_number": 36,
+    "report_number": "ENDF-124",
+    "authors": "J.M. Otter, R.S. Hubner, R.W. Campbell, et al.",
+    "title": "Evaluated Neutron Cross Sections forCu-63, Cu-65, and Natural Cu",
+    "report_date": "Dec-68",
+    "cross_reference": "AI-AEC-12741",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-124.pdf"
+  },
+  {
+    "seq_number": 35,
+    "report_number": "ENDF-123",
+    "authors": "J.T. Reynolds",
+    "title": "Evaluated Neutron Cross Sections for the Gadolinium Isotopes",
+    "report_date": "May-68",
+    "cross_reference": "KAPL-3416 (Restrict)",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 34,
+    "report_number": "ENDF-122",
+    "authors": "T.A. Pitterle, M. Yamamoto",
+    "title": "Evaluated Neutron Cross Sections of Pu-240 for the ENDF/B File",
+    "report_date": "Jun-68",
+    "cross_reference": "APDA-218",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-122.pdf"
+  },
+  {
+    "seq_number": 33,
+    "report_number": "ENDF-121",
+    "authors": "T.A. Pitterle",
+    "title": "Evaluated Neutron Cross Sections of Sodium-23 for the ENDF/B File",
+    "report_date": "Jun-68",
+    "cross_reference": "APDA-217",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-121.pdf"
+  },
+  {
+    "seq_number": 32,
+    "report_number": "ENDF-120",
+    "authors": "D.M. Green, T.A. Pitterle",
+    "title": "ETOE-A Program for ENDF/B to MC2 Data Conversion",
+    "report_date": "Jun-68",
+    "cross_reference": "APDA-219",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-120.pdf"
+  },
+  {
+    "seq_number": 31,
+    "report_number": "ENDF-119",
+    "authors": "Void See ENDF-133",
+    "title": "",
+    "report_date": "",
+    "cross_reference": "",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 30,
+    "report_number": "ENDF-118",
+    "authors": "Void See ENDF-133",
+    "title": "",
+    "report_date": "",
+    "cross_reference": "",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 29,
+    "report_number": "ENDF-117",
+    "authors": "J.R. Smith",
+    "title": "Subject:Am-241,Am-243",
+    "report_date": "",
+    "cross_reference": "",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 28,
+    "report_number": "ENDF-116",
+    "authors": "J.R. Smith, R.A. Grimesey",
+    "title": "An Evaluation and Compilation of Np-237 Cross Section Data for the ENDF/B File",
+    "report_date": "May-69",
+    "cross_reference": "IN-1182",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-116.pdf"
+  },
+  {
+    "seq_number": 27,
+    "report_number": "ENDF-115",
+    "authors": "W.B. Henderson",
+    "title": "Evaluation of Re-185 and Re-187 Neutron Cross Sections for ENDF/B",
+    "report_date": "Mar-68",
+    "cross_reference": "GEMP-587",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 26,
+    "report_number": "ENDF-114 Suppl.",
+    "authors": "M. Raymund",
+    "title": "ETOG-1-A Fortran IV Program to Process Data from the ENDF/B File to the MUFT, GAM and ANISN Formats",
+    "report_date": "Aug-73",
+    "cross_reference": "WCAP-3845-1 Suppl.1",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-114-SUPP.pdf"
+  },
+  {
+    "seq_number": 25,
+    "report_number": "ENDF-114",
+    "authors": "D.E. Kusner, S. Kellman",
+    "title": "ETOG-1-A Fortran IV Program to Process Data from the ENDF/B File to the MUFT,GAM and ANISN Formats",
+    "report_date": "Dec-69",
+    "cross_reference": "WCAP-3845-1",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-114.pdf"
+  },
+  {
+    "seq_number": 24,
+    "report_number": "ENDF-113",
+    "authors": "R.A. Dannels, D.E. Kusner",
+    "title": "ETOM-1-A Fortran IV Program to Process Data from the ENDF/B File to the MUFT Format",
+    "report_date": "May-68",
+    "cross_reference": "WCAP-3688-1",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-113.pdf"
+  },
+  {
+    "seq_number": 23,
+    "report_number": "ENDF-112",
+    "authors": "J.T. Reynolds, C.R. Lubitz",
+    "title": "Evaluated Cross Sections for the Hafnium Isotopes",
+    "report_date": "Aug-67",
+    "cross_reference": "KAPL-3327 (Restrict)",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-112.pdf"
+  },
+  {
+    "seq_number": 22,
+    "report_number": "ENDF-111",
+    "authors": "D.J. Dudziak",
+    "title": "ENDF/B Format Requirements for Shielding Applications",
+    "report_date": "Apr-67",
+    "cross_reference": "LA-3801",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-111.pdf"
+  },
+  {
+    "seq_number": 21,
+    "report_number": "ENDF-110",
+    "authors": "O. Ozer",
+    "title": "Description of the ENDF/B Processing Codes and Retrieval Subroutines",
+    "report_date": "Jun-71",
+    "cross_reference": "BNL-50300",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-110.pdf"
+  },
+  {
+    "seq_number": 20,
+    "report_number": "ENDF-109",
+    "authors": "D.C. Irving",
+    "title": "Evaluation of Neutron Cross Sections for Boron-10",
+    "report_date": "Oct-67",
+    "cross_reference": "ORNL/TM-1872",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 19,
+    "report_number": "ENDF-108",
+    "authors": "M.K. Drake",
+    "title": "Handwritten Notes of Be, U-234, U-236, Pu-241 for ENDF/B",
+    "report_date": "",
+    "cross_reference": "",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 18,
+    "report_number": "ENDF-107",
+    "authors": "Void-Not Used",
+    "title": "",
+    "report_date": "",
+    "cross_reference": "",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 17,
+    "report_number": "ENDF-106",
+    "authors": "C.L. Dunford, R.F. Berland, R.J. Creasy",
+    "title": "SCORE - An Automated Cross Section Evaluation System",
+    "report_date": "Jan-68",
+    "cross_reference": "NAA-SR-MEMO-12529",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-106.pdf"
+  },
+  {
+    "seq_number": 16,
+    "report_number": "ENDF-105",
+    "authors": "R.S. Hubner, B.J. Lemke",
+    "title": "EDIT-A Fortran IV level H Program to Punch, Print, and Plot Selected Portions of an ENDF/B Data Tape",
+    "report_date": "Nov-67",
+    "cross_reference": "NAA-SR-12525",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-105.pdf"
+  },
+  {
+    "seq_number": 15,
+    "report_number": "ENDF-104",
+    "authors": "W.A. Wittkopf",
+    "title": "Th-232 Neutron Cross Section Data for the ENDF/B",
+    "report_date": "",
+    "cross_reference": "",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 14,
+    "report_number": "ENDF-103",
+    "authors": "W.A. Wittkopf, D.H. Roy, A.Z. Livolsi",
+    "title": "U-238 Neutron Cross-Section Data for the ENDF/B",
+    "report_date": "May-67",
+    "cross_reference": "BAW-316",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-103.pdf"
+  },
+  {
+    "seq_number": 12,
+    "report_number": "ENDF-102 1997",
+    "authors": "V. McLane, C.L. Dunford, P.F. Rose",
+    "title": "Data Formats and Procedures for the Evaluated Nuclear Data File ENDF-6",
+    "report_date": "Feb-97",
+    "cross_reference": "BNL-NCS-44945 REV.2/97",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-102-1997.pdf"
+  },
+  {
+    "seq_number": 11,
+    "report_number": "ENDF-102 1995",
+    "authors": "V. McLane, C.L. Dunford, P.F. Rose",
+    "title": "Data Formats and Procedures for the Evaluated Nuclear Data File ENDF-6",
+    "report_date": "Nov-95",
+    "cross_reference": "BNL-NCS-44945 REV.11/95",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-102-1995.pdf"
+  },
+  {
+    "seq_number": 10,
+    "report_number": "ENDF-102 1991",
+    "authors": "P.F. Rose, C.L. Dunford",
+    "title": "Data Formats and Procedures for the Evaluated Nuclear Data File ENDF-6",
+    "report_date": "Oct-91",
+    "cross_reference": "BNL-NCS-44945 REV",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 9,
+    "report_number": "ENDF-102 1990",
+    "authors": "P.F. Rose, C.L. Dunford",
+    "title": "Data Formats and Procedures for the Evaluated Nuclear Data File ENDF-6",
+    "report_date": "Jul-90",
+    "cross_reference": "BNL-NCS-44945",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 8,
+    "report_number": "ENDF-102 1983",
+    "authors": "B.A. Magurno",
+    "title": "Data Formats and Procedures for the Evaluated Nuclear Data File,ENDF.V-V",
+    "report_date": "Nov-83",
+    "cross_reference": "BNL-NCS-50496 2 Ed. Rev.",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-102-1983.pdf"
+  },
+  {
+    "seq_number": 7,
+    "report_number": "ENDF-102 1980",
+    "authors": "S. Pearlstein",
+    "title": "Supp. to the ENDF/B-V Formats and Procedures Manual for Using ENDF/B-IV ...",
+    "report_date": "Nov-80",
+    "cross_reference": "BNL-NCS-28949 2 Ed. Suppl.",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 6,
+    "report_number": "ENDF-102 1979",
+    "authors": "R.R. Kinsey",
+    "title": "Data Formats and Procedures for the Evaluated Nuclear Data File, ENDF/B-V",
+    "report_date": "Oct-79",
+    "cross_reference": "BNL-NCS-50496 3 Ed.",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 5,
+    "report_number": "ENDF-102 1975",
+    "authors": "D.I. Garber",
+    "title": "Data Formats and Procedures for Evaluated Nuclear Data File",
+    "report_date": "Oct-75",
+    "cross_reference": "BNL-NCS-50496 2 Ed.",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-102-1975.pdf"
+  },
+  {
+    "seq_number": 4,
+    "report_number": "ENDF-102 1970 Vol.2",
+    "authors": "D.J. Dudziak",
+    "title": "ENDF Formats and Procedures for Photon Production and Interaction Data",
+    "report_date": "Jul-71",
+    "cross_reference": "LA-4549 1st Ed. Vol.2",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-102-1970-2.pdf"
+  },
+  {
+    "seq_number": 3,
+    "report_number": "ENDF-102 1970 Vol.1",
+    "authors": "M.K. Drake",
+    "title": "Data Formats and Procedures for the ENDF Neutron Cross Section Library",
+    "report_date": "Oct-70",
+    "cross_reference": "BNL-50274 1st Ed. Vol.1",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-102-1970-1.pdf"
+  },
+  {
+    "seq_number": 2,
+    "report_number": "ENDF-102 1966",
+    "authors": "H.C. Honeck",
+    "title": "Specifications for an Evaluated Nuclear Data File for REACTOR APPLICATION...",
+    "report_date": "May-66",
+    "cross_reference": "BNL-50066 1st Ed.",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/ENDF-102-1966.pdf"
+  },
+  {
+    "seq_number": 1,
+    "report_number": "ENDF-101",
+    "authors": "T.E. Stephenson, A. Prince, S. Pearlstein",
+    "title": "Evaluation of the Neutron Cross Section of Manganese for the ENDF/B Library",
+    "report_date": "Jun-67",
+    "cross_reference": "BNL-50060",
+    "pdf_url": ""
+  },
+  {
+    "seq_number": 0,
+    "report_number": "BNL-8381",
+    "authors": "H.C. Honeck",
+    "title": "ENDF: Evaluated Nuclear Data File Description and Specifications",
+    "report_date": "Jan-65",
+    "cross_reference": "BNL-8381",
+    "pdf_url": "https://www.nndc.bnl.gov/endfdocs/BNL-8381.pdf"
+  }
+]
