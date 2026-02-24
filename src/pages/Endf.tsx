@@ -246,43 +246,9 @@ export default function Endf() {
         </div>
       </div>
 
-      {/* Mobile toolbar — filters popover + search mode + pagination */}
+      {/* Mobile toolbar — search mode toggle (left) + pagination (right) */}
       <div className="md:hidden sticky top-0 z-10 bg-background px-3 pt-3 pb-2">
         <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-          {/* Filters popover */}
-          <MobileFilterDrawer>
-            <button
-              onClick={() => toggleSort("authors")}
-              className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm transition-colors ${
-                isSortActive("authors")
-                  ? "bg-foreground text-background font-medium"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
-              }`}
-            >
-              Authors
-              <ArrowUpDown className="h-3.5 w-3.5" />
-            </button>
-
-            <button
-              onClick={() => toggleSort("seq_number")}
-              className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm transition-colors ${
-                isSortActive("seq_number")
-                  ? "bg-foreground text-background font-medium"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
-              }`}
-            >
-              Key #
-              <ArrowUpDown className="h-3.5 w-3.5" />
-            </button>
-
-            <FilterDropdown
-              label="Year"
-              options={YEAR_OPTIONS}
-              value={yearFilter}
-              onChange={setYearFilter}
-            />
-          </MobileFilterDrawer>
-
           {/* Search mode toggle */}
           <div className="inline-flex items-center rounded border text-xs text-muted-foreground overflow-hidden">
             {(["semantic", "keyword"] as const).map((mode) => (
@@ -338,6 +304,40 @@ export default function Endf() {
           )}
         </div>
       </div>
+
+      {/* FAB → Popover with filter controls (mobile only) */}
+      <MobileFilterDrawer>
+        <button
+          onClick={() => toggleSort("authors")}
+          className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm transition-colors ${
+            isSortActive("authors")
+              ? "bg-foreground text-background font-medium"
+              : "text-muted-foreground hover:bg-muted hover:text-foreground"
+          }`}
+        >
+          Authors
+          <ArrowUpDown className="h-3.5 w-3.5" />
+        </button>
+
+        <button
+          onClick={() => toggleSort("seq_number")}
+          className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm transition-colors ${
+            isSortActive("seq_number")
+              ? "bg-foreground text-background font-medium"
+              : "text-muted-foreground hover:bg-muted hover:text-foreground"
+          }`}
+        >
+          Key #
+          <ArrowUpDown className="h-3.5 w-3.5" />
+        </button>
+
+        <FilterDropdown
+          label="Year"
+          options={YEAR_OPTIONS}
+          value={yearFilter}
+          onChange={setYearFilter}
+        />
+      </MobileFilterDrawer>
 
       {/* Scrollable content area */}
       <div ref={scrollRef} className="flex-1 overflow-y-auto px-3 md:px-6 py-4">

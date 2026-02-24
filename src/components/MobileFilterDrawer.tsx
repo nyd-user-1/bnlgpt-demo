@@ -15,14 +15,13 @@ export function MobileFilterDrawer({ children }: MobileFilterDrawerProps) {
     <Popover>
       <PopoverTrigger asChild>
         <button
-          className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+          className="fixed bottom-6 right-6 z-40 md:hidden flex h-12 w-12 items-center justify-center rounded-full bg-foreground text-background shadow-lg transition-transform active:scale-95"
           aria-label="Open filters"
         >
-          <SlidersHorizontal className="h-3.5 w-3.5" />
-          Filters
+          <SlidersHorizontal className="h-5 w-5" />
         </button>
       </PopoverTrigger>
-      <PopoverContent align="start" className="w-80">
+      <PopoverContent align="end" side="top" sideOffset={12} className="w-80">
         <div className="flex flex-wrap items-center gap-2">
           {children}
         </div>

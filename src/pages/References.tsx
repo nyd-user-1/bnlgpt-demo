@@ -472,65 +472,9 @@ export default function References() {
         </div>
       </div>
 
-      {/* Mobile toolbar — filters popover + search mode + pagination */}
+      {/* Mobile toolbar — search mode toggle (left) + pagination (right) */}
       <div className="md:hidden sticky top-0 z-10 bg-background px-3 pt-3 pb-2">
         <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-          {/* Filters popover */}
-          <MobileFilterDrawer>
-            <button
-              onClick={() => {
-                setAuthorsSortAsc((prev) =>
-                  prev === null ? true : prev ? false : null
-                );
-                setKeySortAsc(null);
-              }}
-              className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm transition-colors ${
-                authorsSortAsc !== null
-                  ? "bg-foreground text-background font-medium"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
-              }`}
-            >
-              Authors
-              <ArrowUpDown className="h-3.5 w-3.5" />
-            </button>
-
-            <button
-              onClick={() => {
-                setKeySortAsc((prev) =>
-                  prev === null ? true : prev ? false : null
-                );
-                setAuthorsSortAsc(null);
-              }}
-              className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm transition-colors ${
-                keySortAsc !== null
-                  ? "bg-foreground text-background font-medium"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
-              }`}
-            >
-              Key #
-              <ArrowUpDown className="h-3.5 w-3.5" />
-            </button>
-
-            <FilterDropdown
-              label="Year"
-              options={YEAR_OPTIONS}
-              value={yearFilter}
-              onChange={setYearFilter}
-            />
-
-            <NuclideCombobox
-              value={nuclideInput}
-              onChange={handleNuclideChange}
-              onSubmit={handleStructuredSearch}
-            />
-
-            <ReactionCombobox
-              value={reactionInput}
-              onChange={handleReactionChange}
-              onSubmit={handleStructuredSearch}
-            />
-          </MobileFilterDrawer>
-
           {/* Search mode toggle */}
           <div className="inline-flex items-center rounded border text-xs text-muted-foreground overflow-hidden">
             {(["semantic", "keyword"] as const).map((mode) => (
@@ -586,6 +530,62 @@ export default function References() {
           )}
         </div>
       </div>
+
+      {/* FAB → Popover with filter controls (mobile only) */}
+      <MobileFilterDrawer>
+        <button
+          onClick={() => {
+            setAuthorsSortAsc((prev) =>
+              prev === null ? true : prev ? false : null
+            );
+            setKeySortAsc(null);
+          }}
+          className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm transition-colors ${
+            authorsSortAsc !== null
+              ? "bg-foreground text-background font-medium"
+              : "text-muted-foreground hover:bg-muted hover:text-foreground"
+          }`}
+        >
+          Authors
+          <ArrowUpDown className="h-3.5 w-3.5" />
+        </button>
+
+        <button
+          onClick={() => {
+            setKeySortAsc((prev) =>
+              prev === null ? true : prev ? false : null
+            );
+            setAuthorsSortAsc(null);
+          }}
+          className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm transition-colors ${
+            keySortAsc !== null
+              ? "bg-foreground text-background font-medium"
+              : "text-muted-foreground hover:bg-muted hover:text-foreground"
+          }`}
+        >
+          Key #
+          <ArrowUpDown className="h-3.5 w-3.5" />
+        </button>
+
+        <FilterDropdown
+          label="Year"
+          options={YEAR_OPTIONS}
+          value={yearFilter}
+          onChange={setYearFilter}
+        />
+
+        <NuclideCombobox
+          value={nuclideInput}
+          onChange={handleNuclideChange}
+          onSubmit={handleStructuredSearch}
+        />
+
+        <ReactionCombobox
+          value={reactionInput}
+          onChange={handleReactionChange}
+          onSubmit={handleStructuredSearch}
+        />
+      </MobileFilterDrawer>
 
       {/* Scrollable content area */}
       <div ref={scrollRef} className="flex-1 overflow-y-auto px-3 md:px-6 py-4">
