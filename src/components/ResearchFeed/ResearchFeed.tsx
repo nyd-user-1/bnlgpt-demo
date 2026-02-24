@@ -22,7 +22,7 @@ export function ResearchFeed({ isOpen }: ResearchFeedProps) {
         <FeedHeader />
         <TrendingStrip items={trending} />
 
-        <div className="flex-1 overflow-y-auto divide-y divide-border/50">
+        <div className="flex-1 overflow-y-auto">
           {events.length === 0 ? (
             <p className="px-4 py-8 text-xs text-muted-foreground text-center">
               Activity will appear here as you explore

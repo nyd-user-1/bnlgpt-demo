@@ -155,7 +155,7 @@ export function FeedItem({ event }: FeedItemProps) {
       <Icon className={`h-3.5 w-3.5 mt-0.5 flex-shrink-0 ${isInsight ? "text-green-400" : "text-muted-foreground group-hover:text-foreground transition-colors"}`} />
       {isInsight ? (
         <>
-          <span className="flex-1 text-xs font-semibold text-green-400 leading-snug line-clamp-2">
+          <span className="flex-1 text-xs font-semibold text-green-400 leading-snug truncate">
             {displayText.split("(")[0].trim()}
           </span>
           <span className="text-[10px] text-green-400/70 flex-shrink-0 mt-0.5">
@@ -164,7 +164,7 @@ export function FeedItem({ event }: FeedItemProps) {
         </>
       ) : (
         <>
-          <span className="flex-1 text-xs text-muted-foreground group-hover:text-foreground leading-snug line-clamp-2 transition-colors">
+          <span className="flex-1 text-xs text-muted-foreground group-hover:text-foreground leading-snug truncate transition-colors">
             {displayText}
           </span>
           <span className="text-[10px] text-muted-foreground flex-shrink-0 mt-0.5 transition-colors">
