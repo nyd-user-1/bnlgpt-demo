@@ -20,6 +20,7 @@ export function ChatResponseFooter({
   const [feedback, setFeedback] = useState<"good" | "bad" | null>(null);
   const [sourcesOpen, setSourcesOpen] = useState(false);
   const [pdfOpen, setPdfOpen] = useState(false);
+  const sourcesRef = useRef<HTMLDivElement>(null);
   const pdfRef = useRef<HTMLDivElement>(null);
 
   const handleCopy = async () => {
@@ -41,7 +42,12 @@ export function ChatResponseFooter({
         {/* Sources (Book icon) */}
         {totalCount > 0 && (
           <button
-            onClick={() => setSourcesOpen(!sourcesOpen)}
+            onClick={() => {
+              setSourcesOpen(!sourcesOpen);
+              if (!sourcesOpen) {
+                setTimeout(() => sourcesRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" }), 100);
+              }
+            }}
             className={`inline-flex items-center justify-center h-8 w-8 rounded-md transition-colors ${
               sourcesOpen
                 ? "text-foreground bg-muted"
@@ -115,7 +121,7 @@ export function ChatResponseFooter({
 
       {/* Sources dropdown */}
       {sourcesOpen && sources && (
-        <div className="mt-2 border rounded-lg overflow-hidden animate-in fade-in slide-in-from-top-1 duration-200">
+        <div ref={sourcesRef} className="mt-2 border rounded-lg overflow-hidden animate-in fade-in slide-in-from-top-1 duration-200">
           <div className="px-3 py-2 space-y-3">
             {/* NSR Records */}
             {sources.nsr.length > 0 && (
