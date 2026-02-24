@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   ArrowUp, Plus, Square, ChevronDown, ChevronRight, ArrowLeft,
   Lightbulb, Atom, Zap, Users, X,
@@ -144,6 +145,7 @@ interface ChatInputProps {
 }
 
 export function ChatInput({ onSubmit, onStop, isLoading, initialValue }: ChatInputProps) {
+  const navigate = useNavigate();
   const [value, setValue] = useState(initialValue ?? "");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -375,15 +377,14 @@ export function ChatInput({ onSubmit, onStop, isLoading, initialValue }: ChatInp
   };
 
   const handleDbItemClick = (item: DbItem) => {
-    let prompt = "";
+    closeMenu();
     if (drawerCategory === "nuclides") {
-      prompt = `Tell me about nuclide ${item.value} and its nuclear data`;
+      navigate(`/references?nuclide=${encodeURIComponent(item.value)}`);
     } else if (drawerCategory === "reactions") {
-      prompt = `Tell me about ${item.value} reactions in nuclear physics`;
+      navigate(`/references?reaction=${encodeURIComponent(item.value)}`);
     } else if (drawerCategory === "authors") {
-      prompt = `What research has ${item.value} published in nuclear science?`;
+      navigate(`/references?q=${encodeURIComponent(item.value)}&mode=keyword`);
     }
-    handleSelectPrompt(prompt);
   };
 
   // client-side filtered sample prompts
