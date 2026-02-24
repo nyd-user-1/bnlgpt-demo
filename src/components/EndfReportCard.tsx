@@ -1,7 +1,9 @@
 import { memo, type ReactNode } from "react";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { FileText, Copy, Check, ExternalLink } from "lucide-react";
+import { FileText, Copy, Check, ExternalLink, ArrowUp } from "lucide-react";
 import type { EndfReport } from "@/types/endf";
+import { useFeedEmitter } from "@/hooks/useFeedEmitter";
 
 interface EndfReportCardProps {
   report: EndfReport;
@@ -25,7 +27,9 @@ function highlightText(text: string, query: string): ReactNode {
 }
 
 export const EndfReportCard = memo(function EndfReportCard({ report, searchQuery }: EndfReportCardProps) {
+  const navigate = useNavigate();
   const [copied, setCopied] = useState(false);
+  const { emit } = useFeedEmitter();
 
   const handleCopy = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -41,6 +45,40 @@ export const EndfReportCard = memo(function EndfReportCard({ report, searchQuery
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 1500);
+  };
+
+  const handleSendToChat = (e: React.MouseEvent) => {
+    e.stopPropagation();
+
+    const prompt = `Tell me about "${report.title}"${
+      report.authors ? ` by ${report.authors}` : ""
+    }. What is the significance of this ENDF report?`;
+
+    const context = [
+      `Title: ${report.title}`,
+      report.authors ? `Authors: ${report.authors}` : null,
+      `Report Number: ${report.report_number}`,
+      report.report_date ? `Date: ${report.report_date}` : null,
+      report.cross_reference ? `Cross Reference: ${report.cross_reference}` : null,
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    const url = report.pdf_url ?? "";
+
+    const params = new URLSearchParams({ prompt, context });
+    if (url) params.set("url", url);
+
+    navigate(`/?${params.toString()}`);
+
+    emit({
+      event_type: "record_inquiry",
+      category: "chat",
+      entity_type: "endf_report",
+      entity_value: report.report_number,
+      display_text: `Inquired about ${report.report_number}: "${report.title.slice(0, 60)}"`,
+      metadata: { pdf_url: report.pdf_url },
+    });
   };
 
   return (
@@ -88,7 +126,7 @@ export const EndfReportCard = memo(function EndfReportCard({ report, searchQuery
         </div>
       </div>
 
-      {/* Bottom bar: PDF link left, copy button right */}
+      {/* Bottom bar: PDF link left, action buttons right */}
       <div className="absolute bottom-4 left-6 right-4 flex items-center justify-between">
         {report.pdf_url ? (
           <a
@@ -111,6 +149,13 @@ export const EndfReportCard = memo(function EndfReportCard({ report, searchQuery
             title="Copy report details"
           >
             {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+          </button>
+          <button
+            onClick={handleSendToChat}
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-foreground text-background shadow-lg transition-all hover:scale-110"
+            title="Ask about this ENDF report"
+          >
+            <ArrowUp className="h-4 w-4" />
           </button>
         </div>
       </div>

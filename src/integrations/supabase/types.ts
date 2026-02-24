@@ -70,6 +70,7 @@ export interface Database {
           authors: string | null;
           title: string;
           report_date: string | null;
+          report_date_parsed: string | null;
           cross_reference: string | null;
           pdf_url: string | null;
         };

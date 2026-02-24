@@ -1,16 +1,17 @@
-import { useState, useDeferredValue, useMemo, useRef, useEffect } from "react";
+import { useState, useDeferredValue, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { ArrowUpDown, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowUpDown, ChevronLeft, ChevronRight, Calendar } from "lucide-react";
 import { SearchInput } from "@/components/SearchInput";
 import { EndfReportCard } from "@/components/EndfReportCard";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useEndfReports } from "@/hooks/useEndfReports";
+import { useEndfReports, type EndfSortField } from "@/hooks/useEndfReports";
 
 const CARDS_PER_PAGE = 99;
 
 export default function Endf() {
   const [query, setQuery] = useState("");
-  const [authorsSortAsc, setAuthorsSortAsc] = useState<boolean | null>(null);
+  const [sortBy, setSortBy] = useState<EndfSortField>("seq_number");
+  const [sortAsc, setSortAsc] = useState(false);
   const [page, setPage] = useState(1);
 
   const deferredQuery = useDeferredValue(query);
@@ -20,25 +21,17 @@ export default function Endf() {
     query: isSearching ? deferredQuery : undefined,
     page,
     pageSize: CARDS_PER_PAGE,
+    sortBy,
+    sortAsc,
   });
 
-  // Apply authors sort client-side
-  const records = useMemo(() => {
-    if (!data?.records) return null;
-    if (authorsSortAsc === null) return data.records;
-    return [...data.records].sort((a, b) => {
-      const aa = a.authors ?? "";
-      const ab = b.authors ?? "";
-      return authorsSortAsc ? aa.localeCompare(ab) : ab.localeCompare(aa);
-    });
-  }, [data?.records, authorsSortAsc]);
-
+  const records = data?.records ?? null;
   const totalCount = data?.totalCount ?? 0;
   const totalPages = Math.max(1, Math.ceil(totalCount / CARDS_PER_PAGE));
   const currentPage = Math.min(page, totalPages);
 
-  // Reset page when query changes
-  useEffect(() => { setPage(1); }, [deferredQuery]);
+  // Reset page when query or sort changes
+  useEffect(() => { setPage(1); }, [deferredQuery, sortBy, sortAsc]);
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -46,6 +39,23 @@ export default function Endf() {
     setPage(p);
     scrollRef.current?.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  const toggleSort = (field: EndfSortField) => {
+    if (sortBy === field) {
+      // Cycle: asc → desc → off
+      if (sortAsc) {
+        setSortAsc(false);
+      } else {
+        setSortBy("seq_number");
+        setSortAsc(false);
+      }
+    } else {
+      setSortBy(field);
+      setSortAsc(true);
+    }
+  };
+
+  const isSortActive = (field: EndfSortField) => sortBy === field;
 
   return (
     <div className="h-full flex flex-col">
@@ -65,19 +75,28 @@ export default function Endf() {
         <div className="flex flex-wrap items-center gap-2">
           {/* Authors sort toggle */}
           <button
-            onClick={() =>
-              setAuthorsSortAsc((prev) =>
-                prev === null ? true : prev ? false : null
-              )
-            }
+            onClick={() => toggleSort("authors")}
             className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm transition-colors ${
-              authorsSortAsc !== null
+              isSortActive("authors")
                 ? "bg-foreground text-background font-medium"
                 : "text-muted-foreground hover:bg-muted hover:text-foreground"
             }`}
           >
             Authors
             <ArrowUpDown className="h-3.5 w-3.5" />
+          </button>
+
+          {/* Date sort toggle */}
+          <button
+            onClick={() => toggleSort("report_date_parsed")}
+            className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm transition-colors ${
+              isSortActive("report_date_parsed")
+                ? "bg-foreground text-background font-medium"
+                : "text-muted-foreground hover:bg-muted hover:text-foreground"
+            }`}
+          >
+            Date
+            <Calendar className="h-3.5 w-3.5" />
           </button>
 
           {/* Inline pagination (far right) */}
