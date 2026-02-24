@@ -47,10 +47,20 @@ export default function Chat() {
   // Update URL when session is created (without remounting)
   useEffect(() => {
     if (sessionId && !routeSessionId && messages.length > 0 && !isLoading) {
-      loadedSessionRef.current = sessionId; // prevent loadSession from re-fetching
-      navigate(`/c/${sessionId}`, { replace: true });
+      window.history.replaceState(null, "", `/c/${sessionId}`);
     }
   }, [sessionId, routeSessionId, messages.length, isLoading]);
+
+  // Listen for "new-chat" event from Sidebar (handles replaceState URL mismatch)
+  useEffect(() => {
+    function handler() {
+      loadedSessionRef.current = null;
+      setAutoSubmitted(false);
+      clearMessages();
+    }
+    window.addEventListener("new-chat", handler);
+    return () => window.removeEventListener("new-chat", handler);
+  }, [clearMessages]);
 
   // Auto-submit from URL params (from reference card click)
   useEffect(() => {
