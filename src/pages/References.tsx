@@ -1,4 +1,5 @@
 import { useState, useDeferredValue, useMemo, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { useSearchParams } from "react-router-dom";
 import { ArrowUpDown, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { SearchInput } from "@/components/SearchInput";
@@ -386,10 +387,9 @@ export default function References() {
 
   return (
     <div className="h-full flex flex-col">
-      {/* Sticky search + filter bar */}
-      <div className="sticky top-0 z-10 bg-background px-6 pt-6 pb-2">
-        {/* Search bar */}
-        <div className="mb-4">
+      {/* Portal search bar into header */}
+      {document.getElementById("header-search") &&
+        createPortal(
           <SearchInput
             value={query}
             onChange={(v) => {
@@ -397,9 +397,12 @@ export default function References() {
               if (v.length >= 3) clearStructuredSearch();
             }}
             isLoading={search.isFetching}
-          />
-        </div>
+          />,
+          document.getElementById("header-search")!
+        )}
 
+      {/* Sticky filter bar */}
+      <div className="sticky top-0 z-10 bg-background px-6 pt-3 pb-2">
         {/* Filter bar */}
         <div className="flex flex-wrap items-center gap-2">
           {/* Nuclide filter */}

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { List, Activity } from "lucide-react";
 import { Sidebar } from "@/components/Sidebar";
 import { ResearchFeed } from "@/components/ResearchFeed";
@@ -7,7 +7,6 @@ import { ResearchFeed } from "@/components/ResearchFeed";
 export function AppLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [feedOpen, setFeedOpen] = useState(false);
-  const navigate = useNavigate();
 
   return (
     <div className="flex h-screen bg-background p-4">
@@ -19,7 +18,7 @@ export function AppLayout() {
         onClick={() => {}}
       >
         {/* Top bar — inside the wrapper */}
-        <div className="flex items-center justify-between px-4 py-3 flex-shrink-0">
+        <div className="flex items-center justify-between px-4 py-2 flex-shrink-0">
           <button
             onClick={() => setSidebarOpen((o) => !o)}
             className="inline-flex items-center justify-center h-10 w-10 rounded-md text-foreground hover:bg-muted transition-colors"
@@ -27,12 +26,8 @@ export function AppLayout() {
             <List className="h-5 w-5" />
           </button>
 
-          <button
-            onClick={() => navigate("/")}
-            className="inline-flex items-center justify-center h-10 rounded-md px-3 text-foreground hover:bg-muted transition-colors font-semibold text-xl"
-          >
-            NSRgpt
-          </button>
+          {/* Search bar portal target — filled by page components */}
+          <div id="header-search" className="flex-1 mx-2" />
 
           <button
             onClick={() => setFeedOpen((o) => !o)}
