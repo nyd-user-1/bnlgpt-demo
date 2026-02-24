@@ -2,10 +2,11 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { EndfReport } from "@/types/endf";
 
-export type EndfSortField = "seq_number" | "report_date_parsed" | "authors" | "report_number";
+export type EndfSortField = "seq_number" | "report_date_parsed" | "authors";
 
 interface Filters {
   query?: string;
+  year?: number;
   page?: number;
   pageSize?: number;
   sortBy?: EndfSortField;
@@ -32,6 +33,12 @@ async function fetchReports(filters: Filters): Promise<PaginatedResult> {
     query = query.or(`title.ilike.${pattern},authors.ilike.${pattern},report_number.ilike.${pattern}`);
   }
 
+  if (filters.year) {
+    query = query
+      .gte("report_date_parsed", `${filters.year}-01-01`)
+      .lt("report_date_parsed", `${filters.year + 1}-01-01`);
+  }
+
   const sortBy = filters.sortBy ?? "seq_number";
   const sortAsc = filters.sortAsc ?? false;
 
@@ -39,8 +46,6 @@ async function fetchReports(filters: Filters): Promise<PaginatedResult> {
     query = query.order("authors", { ascending: sortAsc, nullsFirst: false });
   } else if (sortBy === "report_date_parsed") {
     query = query.order("report_date_parsed", { ascending: sortAsc, nullsFirst: false });
-  } else if (sortBy === "report_number") {
-    query = query.order("report_number", { ascending: sortAsc });
   } else {
     query = query.order("seq_number", { ascending: sortAsc });
   }
@@ -54,7 +59,7 @@ async function fetchReports(filters: Filters): Promise<PaginatedResult> {
 
 export function useEndfReports(filters: Filters = {}) {
   return useQuery({
-    queryKey: ["endf-reports", filters.query ?? "", filters.page ?? 1, filters.pageSize ?? 99, filters.sortBy ?? "seq_number", filters.sortAsc ?? false],
+    queryKey: ["endf-reports", filters.query ?? "", filters.year ?? "all", filters.page ?? 1, filters.pageSize ?? 99, filters.sortBy ?? "seq_number", filters.sortAsc ?? false],
     queryFn: () => fetchReports(filters),
     staleTime: 1000 * 60 * 10,
     placeholderData: (prev) => prev,

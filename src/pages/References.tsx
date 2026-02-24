@@ -6,7 +6,6 @@ import { SearchInput } from "@/components/SearchInput";
 import { NsrRecordCard } from "@/components/NsrRecordCard";
 import { NuclideCombobox } from "@/components/NuclideCombobox";
 import { ReactionCombobox } from "@/components/ReactionCombobox";
-import { ElementRangeCombobox } from "@/components/ElementRangeCombobox";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useNsrSearch, type SearchMode } from "@/hooks/useNsrSearch";
 import { useNsrRecords } from "@/hooks/useNsrRecords";
@@ -94,13 +93,6 @@ function FilterDropdown({ label, options, value, onChange }: FilterDropdownProps
 // All years in the database (2000-2026)
 const YEAR_OPTIONS = Array.from({ length: 27 }, (_, i) => String(2026 - i));
 
-/** Parse "1-20" → { zMin: 1, zMax: 20 } */
-function parseElementRange(v: string | null): { zMin?: number; zMax?: number } {
-  if (!v) return {};
-  const [min, max] = v.split("-").map(Number);
-  return { zMin: min, zMax: max };
-}
-
 /* ------------------------------------------------------------------ */
 /*  Page                                                               */
 /* ------------------------------------------------------------------ */
@@ -113,11 +105,10 @@ export default function References() {
   const initialMode = (searchParams.get("mode") as SearchMode) || "semantic";
   const initialNuclide = searchParams.get("nuclide") ?? "";
   const initialReaction = searchParams.get("reaction") ?? "";
-  const initialZRange = searchParams.get("zRange");
-
   const [query, setQuery] = useState(initialQ);
   const [yearFilter, setYearFilter] = useState<string | null>(null);
   const [authorsSortAsc, setAuthorsSortAsc] = useState<boolean | null>(null);
+  const [keySortAsc, setKeySortAsc] = useState<boolean | null>(null);
   const [page, setPage] = useState(1);
   const [searchMode, setSearchMode] = useState<SearchMode>(initialMode);
 
@@ -128,23 +119,17 @@ export default function References() {
 
   const [nuclideInput, setNuclideInput] = useState(initialNuclide);
   const [reactionInput, setReactionInput] = useState(initialReaction);
-  const [elementRange, setElementRange] = useState<string | null>(initialZRange);
   const [structuredParams, setStructuredParams] = useState<{
     nuclides?: string[];
     reactions?: string[];
-    zMin?: number;
-    zMax?: number;
   } | null>(() => {
     // Initialize structured params from URL if present
     const nuclides = initialNuclide ? [initialNuclide] : [];
     const reactions = initialReaction ? [initialReaction] : [];
-    const { zMin, zMax } = parseElementRange(initialZRange);
-    if (nuclides.length > 0 || reactions.length > 0 || initialZRange) {
+    if (nuclides.length > 0 || reactions.length > 0) {
       return {
         nuclides: nuclides.length > 0 ? nuclides : undefined,
         reactions: reactions.length > 0 ? reactions : undefined,
-        zMin,
-        zMax,
       };
     }
     return null;
@@ -158,7 +143,6 @@ export default function References() {
     const mode = (searchParams.get("mode") as SearchMode) || "semantic";
     const nuclide = searchParams.get("nuclide") ?? "";
     const reaction = searchParams.get("reaction") ?? "";
-    const zRange = searchParams.get("zRange");
 
     // Apply search params
     if (q) {
@@ -166,22 +150,17 @@ export default function References() {
       setSearchMode(mode);
       setNuclideInput("");
       setReactionInput("");
-      setElementRange(null);
       setStructuredParams(null);
     } else {
       setQuery("");
       setNuclideInput(nuclide);
       setReactionInput(reaction);
-      setElementRange(zRange);
       const nuclides = nuclide ? [nuclide] : [];
       const reactions = reaction ? [reaction] : [];
-      const { zMin, zMax } = parseElementRange(zRange);
-      if (nuclides.length > 0 || reactions.length > 0 || zRange) {
+      if (nuclides.length > 0 || reactions.length > 0) {
         setStructuredParams({
           nuclides: nuclides.length > 0 ? nuclides : undefined,
           reactions: reactions.length > 0 ? reactions : undefined,
-          zMin,
-          zMax,
         });
       }
     }
@@ -246,22 +225,12 @@ export default function References() {
         display_text: `Filtered by reaction ${structuredParams.reactions.join(", ")}`,
       });
     }
-    if (structuredParams.zMin != null && structuredParams.zMax != null) {
-      emit({
-        event_type: "element_range_filter",
-        category: "search",
-        entity_type: "element_range",
-        entity_value: `Z=${structuredParams.zMin}-${structuredParams.zMax}`,
-        display_text: `Filtered by element range Z=${structuredParams.zMin}-${structuredParams.zMax}`,
-      });
-    }
   }, [structured.data, structuredParams, emit]);
 
   const clearStructuredSearch = () => {
     setStructuredParams(null);
     setNuclideInput("");
     setReactionInput("");
-    setElementRange(null);
   };
 
   const handleStructuredSearch = (overrides?: { nuclide?: string; reaction?: string }) => {
@@ -269,9 +238,8 @@ export default function References() {
     const rxn = overrides?.reaction ?? reactionInput;
     const nuclides = nuc.trim() ? [nuc.trim()] : [];
     const reactions = rxn.trim() ? [rxn.trim()] : [];
-    const { zMin, zMax } = parseElementRange(elementRange);
 
-    if (nuclides.length === 0 && reactions.length === 0 && !elementRange) {
+    if (nuclides.length === 0 && reactions.length === 0) {
       clearStructuredSearch();
       return;
     }
@@ -282,43 +250,21 @@ export default function References() {
     setStructuredParams({
       nuclides: nuclides.length > 0 ? nuclides : undefined,
       reactions: reactions.length > 0 ? reactions : undefined,
-      zMin,
-      zMax,
     });
   };
 
   // Auto-clear structured search when all inputs are emptied
   const handleNuclideChange = (v: string) => {
     setNuclideInput(v);
-    if (!v && !reactionInput && !elementRange && structuredParams) {
+    if (!v && !reactionInput && structuredParams) {
       setStructuredParams(null);
     }
   };
   const handleReactionChange = (v: string) => {
     setReactionInput(v);
-    if (!nuclideInput && !v && !elementRange && structuredParams) {
+    if (!nuclideInput && !v && structuredParams) {
       setStructuredParams(null);
     }
-  };
-  const handleElementRangeChange = (v: string | null) => {
-    setElementRange(v);
-    const { zMin, zMax } = parseElementRange(v);
-    const nuclides = nuclideInput.trim() ? [nuclideInput.trim()] : [];
-    const reactions = reactionInput.trim() ? [reactionInput.trim()] : [];
-
-    if (!v && nuclides.length === 0 && reactions.length === 0) {
-      setStructuredParams(null);
-      return;
-    }
-
-    setQuery("");
-    setPage(1);
-    setStructuredParams({
-      nuclides: nuclides.length > 0 ? nuclides : undefined,
-      reactions: reactions.length > 0 ? reactions : undefined,
-      zMin,
-      zMax,
-    });
   };
 
   const isSearching = deferredQuery.length >= 3;
@@ -358,8 +304,16 @@ export default function References() {
       });
     }
 
+    if (keySortAsc !== null) {
+      filtered = [...filtered].sort((a, b) => {
+        return keySortAsc
+          ? a.key_number.localeCompare(b.key_number)
+          : b.key_number.localeCompare(a.key_number);
+      });
+    }
+
     return filtered;
-  }, [rawRecords, authorsSortAsc]);
+  }, [rawRecords, authorsSortAsc, keySortAsc]);
 
   // Pagination — server-side for browse, client-side for search/structured
   const isBrowsing = !isSearching && !isStructured;
@@ -405,6 +359,49 @@ export default function References() {
       <div className="sticky top-0 z-10 bg-background px-6 pt-3 pb-2">
         {/* Filter bar */}
         <div className="flex flex-wrap items-center gap-2">
+          {/* Authors sort toggle */}
+          <button
+            onClick={() => {
+              setAuthorsSortAsc((prev) =>
+                prev === null ? true : prev ? false : null
+              );
+              setKeySortAsc(null);
+            }}
+            className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm transition-colors ${
+              authorsSortAsc !== null
+                ? "bg-foreground text-background font-medium"
+                : "text-muted-foreground hover:bg-muted hover:text-foreground"
+            }`}
+          >
+            Authors
+            <ArrowUpDown className="h-3.5 w-3.5" />
+          </button>
+
+          {/* Key # sort toggle */}
+          <button
+            onClick={() => {
+              setKeySortAsc((prev) =>
+                prev === null ? true : prev ? false : null
+              );
+              setAuthorsSortAsc(null);
+            }}
+            className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm transition-colors ${
+              keySortAsc !== null
+                ? "bg-foreground text-background font-medium"
+                : "text-muted-foreground hover:bg-muted hover:text-foreground"
+            }`}
+          >
+            Key #
+            <ArrowUpDown className="h-3.5 w-3.5" />
+          </button>
+
+          <FilterDropdown
+            label="Year"
+            options={YEAR_OPTIONS}
+            value={yearFilter}
+            onChange={setYearFilter}
+          />
+
           {/* Nuclide filter */}
           <NuclideCombobox
             value={nuclideInput}
@@ -418,35 +415,6 @@ export default function References() {
             onChange={handleReactionChange}
             onSubmit={handleStructuredSearch}
           />
-
-          {/* Element range filter */}
-          <ElementRangeCombobox
-            value={elementRange}
-            onChange={handleElementRangeChange}
-          />
-
-          <FilterDropdown
-            label="Year"
-            options={YEAR_OPTIONS}
-            value={yearFilter}
-            onChange={setYearFilter}
-          />
-          {/* Authors sort toggle */}
-          <button
-            onClick={() =>
-              setAuthorsSortAsc((prev) =>
-                prev === null ? true : prev ? false : null
-              )
-            }
-            className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm transition-colors ${
-              authorsSortAsc !== null
-                ? "bg-foreground text-background font-medium"
-                : "text-muted-foreground hover:bg-muted hover:text-foreground"
-            }`}
-          >
-            Authors
-            <ArrowUpDown className="h-3.5 w-3.5" />
-          </button>
 
           {/* Search mode toggle */}
           <div className="inline-flex items-center rounded border text-xs text-muted-foreground overflow-hidden">

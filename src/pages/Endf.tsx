@@ -1,6 +1,6 @@
 import { useState, useDeferredValue, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { ArrowUpDown, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowUpDown, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { SearchInput } from "@/components/SearchInput";
 import { EndfReportCard } from "@/components/EndfReportCard";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -8,8 +8,84 @@ import { useEndfReports, type EndfSortField } from "@/hooks/useEndfReports";
 
 const CARDS_PER_PAGE = 99;
 
+/* ------------------------------------------------------------------ */
+/*  Dropdown filter (same as References page)                          */
+/* ------------------------------------------------------------------ */
+
+interface FilterDropdownProps {
+  label: string;
+  options: string[];
+  value: string | null;
+  onChange: (value: string | null) => void;
+}
+
+function FilterDropdown({ label, options, value, onChange }: FilterDropdownProps) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    if (open) document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [open]);
+
+  return (
+    <div className="relative" ref={ref}>
+      <button
+        onClick={() => setOpen(!open)}
+        className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm transition-colors ${
+          value
+            ? "bg-foreground text-background font-medium"
+            : "text-muted-foreground hover:bg-muted hover:text-foreground"
+        }`}
+      >
+        {value ? `${label}: ${value}` : label}
+        <ChevronDown className={`h-3.5 w-3.5 transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+
+      {open && (
+        <div className="absolute left-0 top-full mt-1 z-50 min-w-[180px] max-h-[280px] overflow-y-auto rounded-lg border bg-background shadow-md animate-in fade-in slide-in-from-top-1 duration-150">
+          {value && (
+            <button
+              onClick={() => { onChange(null); setOpen(false); }}
+              className="flex w-full items-center px-3 py-2 text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+            >
+              Clear filter
+            </button>
+          )}
+          {options.map((opt) => (
+            <button
+              key={opt}
+              onClick={() => { onChange(opt); setOpen(false); }}
+              className={`flex w-full items-center px-3 py-2 text-sm transition-colors ${
+                value === opt
+                  ? "bg-muted font-medium text-foreground"
+                  : "text-foreground hover:bg-muted"
+              }`}
+            >
+              {opt}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ENDF reports span 1965-2020
+const YEAR_OPTIONS = Array.from({ length: 56 }, (_, i) => String(2020 - i));
+
+/* ------------------------------------------------------------------ */
+/*  Page                                                               */
+/* ------------------------------------------------------------------ */
+
 export default function Endf() {
   const [query, setQuery] = useState("");
+  const [yearFilter, setYearFilter] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState<EndfSortField>("report_date_parsed");
   const [sortAsc, setSortAsc] = useState(false);
   const [page, setPage] = useState(1);
@@ -19,6 +95,7 @@ export default function Endf() {
 
   const { data, isLoading, error } = useEndfReports({
     query: isSearching ? deferredQuery : undefined,
+    year: yearFilter ? Number(yearFilter) : undefined,
     page,
     pageSize: CARDS_PER_PAGE,
     sortBy,
@@ -31,7 +108,7 @@ export default function Endf() {
   const currentPage = Math.min(page, totalPages);
 
   // Reset page when query or sort changes
-  useEffect(() => { setPage(1); }, [deferredQuery, sortBy, sortAsc]);
+  useEffect(() => { setPage(1); }, [deferredQuery, yearFilter, sortBy, sortAsc]);
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -44,7 +121,6 @@ export default function Endf() {
 
   const toggleSort = (field: EndfSortField) => {
     if (sortBy === field) {
-      // Cycle: asc → desc → off (back to default)
       if (sortAsc) {
         setSortAsc(false);
       } else {
@@ -102,31 +178,13 @@ export default function Endf() {
             <ArrowUpDown className="h-3.5 w-3.5" />
           </button>
 
-          {/* Report sort toggle */}
-          <button
-            onClick={() => toggleSort("report_number")}
-            className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm transition-colors ${
-              isSortActive("report_number")
-                ? "bg-foreground text-background font-medium"
-                : "text-muted-foreground hover:bg-muted hover:text-foreground"
-            }`}
-          >
-            Report
-            <ArrowUpDown className="h-3.5 w-3.5" />
-          </button>
-
-          {/* Year sort toggle */}
-          <button
-            onClick={() => toggleSort("report_date_parsed")}
-            className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm transition-colors ${
-              isSortActive("report_date_parsed")
-                ? "bg-foreground text-background font-medium"
-                : "text-muted-foreground hover:bg-muted hover:text-foreground"
-            }`}
-          >
-            Year
-            <ArrowUpDown className="h-3.5 w-3.5" />
-          </button>
+          {/* Year dropdown */}
+          <FilterDropdown
+            label="Year"
+            options={YEAR_OPTIONS}
+            value={yearFilter}
+            onChange={setYearFilter}
+          />
 
           {/* Inline pagination (far right) */}
           {totalPages > 0 && (
@@ -212,7 +270,7 @@ export default function Endf() {
         )}
 
         {/* Empty state */}
-        {records && records.length === 0 && isSearching && (
+        {records && records.length === 0 && (isSearching || yearFilter) && (
           <p className="text-center text-muted-foreground py-12">
             No matching reports found. Try a different search term.
           </p>
