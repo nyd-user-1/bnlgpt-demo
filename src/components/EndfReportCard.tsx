@@ -87,9 +87,9 @@ export const EndfReportCard = memo(function EndfReportCard({ report, searchQuery
       <div className="flex items-center gap-2 mb-3">
         <Hash className="h-5 w-5 text-muted-foreground" />
         <span className="text-base font-bold">{report.seq_number}</span>
-        {report.report_date && (
+        {report.report_date_parsed && (
           <span className="ml-auto text-sm font-medium text-muted-foreground">
-            {report.report_date}
+            {new Date(report.report_date_parsed).getUTCFullYear()}
           </span>
         )}
       </div>
