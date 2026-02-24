@@ -416,19 +416,26 @@ export default function References() {
             onSubmit={handleStructuredSearch}
           />
 
-          {/* Clear structured filters */}
-          {isStructured && (
-            <button
-              onClick={clearStructuredSearch}
-              className="text-xs text-muted-foreground hover:text-foreground underline"
-            >
-              Clear nuclide/reaction filters
-            </button>
-          )}
-
-          {/* Inline pagination + search mode (far right) */}
+          {/* Search mode toggle + inline pagination (far right) */}
           {totalPages > 0 && (
             <div className="ml-auto inline-flex items-center gap-1.5 text-xs text-muted-foreground">
+              {/* Search mode toggle */}
+              <div className="inline-flex items-center rounded border text-xs text-muted-foreground overflow-hidden">
+                {(["semantic", "keyword"] as const).map((mode) => (
+                  <button
+                    key={mode}
+                    onClick={() => setSearchMode(mode)}
+                    className={`px-2 py-0.5 transition-colors ${
+                      searchMode === mode
+                        ? "bg-muted font-medium text-foreground"
+                        : "hover:bg-muted hover:text-foreground"
+                    }`}
+                  >
+                    {mode.charAt(0).toUpperCase() + mode.slice(1)}
+                  </button>
+                ))}
+              </div>
+
               <button
                 onClick={() => goToPage(currentPage - 1)}
                 disabled={currentPage <= 1}
@@ -460,23 +467,6 @@ export default function References() {
               >
                 <ChevronRight className="h-3.5 w-3.5" />
               </button>
-
-              {/* Search mode toggle */}
-              <div className="inline-flex items-center rounded border text-xs text-muted-foreground overflow-hidden">
-                {(["semantic", "keyword"] as const).map((mode) => (
-                  <button
-                    key={mode}
-                    onClick={() => setSearchMode(mode)}
-                    className={`px-2 py-0.5 transition-colors ${
-                      searchMode === mode
-                        ? "bg-muted font-medium text-foreground"
-                        : "hover:bg-muted hover:text-foreground"
-                    }`}
-                  >
-                    {mode.charAt(0).toUpperCase() + mode.slice(1)}
-                  </button>
-                ))}
-              </div>
             </div>
           )}
         </div>
