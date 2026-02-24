@@ -1,46 +1,32 @@
-import { useState, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { SlidersHorizontal } from "lucide-react";
 import {
-  Drawer,
-  DrawerTrigger,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerDescription,
-} from "@/components/ui/drawer";
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
 
 interface MobileFilterDrawerProps {
   children: ReactNode;
 }
 
 export function MobileFilterDrawer({ children }: MobileFilterDrawerProps) {
-  const [open, setOpen] = useState(false);
-
   return (
-    <Drawer open={open} onOpenChange={setOpen}>
-      {/* FAB trigger — mobile only */}
-      <DrawerTrigger asChild>
+    <Popover>
+      <PopoverTrigger asChild>
         <button
-          className="fixed bottom-6 right-6 z-40 md:hidden flex h-12 w-12 items-center justify-center rounded-full bg-foreground text-background shadow-lg transition-transform active:scale-95"
+          className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
           aria-label="Open filters"
         >
-          <SlidersHorizontal className="h-5 w-5" />
+          <SlidersHorizontal className="h-3.5 w-3.5" />
+          Filters
         </button>
-      </DrawerTrigger>
-
-      <DrawerContent>
-        <DrawerHeader>
-          <DrawerTitle>Filters</DrawerTitle>
-          <DrawerDescription className="sr-only">
-            Sort and filter controls
-          </DrawerDescription>
-        </DrawerHeader>
-        <div className="px-4 pb-6">
-          <div className="flex flex-wrap items-center gap-2">
-            {children}
-          </div>
+      </PopoverTrigger>
+      <PopoverContent align="start" className="w-80">
+        <div className="flex flex-wrap items-center gap-2">
+          {children}
         </div>
-      </DrawerContent>
-    </Drawer>
+      </PopoverContent>
+    </Popover>
   );
 }

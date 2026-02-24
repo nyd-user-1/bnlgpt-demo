@@ -246,28 +246,63 @@ export default function Endf() {
         </div>
       </div>
 
-      {/* Mobile pagination + search mode — visible only on mobile */}
-      {totalPages > 0 && (
-        <div className="md:hidden sticky top-0 z-10 bg-background px-3 pt-3 pb-2">
-          <div className="flex items-center justify-between gap-1.5 text-xs text-muted-foreground">
-            {/* Search mode toggle */}
-            <div className="inline-flex items-center rounded border text-xs text-muted-foreground overflow-hidden">
-              {(["semantic", "keyword"] as const).map((mode) => (
-                <button
-                  key={mode}
-                  onClick={() => setSearchMode(mode)}
-                  className={`px-2 py-0.5 transition-colors ${
-                    searchMode === mode
-                      ? "bg-muted font-medium text-foreground"
-                      : "hover:bg-muted hover:text-foreground"
-                  }`}
-                >
-                  {mode.charAt(0).toUpperCase() + mode.slice(1)}
-                </button>
-              ))}
-            </div>
+      {/* Mobile toolbar — filters popover + search mode + pagination */}
+      <div className="md:hidden sticky top-0 z-10 bg-background px-3 pt-3 pb-2">
+        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+          {/* Filters popover */}
+          <MobileFilterDrawer>
+            <button
+              onClick={() => toggleSort("authors")}
+              className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm transition-colors ${
+                isSortActive("authors")
+                  ? "bg-foreground text-background font-medium"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+              }`}
+            >
+              Authors
+              <ArrowUpDown className="h-3.5 w-3.5" />
+            </button>
 
-            <div className="inline-flex items-center gap-1.5">
+            <button
+              onClick={() => toggleSort("seq_number")}
+              className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm transition-colors ${
+                isSortActive("seq_number")
+                  ? "bg-foreground text-background font-medium"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+              }`}
+            >
+              Key #
+              <ArrowUpDown className="h-3.5 w-3.5" />
+            </button>
+
+            <FilterDropdown
+              label="Year"
+              options={YEAR_OPTIONS}
+              value={yearFilter}
+              onChange={setYearFilter}
+            />
+          </MobileFilterDrawer>
+
+          {/* Search mode toggle */}
+          <div className="inline-flex items-center rounded border text-xs text-muted-foreground overflow-hidden">
+            {(["semantic", "keyword"] as const).map((mode) => (
+              <button
+                key={mode}
+                onClick={() => setSearchMode(mode)}
+                className={`px-2 py-0.5 transition-colors ${
+                  searchMode === mode
+                    ? "bg-muted font-medium text-foreground"
+                    : "hover:bg-muted hover:text-foreground"
+                }`}
+              >
+                {mode.charAt(0).toUpperCase() + mode.slice(1)}
+              </button>
+            ))}
+          </div>
+
+          {/* Pagination */}
+          {totalPages > 0 && (
+            <div className="ml-auto inline-flex items-center gap-1.5">
               <button
                 onClick={() => goToPage(currentPage - 1)}
                 disabled={currentPage <= 1}
@@ -300,63 +335,9 @@ export default function Endf() {
                 <ChevronRight className="h-3.5 w-3.5" />
               </button>
             </div>
-          </div>
+          )}
         </div>
-      )}
-
-      {/* Mobile FAB + drawer filters */}
-      <MobileFilterDrawer>
-        {/* Authors sort toggle */}
-        <button
-          onClick={() => toggleSort("authors")}
-          className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm transition-colors ${
-            isSortActive("authors")
-              ? "bg-foreground text-background font-medium"
-              : "text-muted-foreground hover:bg-muted hover:text-foreground"
-          }`}
-        >
-          Authors
-          <ArrowUpDown className="h-3.5 w-3.5" />
-        </button>
-
-        {/* Key # sort toggle */}
-        <button
-          onClick={() => toggleSort("seq_number")}
-          className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm transition-colors ${
-            isSortActive("seq_number")
-              ? "bg-foreground text-background font-medium"
-              : "text-muted-foreground hover:bg-muted hover:text-foreground"
-          }`}
-        >
-          Key #
-          <ArrowUpDown className="h-3.5 w-3.5" />
-        </button>
-
-        {/* Year dropdown */}
-        <FilterDropdown
-          label="Year"
-          options={YEAR_OPTIONS}
-          value={yearFilter}
-          onChange={setYearFilter}
-        />
-
-        {/* Search mode toggle */}
-        <div className="inline-flex items-center rounded border text-xs text-muted-foreground overflow-hidden">
-          {(["semantic", "keyword"] as const).map((mode) => (
-            <button
-              key={mode}
-              onClick={() => setSearchMode(mode)}
-              className={`px-2 py-0.5 transition-colors ${
-                searchMode === mode
-                  ? "bg-muted font-medium text-foreground"
-                  : "hover:bg-muted hover:text-foreground"
-              }`}
-            >
-              {mode.charAt(0).toUpperCase() + mode.slice(1)}
-            </button>
-          ))}
-        </div>
-      </MobileFilterDrawer>
+      </div>
 
       {/* Scrollable content area */}
       <div ref={scrollRef} className="flex-1 overflow-y-auto px-3 md:px-6 py-4">

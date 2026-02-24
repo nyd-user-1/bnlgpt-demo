@@ -148,7 +148,7 @@ export const EndfReportCard = memo(function EndfReportCard({ report, searchQuery
         ) : (
           <span />
         )}
-        <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="flex items-center gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
           <button
             onClick={handleCopy}
             className="flex h-10 w-10 items-center justify-center rounded-full bg-muted text-foreground shadow-lg transition-all hover:scale-110"
