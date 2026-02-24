@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { ThumbsUp, ThumbsDown, Copy, Check, BookOpen, ExternalLink, GraduationCap } from "lucide-react";
+import { useState, useRef } from "react";
+import { ThumbsUp, ThumbsDown, Copy, Check, BookOpen, ExternalLink, GraduationCap, FileText } from "lucide-react";
 import { toast } from "sonner";
 import type { MessageSources } from "@/hooks/useChat";
 
@@ -7,16 +7,20 @@ interface ChatResponseFooterProps {
   content: string;
   isStreaming?: boolean;
   sources?: MessageSources;
+  pdfUrl?: string;
 }
 
 export function ChatResponseFooter({
   content,
   isStreaming = false,
   sources,
+  pdfUrl,
 }: ChatResponseFooterProps) {
   const [copied, setCopied] = useState(false);
   const [feedback, setFeedback] = useState<"good" | "bad" | null>(null);
   const [sourcesOpen, setSourcesOpen] = useState(false);
+  const [pdfOpen, setPdfOpen] = useState(false);
+  const pdfRef = useRef<HTMLDivElement>(null);
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(content);
@@ -46,6 +50,26 @@ export function ChatResponseFooter({
             title={`${totalCount} source${totalCount !== 1 ? "s" : ""}`}
           >
             <BookOpen className="h-4 w-4" />
+          </button>
+        )}
+
+        {/* PDF viewer */}
+        {pdfUrl && (
+          <button
+            onClick={() => {
+              setPdfOpen(!pdfOpen);
+              if (!pdfOpen) {
+                setTimeout(() => pdfRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" }), 100);
+              }
+            }}
+            className={`inline-flex items-center justify-center h-8 w-8 rounded-md transition-colors ${
+              pdfOpen
+                ? "text-foreground bg-muted"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted"
+            }`}
+            title="View PDF"
+          >
+            <FileText className="h-4 w-4" />
           </button>
         )}
 
@@ -174,6 +198,32 @@ export function ChatResponseFooter({
               </div>
             )}
           </div>
+        </div>
+      )}
+
+      {/* Inline PDF viewer */}
+      {pdfOpen && pdfUrl && (
+        <div ref={pdfRef} className="mt-2 border rounded-lg overflow-hidden animate-in fade-in slide-in-from-top-1 duration-200">
+          <div className="flex items-center justify-between px-3 py-2 bg-muted/40 border-b">
+            <span className="text-xs font-medium text-muted-foreground flex items-center gap-1.5">
+              <FileText className="h-3 w-3" />
+              ENDF Report PDF
+            </span>
+            <a
+              href={pdfUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors"
+            >
+              Open in new tab
+              <ExternalLink className="h-3 w-3" />
+            </a>
+          </div>
+          <iframe
+            src={pdfUrl}
+            title="ENDF Report PDF"
+            className="w-full h-[600px] bg-background"
+          />
         </div>
       )}
     </div>

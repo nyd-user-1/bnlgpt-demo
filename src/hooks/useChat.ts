@@ -24,6 +24,7 @@ export interface Message {
   content: string;
   isStreaming?: boolean;
   sources?: MessageSources;
+  pdfUrl?: string;
 }
 
 function makeId() {
@@ -38,6 +39,7 @@ function toPersistedMessages(msgs: Message[]): PersistedMessage[] {
       role: m.role,
       content: m.content,
       timestamp: new Date().toISOString(),
+      ...(m.pdfUrl ? { pdfUrl: m.pdfUrl } : {}),
       ...(m.sources ? { sources: m.sources } : {}),
     }));
 }
@@ -54,7 +56,7 @@ export function useChat() {
   const persistence = useChatPersistence();
 
   const sendMessage = useCallback(
-    async (userText: string, systemContext?: string) => {
+    async (userText: string, systemContext?: string, pdfUrl?: string) => {
       const userMsg: Message = {
         id: makeId(),
         role: "user",
@@ -66,6 +68,7 @@ export function useChat() {
         role: "assistant",
         content: "",
         isStreaming: true,
+        ...(pdfUrl ? { pdfUrl } : {}),
       };
 
       setMessages((prev) => [...prev, userMsg, assistantMsg]);
@@ -233,6 +236,7 @@ export function useChat() {
             id: m.id,
             role: m.role,
             content: m.content,
+            ...(m.pdfUrl ? { pdfUrl: m.pdfUrl } : {}),
             ...(m.sources ? { sources: m.sources as MessageSources } : {}),
           }))
         );

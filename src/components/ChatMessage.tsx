@@ -7,6 +7,7 @@ interface ChatMessageProps {
   content: string;
   isStreaming?: boolean;
   sources?: MessageSources;
+  pdfUrl?: string;
 }
 
 export function ChatMessage({
@@ -14,6 +15,7 @@ export function ChatMessage({
   content,
   isStreaming,
   sources,
+  pdfUrl,
 }: ChatMessageProps) {
   if (role === "user") {
     return (
@@ -85,7 +87,7 @@ export function ChatMessage({
           <span className="inline-block w-1.5 h-4 bg-foreground animate-pulse" />
         )}
       </div>
-      <ChatResponseFooter content={content} isStreaming={isStreaming} sources={sources} />
+      <ChatResponseFooter content={content} isStreaming={isStreaming} sources={sources} pdfUrl={pdfUrl} />
     </div>
   );
 }

@@ -87,7 +87,7 @@ export default function Chat() {
         "context, explain the significance of the research, and highlight connections " +
         "to related work in the field.";
 
-      sendMessage(prompt, systemContext);
+      sendMessage(prompt, systemContext, url || undefined);
       navigate("/", { replace: true });
     }
   }, [searchParams, autoSubmitted, routeSessionId, sendMessage, navigate]);
@@ -108,6 +108,7 @@ export default function Chat() {
                   content={msg.content}
                   isStreaming={msg.isStreaming}
                   sources={msg.sources}
+                  pdfUrl={msg.pdfUrl}
                 />
               ))}
               <div ref={messagesEndRef} />
