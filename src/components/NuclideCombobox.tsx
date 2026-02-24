@@ -151,7 +151,7 @@ export function NuclideCombobox({ value, onChange, onSubmit }: NuclideComboboxPr
             onFocus={() => setOpen(true)}
             onKeyDown={handleKeyDown}
             placeholder="e.g. 6He"
-            className="bg-transparent text-sm w-24 outline-none placeholder:text-muted-foreground/50"
+            className="bg-transparent text-sm w-16 outline-none placeholder:text-muted-foreground/50"
           />
         )}
 

@@ -144,7 +144,7 @@ export function ReactionCombobox({ value, onChange, onSubmit }: ReactionCombobox
             onFocus={() => setOpen(true)}
             onKeyDown={handleKeyDown}
             placeholder="e.g. p,n"
-            className="bg-transparent text-sm w-24 outline-none placeholder:text-muted-foreground/50"
+            className="bg-transparent text-sm w-16 outline-none placeholder:text-muted-foreground/50"
           />
         )}
 
