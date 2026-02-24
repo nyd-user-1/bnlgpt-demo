@@ -86,7 +86,7 @@ const YEAR_OPTIONS = Array.from({ length: 56 }, (_, i) => String(2020 - i));
 export default function Endf() {
   const [query, setQuery] = useState("");
   const [yearFilter, setYearFilter] = useState<string | null>(null);
-  const [sortBy, setSortBy] = useState<EndfSortField>("report_date_parsed");
+  const [sortBy, setSortBy] = useState<EndfSortField>("seq_number");
   const [sortAsc, setSortAsc] = useState(false);
   const [page, setPage] = useState(1);
 
@@ -117,7 +117,7 @@ export default function Endf() {
     scrollRef.current?.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const defaultSort: EndfSortField = "report_date_parsed";
+  const defaultSort: EndfSortField = "seq_number";
 
   const toggleSort = (field: EndfSortField) => {
     if (sortBy === field) {
@@ -220,7 +220,6 @@ export default function Endf() {
               >
                 <ChevronRight className="h-3.5 w-3.5" />
               </button>
-              <span className="rounded border px-2 py-0.5">{totalCount.toLocaleString()} rows</span>
             </div>
           )}
         </div>

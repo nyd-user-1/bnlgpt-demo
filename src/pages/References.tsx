@@ -416,23 +416,6 @@ export default function References() {
             onSubmit={handleStructuredSearch}
           />
 
-          {/* Search mode toggle */}
-          <div className="inline-flex items-center rounded border text-xs text-muted-foreground overflow-hidden">
-            {(["semantic", "keyword"] as const).map((mode) => (
-              <button
-                key={mode}
-                onClick={() => setSearchMode(mode)}
-                className={`px-2 py-0.5 transition-colors ${
-                  searchMode === mode
-                    ? "bg-muted font-medium text-foreground"
-                    : "hover:bg-muted hover:text-foreground"
-                }`}
-              >
-                {mode.charAt(0).toUpperCase() + mode.slice(1)}
-              </button>
-            ))}
-          </div>
-
           {/* Clear structured filters */}
           {isStructured && (
             <button
@@ -443,7 +426,7 @@ export default function References() {
             </button>
           )}
 
-          {/* Inline pagination (far right) */}
+          {/* Inline pagination + search mode (far right) */}
           {totalPages > 0 && (
             <div className="ml-auto inline-flex items-center gap-1.5 text-xs text-muted-foreground">
               <button
@@ -477,7 +460,23 @@ export default function References() {
               >
                 <ChevronRight className="h-3.5 w-3.5" />
               </button>
-              <span className="rounded border px-2 py-0.5">{totalRecords.toLocaleString()} rows</span>
+
+              {/* Search mode toggle */}
+              <div className="inline-flex items-center rounded border text-xs text-muted-foreground overflow-hidden">
+                {(["semantic", "keyword"] as const).map((mode) => (
+                  <button
+                    key={mode}
+                    onClick={() => setSearchMode(mode)}
+                    className={`px-2 py-0.5 transition-colors ${
+                      searchMode === mode
+                        ? "bg-muted font-medium text-foreground"
+                        : "hover:bg-muted hover:text-foreground"
+                    }`}
+                  >
+                    {mode.charAt(0).toUpperCase() + mode.slice(1)}
+                  </button>
+                ))}
+              </div>
             </div>
           )}
         </div>
