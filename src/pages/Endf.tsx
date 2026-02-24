@@ -73,19 +73,6 @@ export default function Endf() {
       {/* Sticky filter bar */}
       <div className="sticky top-0 z-10 bg-background px-6 pt-3 pb-2">
         <div className="flex flex-wrap items-center gap-2">
-          {/* Key # sort toggle */}
-          <button
-            onClick={() => toggleSort("seq_number")}
-            className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm transition-colors ${
-              isSortActive("seq_number")
-                ? "bg-foreground text-background font-medium"
-                : "text-muted-foreground hover:bg-muted hover:text-foreground"
-            }`}
-          >
-            Key #
-            <ArrowUpDown className="h-3.5 w-3.5" />
-          </button>
-
           {/* Authors sort toggle */}
           <button
             onClick={() => toggleSort("authors")}
@@ -99,16 +86,16 @@ export default function Endf() {
             <ArrowUpDown className="h-3.5 w-3.5" />
           </button>
 
-          {/* Date sort toggle */}
+          {/* Key # sort toggle */}
           <button
-            onClick={() => toggleSort("report_date_parsed")}
+            onClick={() => toggleSort("seq_number")}
             className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm transition-colors ${
-              isSortActive("report_date_parsed")
+              isSortActive("seq_number")
                 ? "bg-foreground text-background font-medium"
                 : "text-muted-foreground hover:bg-muted hover:text-foreground"
             }`}
           >
-            Date
+            Key #
             <ArrowUpDown className="h-3.5 w-3.5" />
           </button>
 
@@ -122,6 +109,19 @@ export default function Endf() {
             }`}
           >
             Report
+            <ArrowUpDown className="h-3.5 w-3.5" />
+          </button>
+
+          {/* Year sort toggle */}
+          <button
+            onClick={() => toggleSort("report_date_parsed")}
+            className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm transition-colors ${
+              isSortActive("report_date_parsed")
+                ? "bg-foreground text-background font-medium"
+                : "text-muted-foreground hover:bg-muted hover:text-foreground"
+            }`}
+          >
+            Year
             <ArrowUpDown className="h-3.5 w-3.5" />
           </button>
 
