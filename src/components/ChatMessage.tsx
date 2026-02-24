@@ -20,7 +20,7 @@ export function ChatMessage({
   if (role === "user") {
     return (
       <div className="flex justify-end mb-6">
-        <div className="bg-muted/40 rounded-lg p-4 border-0 max-w-[70%]">
+        <div className="bg-muted/40 rounded-lg p-3 md:p-4 border-0 max-w-[90%] md:max-w-[70%]">
           <p className="text-base leading-relaxed">{content}</p>
         </div>
       </div>

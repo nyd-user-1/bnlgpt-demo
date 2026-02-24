@@ -121,7 +121,7 @@ function ChatSessionItem({
         className={`absolute right-2 top-1/2 -translate-y-1/2 h-7 w-7 rounded-md flex items-center justify-center transition-opacity ${
           menuOpen
             ? "opacity-100 bg-muted"
-            : "opacity-0 group-hover:opacity-100 hover:bg-muted"
+            : "opacity-100 md:opacity-0 md:group-hover:opacity-100 hover:bg-muted"
         }`}
       >
         <MoreHorizontal className="h-4 w-4 text-muted-foreground" />
@@ -163,9 +163,10 @@ function ChatSessionItem({
 
 interface SidebarProps {
   isOpen: boolean;
+  onClose?: () => void;
 }
 
-export function Sidebar({ isOpen }: SidebarProps) {
+export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const [chatsExpanded, setChatsExpanded] = useState(true);
@@ -175,16 +176,16 @@ export function Sidebar({ isOpen }: SidebarProps) {
     <aside
       className={`${
         isOpen ? "w-[281px]" : "w-0"
-      } flex-shrink-0 transition-all duration-200 ease-in-out z-50 ${isOpen ? "overflow-visible" : "overflow-hidden"}`}
+      } flex-shrink-0 transition-all duration-200 ease-in-out fixed inset-y-0 left-0 z-50 md:relative md:inset-auto ${isOpen ? "overflow-visible" : "overflow-hidden"}`}
     >
-      <div className="w-[281px] h-full flex flex-col">
+      <div className="w-[281px] h-full flex flex-col bg-background">
         {/* Navigation */}
         <nav className="flex-1 overflow-y-auto px-3 pt-2 space-y-1">
           <h1 className="px-3 pt-1 pb-3 text-lg font-bold tracking-tight">
             Nuclear Science References
           </h1>
           <button
-            onClick={() => navigate("/references")}
+            onClick={() => { navigate("/references"); onClose?.(); }}
             className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
               location.pathname === "/references"
                 ? "bg-muted"
@@ -196,7 +197,7 @@ export function Sidebar({ isOpen }: SidebarProps) {
           </button>
 
           <button
-            onClick={() => navigate("/endf")}
+            onClick={() => { navigate("/endf"); onClose?.(); }}
             className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
               location.pathname === "/endf"
                 ? "bg-muted"
@@ -211,6 +212,7 @@ export function Sidebar({ isOpen }: SidebarProps) {
             onClick={() => {
               navigate("/new-chat");
               window.dispatchEvent(new Event("new-chat"));
+              onClose?.();
             }}
             className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
               location.pathname === "/" || location.pathname === "/new-chat"
@@ -244,7 +246,7 @@ export function Sidebar({ isOpen }: SidebarProps) {
                     id={session.id}
                     title={session.title}
                     isActive={location.pathname === `/c/${session.id}`}
-                    onNavigate={() => navigate(`/c/${session.id}`)}
+                    onNavigate={() => { navigate(`/c/${session.id}`); onClose?.(); }}
                     onRefresh={refresh}
                   />
                 ))}

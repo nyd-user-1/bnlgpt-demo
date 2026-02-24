@@ -175,7 +175,7 @@ export function NuclideCombobox({ value, onChange, onSubmit }: NuclideComboboxPr
 
       {/* Dropdown */}
       {open && (
-        <div className="absolute left-0 top-full mt-1 z-50 w-[240px] max-h-[240px] overflow-y-auto rounded-lg border bg-background shadow-md animate-in fade-in slide-in-from-top-1 duration-150">
+        <div className="absolute left-0 top-full mt-1 z-50 w-[calc(100vw-2rem)] md:w-[240px] max-h-[240px] overflow-y-auto rounded-lg border bg-background shadow-md animate-in fade-in slide-in-from-top-1 duration-150">
           {filtered.length === 0 ? (
             <div className="px-3 py-2 text-xs text-muted-foreground">No nuclides found.</div>
           ) : (

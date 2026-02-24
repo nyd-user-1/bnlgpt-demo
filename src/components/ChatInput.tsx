@@ -431,7 +431,7 @@ export function ChatInput({ onSubmit, onStop, isLoading, initialValue }: ChatInp
 
             {menuOpen && !drawerCategory && (
               /* -------- Category list -------- */
-              <div className="absolute bottom-full left-0 mb-2 w-56 rounded-2xl border border-border/60 bg-background shadow-xl animate-in fade-in slide-in-from-bottom-2 duration-150 overflow-hidden">
+              <div className="absolute bottom-full left-0 mb-2 w-[calc(100vw-2rem)] md:w-56 rounded-2xl border border-border/60 bg-background shadow-xl animate-in fade-in slide-in-from-bottom-2 duration-150 overflow-hidden">
                 <div className="py-1">
                   {CATEGORIES.map((cat, i) => (
                     <button
@@ -452,7 +452,7 @@ export function ChatInput({ onSubmit, onStop, isLoading, initialValue }: ChatInp
 
             {menuOpen && drawerCategory && (
               /* -------- Drawer -------- */
-              <div className="absolute bottom-full left-0 mb-2 w-80 rounded-2xl border border-border/60 bg-background shadow-xl animate-in fade-in slide-in-from-bottom-2 duration-150 overflow-hidden">
+              <div className="absolute bottom-full left-0 mb-2 w-[calc(100vw-2rem)] md:w-80 rounded-2xl border border-border/60 bg-background shadow-xl animate-in fade-in slide-in-from-bottom-2 duration-150 overflow-hidden">
                 {/* Header: back + search + clear */}
                 <div className="flex items-center gap-2 px-3 py-2.5 border-b border-border/40">
                   <button
@@ -561,7 +561,7 @@ export function ChatInput({ onSubmit, onStop, isLoading, initialValue }: ChatInp
               </button>
 
               {modelMenuOpen && (
-                <div className="absolute bottom-full right-0 mb-2 w-[260px] rounded-xl border bg-background shadow-xl animate-in fade-in slide-in-from-bottom-2 duration-150 overflow-hidden py-1">
+                <div className="absolute bottom-full left-0 md:left-auto md:right-0 mb-2 w-[calc(100vw-2rem)] md:w-[260px] rounded-xl border bg-background shadow-xl animate-in fade-in slide-in-from-bottom-2 duration-150 overflow-hidden py-1">
                   {MODEL_OPTIONS.map((m) => (
                     <button
                       key={m.label}

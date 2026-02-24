@@ -356,7 +356,7 @@ export default function References() {
         )}
 
       {/* Sticky filter bar */}
-      <div className="sticky top-0 z-10 bg-background px-6 pt-3 pb-2">
+      <div className="sticky top-0 z-10 bg-background px-3 md:px-6 pt-3 pb-2">
         {/* Filter bar */}
         <div className="flex flex-wrap items-center gap-2">
           {/* Authors sort toggle */}
@@ -418,7 +418,7 @@ export default function References() {
 
           {/* Search mode toggle + inline pagination (far right) */}
           {totalPages > 0 && (
-            <div className="ml-auto inline-flex items-center gap-1.5 text-xs text-muted-foreground">
+            <div className="w-full md:w-auto md:ml-auto inline-flex flex-wrap justify-between md:justify-start mt-2 md:mt-0 items-center gap-1.5 text-xs text-muted-foreground">
               {/* Search mode toggle */}
               <div className="inline-flex items-center rounded border text-xs text-muted-foreground overflow-hidden">
                 {(["semantic", "keyword"] as const).map((mode) => (
@@ -473,7 +473,7 @@ export default function References() {
       </div>
 
       {/* Scrollable content area */}
-      <div ref={scrollRef} className="flex-1 overflow-y-auto px-6 py-4">
+      <div ref={scrollRef} className="flex-1 overflow-y-auto px-3 md:px-6 py-4">
         {/* Error state */}
         {error && (
           <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-4 text-sm text-destructive mb-6">

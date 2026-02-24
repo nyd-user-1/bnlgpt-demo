@@ -111,7 +111,7 @@ export default function Chat() {
         <>
           {/* Messages — scrollable */}
           <div className="flex-1 overflow-y-auto">
-            <div className="mx-auto max-w-[720px] px-4 py-8">
+            <div className="mx-auto max-w-[720px] px-2 md:px-4 py-4 md:py-8">
               {messages.map((msg) => (
                 <ChatMessage
                   key={msg.id}
@@ -127,7 +127,7 @@ export default function Chat() {
           </div>
 
           {/* Input pinned to bottom */}
-          <div className="px-4 py-4 shrink-0 bg-background">
+          <div className="px-2 md:px-4 py-3 md:py-4 shrink-0 bg-background">
             <ChatInput
               onSubmit={(text) => sendMessage(text)}
               onStop={stopGeneration}

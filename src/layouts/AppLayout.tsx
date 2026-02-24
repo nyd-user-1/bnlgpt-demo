@@ -9,8 +9,16 @@ export function AppLayout() {
   const [feedOpen, setFeedOpen] = useState(false);
 
   return (
-    <div className="flex h-screen bg-background p-4">
-      <Sidebar isOpen={sidebarOpen} />
+    <div className="flex h-screen bg-background p-1 md:p-4">
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+
+      {/* Mobile backdrop */}
+      {(sidebarOpen || feedOpen) && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          onClick={() => { setSidebarOpen(false); setFeedOpen(false); }}
+        />
+      )}
 
       {/* App wrapper — rounded border container */}
       <div
@@ -43,7 +51,7 @@ export function AppLayout() {
         </main>
       </div>
 
-      <ResearchFeed isOpen={feedOpen} />
+      <ResearchFeed isOpen={feedOpen} onClose={() => setFeedOpen(false)} />
     </div>
   );
 }

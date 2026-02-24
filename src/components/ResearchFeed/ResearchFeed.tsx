@@ -5,16 +5,17 @@ import { TrendingStrip } from "./TrendingStrip";
 
 interface ResearchFeedProps {
   isOpen: boolean;
+  onClose?: () => void;
 }
 
-export function ResearchFeed({ isOpen }: ResearchFeedProps) {
+export function ResearchFeed({ isOpen, onClose: _onClose }: ResearchFeedProps) {
   const { events, trending } = useResearchFeed();
 
   return (
     <aside
       className={`${
         isOpen ? "w-[300px]" : "w-0"
-      } flex-shrink-0 transition-all duration-200 ease-in-out ${
+      } flex-shrink-0 transition-all duration-200 ease-in-out fixed inset-y-0 right-0 z-50 md:relative md:inset-auto md:z-auto ${
         isOpen ? "overflow-visible" : "overflow-hidden"
       }`}
     >

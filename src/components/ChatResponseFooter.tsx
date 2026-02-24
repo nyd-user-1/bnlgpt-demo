@@ -59,7 +59,7 @@ export function ChatResponseFooter({
                 setTimeout(() => sourcesRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" }), 100);
               }
             }}
-            className={`inline-flex items-center justify-center h-8 w-8 rounded-md transition-colors ${
+            className={`inline-flex items-center justify-center h-10 w-10 md:h-8 md:w-8 rounded-md transition-colors ${
               sourcesOpen
                 ? "text-foreground bg-muted"
                 : "text-muted-foreground hover:text-foreground hover:bg-muted"
@@ -79,7 +79,7 @@ export function ChatResponseFooter({
                 setTimeout(() => abstractRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" }), 100);
               }
             }}
-            className={`inline-flex items-center justify-center h-8 w-8 rounded-md transition-colors ${
+            className={`inline-flex items-center justify-center h-10 w-10 md:h-8 md:w-8 rounded-md transition-colors ${
               abstractOpen
                 ? "text-foreground bg-muted"
                 : "text-muted-foreground hover:text-foreground hover:bg-muted"
@@ -99,7 +99,7 @@ export function ChatResponseFooter({
                 setTimeout(() => pdfRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" }), 100);
               }
             }}
-            className={`inline-flex items-center justify-center h-8 w-8 rounded-md transition-colors ${
+            className={`inline-flex items-center justify-center h-10 w-10 md:h-8 md:w-8 rounded-md transition-colors ${
               pdfOpen
                 ? "text-foreground bg-muted"
                 : "text-muted-foreground hover:text-foreground hover:bg-muted"
@@ -113,7 +113,7 @@ export function ChatResponseFooter({
         {/* Copy */}
         <button
           onClick={handleCopy}
-          className="inline-flex items-center justify-center h-8 w-8 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+          className="inline-flex items-center justify-center h-10 w-10 md:h-8 md:w-8 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
           title="Copy response"
         >
           {copied ? (
@@ -127,7 +127,7 @@ export function ChatResponseFooter({
         <div className="flex items-center gap-1 ml-auto">
           <button
             onClick={() => setFeedback(feedback === "good" ? null : "good")}
-            className={`inline-flex items-center justify-center h-8 w-8 rounded-md transition-colors ${
+            className={`inline-flex items-center justify-center h-10 w-10 md:h-8 md:w-8 rounded-md transition-colors ${
               feedback === "good"
                 ? "text-green-600 hover:text-green-600 hover:bg-green-50"
                 : "text-muted-foreground hover:text-foreground hover:bg-muted"
@@ -138,7 +138,7 @@ export function ChatResponseFooter({
           </button>
           <button
             onClick={() => setFeedback(feedback === "bad" ? null : "bad")}
-            className={`inline-flex items-center justify-center h-8 w-8 rounded-md transition-colors ${
+            className={`inline-flex items-center justify-center h-10 w-10 md:h-8 md:w-8 rounded-md transition-colors ${
               feedback === "bad"
                 ? "text-red-500 hover:text-red-500 hover:bg-red-50"
                 : "text-muted-foreground hover:text-foreground hover:bg-muted"
@@ -304,7 +304,7 @@ export function ChatResponseFooter({
           <iframe
             src={`${effectivePdfUrl}#navpanes=0&view=FitH`}
             title={paperData ? "Paper PDF" : "ENDF Report PDF"}
-            className="w-full h-[600px] bg-background"
+            className="w-full h-[50vh] md:h-[600px] bg-background"
           />
         </div>
       )}
