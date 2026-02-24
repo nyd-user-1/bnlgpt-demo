@@ -13,6 +13,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Loader2,
+  X,
 } from "lucide-react";
 import type { NsrRecord } from "@/types/nsr";
 import { useS2Enrichment } from "@/hooks/useS2Enrichment";
@@ -43,8 +44,8 @@ export function RecordDrawer({
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="right" className="flex flex-col">
-        <SheetHeader className="pb-0 shrink-0">
+      <SheetContent side="right" showCloseButton={false} className="flex flex-col">
+        <SheetHeader className="pb-0 shrink-0 pr-4">
           <div className="flex items-center gap-2">
             <Hash className="h-4 w-4 text-muted-foreground" />
             <SheetTitle className="text-base">
@@ -55,28 +56,37 @@ export function RecordDrawer({
             </span>
 
             {/* Prev/next navigation */}
-            <button
-              onClick={() => hasPrev && onNavigate(currentIndex - 1)}
-              disabled={!hasPrev}
-              className="inline-flex items-center justify-center h-7 w-7 rounded-md hover:bg-muted disabled:opacity-30 transition-colors"
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </button>
-            <button
-              onClick={() => hasNext && onNavigate(currentIndex + 1)}
-              disabled={!hasNext}
-              className="inline-flex items-center justify-center h-7 w-7 rounded-md hover:bg-muted disabled:opacity-30 transition-colors"
-            >
-              <ChevronRight className="h-4 w-4" />
-            </button>
-
-            {/* Open Access badge pushed to right */}
-            {s2?.is_open_access && (
-              <span className="ml-auto inline-flex items-center rounded-full bg-green-500/20 px-2.5 py-0.5 text-[11px] font-medium text-green-400">
-                Open Access
-              </span>
-            )}
+            <div className="ml-auto flex items-center gap-1">
+              <button
+                onClick={() => hasPrev && onNavigate(currentIndex - 1)}
+                disabled={!hasPrev}
+                className="inline-flex items-center justify-center h-7 w-7 rounded-md hover:bg-muted disabled:opacity-30 transition-colors"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+              <button
+                onClick={() => hasNext && onNavigate(currentIndex + 1)}
+                disabled={!hasNext}
+                className="inline-flex items-center justify-center h-7 w-7 rounded-md hover:bg-muted disabled:opacity-30 transition-colors"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </button>
+              <button
+                onClick={() => onOpenChange(false)}
+                className="inline-flex items-center justify-center h-7 w-7 rounded-md hover:bg-muted opacity-70 hover:opacity-100 transition-all ml-1"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
           </div>
+
+          {/* Open Access badge */}
+          {s2?.is_open_access && (
+            <span className="inline-flex items-center rounded-full bg-green-500/20 px-2.5 py-0.5 text-[11px] font-medium text-green-400 w-fit">
+              Open Access
+            </span>
+          )}
+
           <SheetDescription className="text-foreground font-medium text-sm leading-snug mt-1">
             {record.title}
           </SheetDescription>
@@ -120,27 +130,26 @@ export function RecordDrawer({
           {/* S2 data found */}
           {!s2Loading && s2 && s2.s2_lookup_status === "found" && (
             <>
-              {/* Venue + Stats row */}
-              <div className="flex items-center gap-3 py-3 border-b border-border/50 text-xs">
+              {/* Venue + Stats */}
+              <div className="py-3 border-b border-border/50 text-xs space-y-2">
                 {s2.venue && (
-                  <>
-                    <span className="inline-flex items-center rounded-full bg-foreground/10 px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground">
-                      {s2.venue}
-                    </span>
-                    <span className="text-border">|</span>
-                  </>
+                  <span className="inline-flex items-center rounded-full bg-foreground/10 px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground">
+                    {s2.venue}
+                  </span>
                 )}
-                <div className="flex items-center gap-1.5">
-                  <span className="font-semibold">{s2.citation_count ?? "—"}</span>
-                  <span className="text-muted-foreground">citations</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="font-semibold">{s2.influential_citation_count ?? "—"}</span>
-                  <span className="text-muted-foreground">influential</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="font-semibold">{s2.reference_count ?? "—"}</span>
-                  <span className="text-muted-foreground">references</span>
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-semibold">{s2.citation_count ?? "—"}</span>
+                    <span className="text-muted-foreground">citations</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-semibold">{s2.influential_citation_count ?? "—"}</span>
+                    <span className="text-muted-foreground">influential</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-semibold">{s2.reference_count ?? "—"}</span>
+                    <span className="text-muted-foreground">references</span>
+                  </div>
                 </div>
               </div>
 
@@ -177,25 +186,23 @@ export function RecordDrawer({
                       Authors
                     </span>
                   </div>
-                  <div className="flex flex-wrap gap-2">
-                    {s2.s2_authors.map((author) => (
-                      <div
-                        key={author.name}
-                        className="flex items-center gap-2 rounded-md border border-border/50 bg-muted/40 px-3 py-1.5"
-                      >
-                        <span className="text-xs font-medium">{author.name}</span>
-                        {author.hIndex != null && author.hIndex > 0 && (
-                          <span className="text-[10px] text-muted-foreground">
-                            h-index: {author.hIndex}
-                          </span>
-                        )}
-                        {author.affiliations?.[0] && (
-                          <span className="text-[10px] text-muted-foreground">
-                            {author.affiliations[0]}
-                          </span>
-                        )}
-                      </div>
-                    ))}
+                  <div className="flex flex-wrap gap-1.5">
+                    {s2.s2_authors.map((author) => {
+                      const hasExtra = (author.hIndex != null && author.hIndex > 0) || author.affiliations?.[0];
+                      return (
+                        <span
+                          key={author.name}
+                          className={`inline-flex items-center gap-1.5 rounded-full border border-border/50 bg-muted/40 text-xs ${hasExtra ? "px-2.5 py-1" : "px-2 py-0.5"}`}
+                        >
+                          <span className="font-medium">{author.name}</span>
+                          {author.hIndex != null && author.hIndex > 0 && (
+                            <span className="text-[10px] text-muted-foreground">
+                              h:{author.hIndex}
+                            </span>
+                          )}
+                        </span>
+                      );
+                    })}
                   </div>
                 </div>
               )}
