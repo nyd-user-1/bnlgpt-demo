@@ -80,6 +80,80 @@ function formatS2Context(papers: S2Paper[]): string {
   return `\n\n## Related Papers (Semantic Scholar)\n${lines.join("\n\n")}`;
 }
 
+/** Extract nuclide mentions like "100Br", "208Pb", "6He" from text */
+function extractNuclides(text: string): string[] {
+  const patterns = [
+    /\b(\d{1,3})([A-Z][a-z]?)\b/g,           // 100Br, 208Pb, 6He
+    /\b([A-Z][a-z]?)-?(\d{1,3})\b/g,          // Br-100, Pb208
+  ];
+  const found = new Set<string>();
+  for (const pat of patterns) {
+    let m;
+    while ((m = pat.exec(text)) !== null) {
+      // Normalize to "100Br" form
+      const isNumFirst = /^\d/.test(m[1]);
+      const mass = isNumFirst ? m[1] : m[2];
+      const sym = isNumFirst ? m[2] : m[1];
+      found.add(`${mass}${sym[0].toUpperCase()}${sym.slice(1).toLowerCase()}`);
+    }
+  }
+  return [...found];
+}
+
+/** Extract reaction mentions like "(p,n)", "(d,p)" from text */
+function extractReactions(text: string): string[] {
+  const pat = /\(([a-zA-Z0-9',]+)\)/g;
+  const found = new Set<string>();
+  let m;
+  while ((m = pat.exec(text)) !== null) {
+    // Only keep if it looks like a nuclear reaction (has a comma)
+    if (m[1].includes(",")) {
+      found.add(`(${m[1]})`);
+    }
+  }
+  return [...found];
+}
+
+/** Fetch NSR records matching a specific nuclide via structured array query */
+async function fetchNuclideRecords(
+  nuclides: string[],
+  supabaseUrl: string,
+  supabaseKey: string,
+): Promise<NsrResult[]> {
+  if (nuclides.length === 0) return [];
+  const supabase = createClient(supabaseUrl, supabaseKey);
+  const { data, error } = await supabase
+    .from("nsr")
+    .select("key_number, title, authors, pub_year, doi, keywords")
+    .contains("nuclides", nuclides)
+    .order("pub_year", { ascending: false })
+    .limit(8);
+
+  if (error) return [];
+  return (data ?? []).map((r: any) => ({ ...r, similarity: 1.0 }));
+}
+
+/** Merge structured + semantic results, deduplicating by key_number */
+function mergeNsrResults(structured: NsrResult[], semantic: NsrResult[]): NsrResult[] {
+  const seen = new Set<string>();
+  const merged: NsrResult[] = [];
+  // Structured matches first (exact nuclide hits)
+  for (const r of structured) {
+    if (!seen.has(r.key_number)) {
+      seen.add(r.key_number);
+      merged.push(r);
+    }
+  }
+  // Then semantic matches
+  for (const r of semantic) {
+    if (!seen.has(r.key_number)) {
+      seen.add(r.key_number);
+      merged.push(r);
+    }
+  }
+  return merged.slice(0, 12);
+}
+
 async function embedQuery(text: string, openaiKey: string): Promise<number[]> {
   const res = await fetch("https://api.openai.com/v1/embeddings", {
     method: "POST",
@@ -171,16 +245,21 @@ Deno.serve(async (req) => {
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const s2Key = Deno.env.get("SEMANTIC_SCHOLAR_API_KEY");
 
-    // 1. Embed user message & fetch S2 papers in parallel
-    const [queryEmbedding, s2Papers] = await Promise.all([
+    // 1. Extract structured entities from the query
+    const nuclides = extractNuclides(userMessage);
+
+    // 2. Embed user message, fetch S2 papers, and structured nuclide search in parallel
+    const [queryEmbedding, s2Papers, nuclideRecords] = await Promise.all([
       embedQuery(userMessage, openaiKey),
       fetchS2Papers(userMessage, s2Key),
+      fetchNuclideRecords(nuclides, supabaseUrl, supabaseKey),
     ]);
 
-    // 2. Retrieve NSR records
-    const nsrRecords = await fetchNsrRecords(queryEmbedding, supabaseUrl, supabaseKey);
+    // 3. Semantic search + merge with structured results
+    const semanticRecords = await fetchNsrRecords(queryEmbedding, supabaseUrl, supabaseKey);
+    const nsrRecords = mergeNsrResults(nuclideRecords, semanticRecords);
 
-    // 3. Build grounded system prompt
+    // 4. Build grounded system prompt
     const groundingContext =
       formatNsrContext(nsrRecords) + formatS2Context(s2Papers);
 
@@ -188,7 +267,7 @@ Deno.serve(async (req) => {
       ? `${SYSTEM_PROMPT_BASE}\n\n${systemContext}\n${groundingContext}`
       : `${SYSTEM_PROMPT_BASE}\n${groundingContext}`;
 
-    // 4. Build the sources metadata
+    // 5. Build the sources metadata
     const sources = {
       nsr: nsrRecords.map((r) => ({
         key_number: r.key_number,
@@ -205,14 +284,14 @@ Deno.serve(async (req) => {
       })),
     };
 
-    // 5. Build API messages for GPT-4o
+    // 6. Build API messages for GPT-4o
     const apiMessages = [
       { role: "system", content: systemPrompt },
       ...messages.slice(-10),
       { role: "user", content: userMessage },
     ];
 
-    // 6. Call GPT-4o with streaming
+    // 7. Call GPT-4o with streaming
     const completionRes = await fetch(
       "https://api.openai.com/v1/chat/completions",
       {
@@ -235,7 +314,7 @@ Deno.serve(async (req) => {
       throw new Error(`OpenAI completion error ${completionRes.status}: ${err}`);
     }
 
-    // 7. Stream response back with sources prefix
+    // 8. Stream response back with sources prefix
     const encoder = new TextEncoder();
 
     const stream = new ReadableStream({
