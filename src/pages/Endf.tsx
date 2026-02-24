@@ -83,8 +83,11 @@ const YEAR_OPTIONS = Array.from({ length: 56 }, (_, i) => String(2020 - i));
 /*  Page                                                               */
 /* ------------------------------------------------------------------ */
 
+type SearchMode = "semantic" | "keyword";
+
 export default function Endf() {
   const [query, setQuery] = useState("");
+  const [searchMode, setSearchMode] = useState<SearchMode>("semantic");
   const [yearFilter, setYearFilter] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState<EndfSortField>("seq_number");
   const [sortAsc, setSortAsc] = useState(false);
@@ -107,8 +110,8 @@ export default function Endf() {
   const totalPages = Math.max(1, Math.ceil(totalCount / CARDS_PER_PAGE));
   const currentPage = Math.min(page, totalPages);
 
-  // Reset page when query or sort changes
-  useEffect(() => { setPage(1); }, [deferredQuery, yearFilter, sortBy, sortAsc]);
+  // Reset page when query, filter, or sort changes
+  useEffect(() => { setPage(1); }, [deferredQuery, yearFilter, searchMode, sortBy, sortAsc]);
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -186,9 +189,26 @@ export default function Endf() {
             onChange={setYearFilter}
           />
 
-          {/* Inline pagination (far right) */}
+          {/* Search mode toggle + inline pagination (far right) */}
           {totalPages > 0 && (
             <div className="ml-auto inline-flex items-center gap-1.5 text-xs text-muted-foreground">
+              {/* Search mode toggle */}
+              <div className="inline-flex items-center rounded border text-xs text-muted-foreground overflow-hidden">
+                {(["semantic", "keyword"] as const).map((mode) => (
+                  <button
+                    key={mode}
+                    onClick={() => setSearchMode(mode)}
+                    className={`px-2 py-0.5 transition-colors ${
+                      searchMode === mode
+                        ? "bg-muted font-medium text-foreground"
+                        : "hover:bg-muted hover:text-foreground"
+                    }`}
+                  >
+                    {mode.charAt(0).toUpperCase() + mode.slice(1)}
+                  </button>
+                ))}
+              </div>
+
               <button
                 onClick={() => goToPage(currentPage - 1)}
                 disabled={currentPage <= 1}

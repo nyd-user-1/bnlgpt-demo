@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useSearchParams, useNavigate, useParams } from "react-router-dom";
+import { useSearchParams, useNavigate, useParams, useLocation } from "react-router-dom";
 import { ChatInput } from "@/components/ChatInput";
 import { ChatMessage } from "@/components/ChatMessage";
 import { useChat } from "@/hooks/useChat";
@@ -7,6 +7,7 @@ import { useChat } from "@/hooks/useChat";
 export default function Chat() {
   const [searchParams] = useSearchParams();
   const { sessionId: routeSessionId } = useParams();
+  const location = useLocation();
   const navigate = useNavigate();
   const { messages, isLoading, sendMessage, stopGeneration, clearMessages, loadSession, sessionId } =
     useChat();
@@ -24,25 +25,25 @@ export default function Chat() {
     function handleKeyDown(e: KeyboardEvent) {
       if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key.toLowerCase() === "o") {
         e.preventDefault();
-        clearMessages();
-        navigate("/");
+        navigate("/new-chat");
       }
     }
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [clearMessages, navigate]);
+  }, [navigate]);
 
   // Load existing session from route param, or clear for new chat
+  const isNewChat = location.pathname === "/new-chat";
   useEffect(() => {
     if (routeSessionId && routeSessionId !== loadedSessionRef.current) {
       loadedSessionRef.current = routeSessionId;
       loadSession(routeSessionId);
-    } else if (!routeSessionId && loadedSessionRef.current) {
-      // Navigated to "/" from a session — start fresh
+    } else if (!routeSessionId) {
+      // Navigated to "/" or "/new-chat" — start fresh
       loadedSessionRef.current = null;
       clearMessages();
     }
-  }, [routeSessionId, loadSession, clearMessages]);
+  }, [routeSessionId, isNewChat, loadSession, clearMessages]);
 
   // Update URL when session is created (without remounting)
   useEffect(() => {
@@ -50,17 +51,6 @@ export default function Chat() {
       window.history.replaceState(null, "", `/c/${sessionId}`);
     }
   }, [sessionId, routeSessionId, messages.length, isLoading]);
-
-  // Listen for "new-chat" event from Sidebar (handles replaceState URL mismatch)
-  useEffect(() => {
-    function handler() {
-      loadedSessionRef.current = null;
-      setAutoSubmitted(false);
-      clearMessages();
-    }
-    window.addEventListener("new-chat", handler);
-    return () => window.removeEventListener("new-chat", handler);
-  }, [clearMessages]);
 
   // Auto-submit from URL params (from reference card click)
   useEffect(() => {

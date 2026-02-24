@@ -18,6 +18,7 @@ function App() {
           <Routes>
             <Route element={<AppLayout />}>
               <Route path="/" element={<Chat />} />
+              <Route path="/new-chat" element={<Chat />} />
               <Route path="/c/:sessionId" element={<Chat />} />
               <Route path="/references" element={<References />} />
               <Route path="/resources" element={<Resources />} />
