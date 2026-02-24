@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
 import {
   ArrowUp, Plus, Square, ChevronDown, ChevronRight, ArrowLeft,
   Lightbulb, Atom, Zap, Users, X,
@@ -145,7 +144,6 @@ interface ChatInputProps {
 }
 
 export function ChatInput({ onSubmit, onStop, isLoading, initialValue }: ChatInputProps) {
-  const navigate = useNavigate();
   const [value, setValue] = useState(initialValue ?? "");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -377,14 +375,15 @@ export function ChatInput({ onSubmit, onStop, isLoading, initialValue }: ChatInp
   };
 
   const handleDbItemClick = (item: DbItem) => {
-    closeMenu();
+    let prompt = "";
     if (drawerCategory === "nuclides") {
-      navigate(`/references?nuclide=${encodeURIComponent(item.value)}`);
+      prompt = `What papers in the NSR database discuss ${item.value}? Summarize their key findings and significance.`;
     } else if (drawerCategory === "reactions") {
-      navigate(`/references?reaction=${encodeURIComponent(item.value)}`);
+      prompt = `What papers in the NSR database discuss ${item.value} reactions? Summarize their measurements, methods, and key results.`;
     } else if (drawerCategory === "authors") {
-      navigate(`/references?q=${encodeURIComponent(item.value)}&mode=keyword`);
+      prompt = `What papers by ${item.value} are in the NSR database? Summarize their research contributions and key findings.`;
     }
+    handleSelectPrompt(prompt);
   };
 
   // client-side filtered sample prompts
