@@ -472,11 +472,28 @@ export default function References() {
         </div>
       </div>
 
-      {/* Mobile FAB + bottom-sheet filters */}
-      <MobileFilterDrawer
-        pagination={
-          totalPages > 1 ? (
-            <div className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
+      {/* Mobile pagination + search mode — visible only on mobile */}
+      {totalPages > 0 && (
+        <div className="md:hidden sticky top-0 z-10 bg-background px-3 pt-3 pb-2">
+          <div className="flex items-center justify-between gap-1.5 text-xs text-muted-foreground">
+            {/* Search mode toggle */}
+            <div className="inline-flex items-center rounded border text-xs text-muted-foreground overflow-hidden">
+              {(["semantic", "keyword"] as const).map((mode) => (
+                <button
+                  key={mode}
+                  onClick={() => setSearchMode(mode)}
+                  className={`px-2 py-0.5 transition-colors ${
+                    searchMode === mode
+                      ? "bg-muted font-medium text-foreground"
+                      : "hover:bg-muted hover:text-foreground"
+                  }`}
+                >
+                  {mode.charAt(0).toUpperCase() + mode.slice(1)}
+                </button>
+              ))}
+            </div>
+
+            <div className="inline-flex items-center gap-1.5">
               <button
                 onClick={() => goToPage(currentPage - 1)}
                 disabled={currentPage <= 1}
@@ -484,7 +501,23 @@ export default function References() {
               >
                 <ChevronLeft className="h-3.5 w-3.5" />
               </button>
-              <span>Page {currentPage} of {totalPages}</span>
+              <span>Page</span>
+              <input
+                type="text"
+                value={currentPage}
+                onChange={(e) => {
+                  const val = Number(e.target.value);
+                  if (val >= 1 && val <= totalPages) goToPage(val);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    const val = Number((e.target as HTMLInputElement).value);
+                    if (val >= 1 && val <= totalPages) goToPage(val);
+                  }
+                }}
+                className="h-6 w-10 rounded border bg-transparent text-center text-xs text-foreground outline-none focus:ring-1 focus:ring-foreground/20"
+              />
+              <span>of {totalPages}</span>
               <button
                 onClick={() => goToPage(currentPage + 1)}
                 disabled={currentPage >= totalPages}
@@ -493,9 +526,12 @@ export default function References() {
                 <ChevronRight className="h-3.5 w-3.5" />
               </button>
             </div>
-          ) : undefined
-        }
-      >
+          </div>
+        </div>
+      )}
+
+      {/* Mobile FAB + drawer filters */}
+      <MobileFilterDrawer>
         {/* Authors sort toggle */}
         <button
           onClick={() => {
@@ -632,45 +668,6 @@ export default function References() {
           </p>
         )}
       </div>
-
-      {/* Mobile sticky bottom pagination */}
-      {totalPages > 1 && (
-        <div className="md:hidden sticky bottom-0 z-10 bg-background/95 backdrop-blur-sm border-t px-4 py-2">
-          <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
-            <button
-              onClick={() => goToPage(currentPage - 1)}
-              disabled={currentPage <= 1}
-              className="inline-flex items-center justify-center h-7 w-7 rounded border hover:bg-muted disabled:opacity-30 transition-colors"
-            >
-              <ChevronLeft className="h-3.5 w-3.5" />
-            </button>
-            <span>Page</span>
-            <input
-              type="text"
-              value={currentPage}
-              onChange={(e) => {
-                const val = Number(e.target.value);
-                if (val >= 1 && val <= totalPages) goToPage(val);
-              }}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  const val = Number((e.target as HTMLInputElement).value);
-                  if (val >= 1 && val <= totalPages) goToPage(val);
-                }
-              }}
-              className="h-7 w-10 rounded border bg-transparent text-center text-xs text-foreground outline-none focus:ring-1 focus:ring-foreground/20"
-            />
-            <span>of {totalPages}</span>
-            <button
-              onClick={() => goToPage(currentPage + 1)}
-              disabled={currentPage >= totalPages}
-              className="inline-flex items-center justify-center h-7 w-7 rounded border hover:bg-muted disabled:opacity-30 transition-colors"
-            >
-              <ChevronRight className="h-3.5 w-3.5" />
-            </button>
-          </div>
-        </div>
-      )}
 
       <RecordDrawer
         records={pagedRecords ?? []}
