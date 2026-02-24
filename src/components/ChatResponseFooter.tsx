@@ -220,7 +220,7 @@ export function ChatResponseFooter({
             </a>
           </div>
           <iframe
-            src={pdfUrl}
+            src={`${pdfUrl}#navpanes=0&view=FitH`}
             title="ENDF Report PDF"
             className="w-full h-[600px] bg-background"
           />
