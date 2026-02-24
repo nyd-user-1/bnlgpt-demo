@@ -73,6 +73,19 @@ export default function Endf() {
       {/* Sticky filter bar */}
       <div className="sticky top-0 z-10 bg-background px-6 pt-3 pb-2">
         <div className="flex flex-wrap items-center gap-2">
+          {/* Key # sort toggle */}
+          <button
+            onClick={() => toggleSort("seq_number")}
+            className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm transition-colors ${
+              isSortActive("seq_number")
+                ? "bg-foreground text-background font-medium"
+                : "text-muted-foreground hover:bg-muted hover:text-foreground"
+            }`}
+          >
+            Key #
+            <ArrowUpDown className="h-3.5 w-3.5" />
+          </button>
+
           {/* Authors sort toggle */}
           <button
             onClick={() => toggleSort("authors")}
