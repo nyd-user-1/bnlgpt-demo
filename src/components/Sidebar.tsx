@@ -208,7 +208,10 @@ export function Sidebar({ isOpen }: SidebarProps) {
           </button>
 
           <button
-            onClick={() => navigate("/new-chat")}
+            onClick={() => {
+              navigate("/new-chat");
+              window.dispatchEvent(new Event("new-chat"));
+            }}
             className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
               location.pathname === "/" || location.pathname === "/new-chat"
                 ? "bg-muted"
