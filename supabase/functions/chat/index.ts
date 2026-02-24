@@ -114,6 +114,46 @@ function extractReactions(text: string): string[] {
   return [...found];
 }
 
+/** Extract author name from queries like "papers by A Gilman" or "what did Smith publish" */
+function extractAuthorQuery(text: string): string | null {
+  const patterns = [
+    /(?:papers?|publications?|work|research|articles?)\s+(?:by|from|of)\s+(.+?)(?:\?|$|\.|\bin\b|\bfrom\b|\babout\b)/i,
+    /(?:by|from)\s+(?:author\s+)?(.+?)(?:\s+(?:are|is|in|on|about|from)\b|\?|$|\.)/i,
+    /(?:what\s+(?:did|has|have))\s+(.+?)\s+(?:publish|write|author|research|study|contribute)/i,
+    /(?:authored?\s+by|written\s+by)\s+(.+?)(?:\?|$|\.)/i,
+  ];
+  for (const pat of patterns) {
+    const m = text.match(pat);
+    if (m && m[1]) {
+      const name = m[1].trim().replace(/[?.!,]+$/, "").trim();
+      // Ignore if it looks like a nuclide or is too short
+      if (name.length >= 3 && !/^\d+[A-Z][a-z]?$/.test(name)) {
+        return name;
+      }
+    }
+  }
+  return null;
+}
+
+/** Fetch NSR records by author name via ilike */
+async function fetchAuthorRecords(
+  authorName: string | null,
+  supabaseUrl: string,
+  supabaseKey: string,
+): Promise<NsrResult[]> {
+  if (!authorName) return [];
+  const supabase = createClient(supabaseUrl, supabaseKey);
+  const { data, error } = await supabase
+    .from("nsr")
+    .select("key_number, title, authors, pub_year, doi, keywords")
+    .ilike("authors", `%${authorName}%`)
+    .order("pub_year", { ascending: false })
+    .limit(8);
+
+  if (error) return [];
+  return (data ?? []).map((r: any) => ({ ...r, similarity: 1.0 }));
+}
+
 /** Fetch NSR records matching a specific nuclide via structured array query */
 async function fetchNuclideRecords(
   nuclides: string[],
@@ -247,17 +287,20 @@ Deno.serve(async (req) => {
 
     // 1. Extract structured entities from the query
     const nuclides = extractNuclides(userMessage);
+    const authorQuery = extractAuthorQuery(userMessage);
 
-    // 2. Embed user message, fetch S2 papers, and structured nuclide search in parallel
-    const [queryEmbedding, s2Papers, nuclideRecords] = await Promise.all([
+    // 2. Embed user message, fetch S2 papers, and structured searches in parallel
+    const [queryEmbedding, s2Papers, nuclideRecords, authorRecords] = await Promise.all([
       embedQuery(userMessage, openaiKey),
       fetchS2Papers(userMessage, s2Key),
       fetchNuclideRecords(nuclides, supabaseUrl, supabaseKey),
+      fetchAuthorRecords(authorQuery, supabaseUrl, supabaseKey),
     ]);
 
-    // 3. Semantic search + merge with structured results
+    // 3. Semantic search + merge with structured results (author + nuclide first)
     const semanticRecords = await fetchNsrRecords(queryEmbedding, supabaseUrl, supabaseKey);
-    const nsrRecords = mergeNsrResults(nuclideRecords, semanticRecords);
+    const structuredRecords = mergeNsrResults(authorRecords, nuclideRecords);
+    const nsrRecords = mergeNsrResults(structuredRecords, semanticRecords);
 
     // 4. Build grounded system prompt
     const groundingContext =
