@@ -1,7 +1,7 @@
 import { memo, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { FileText, Copy, Check, ExternalLink, ArrowUp } from "lucide-react";
+import { Hash, Copy, Check, ExternalLink, ArrowUp } from "lucide-react";
 import type { EndfReport } from "@/types/endf";
 import { useFeedEmitter } from "@/hooks/useFeedEmitter";
 
@@ -83,12 +83,10 @@ export const EndfReportCard = memo(function EndfReportCard({ report, searchQuery
 
   return (
     <div className="group relative rounded-lg border border-border/40 bg-muted/40 p-6 pb-16 min-h-[280px] transition-all hover:shadow-lg hover:border-border">
-      {/* Top row: icon + report_number + date */}
+      {/* Top row: # icon + seq_number + date */}
       <div className="flex items-center gap-2 mb-3">
-        <FileText className="h-5 w-5 text-muted-foreground" />
-        <span className="text-base font-bold">
-          {searchQuery ? highlightText(report.report_number, searchQuery) : report.report_number}
-        </span>
+        <Hash className="h-5 w-5 text-muted-foreground" />
+        <span className="text-base font-bold">{report.seq_number}</span>
         {report.report_date && (
           <span className="ml-auto text-sm font-medium text-muted-foreground">
             {report.report_date}
@@ -123,6 +121,14 @@ export const EndfReportCard = memo(function EndfReportCard({ report, searchQuery
               <p className="font-medium truncate">{report.cross_reference}</p>
             </>
           )}
+        </div>
+
+        {/* ENDF Report */}
+        <div className="min-w-0">
+          <span className="text-muted-foreground">ENDF Report</span>
+          <p className="font-medium truncate">
+            {searchQuery ? highlightText(report.report_number, searchQuery) : report.report_number}
+          </p>
         </div>
       </div>
 
