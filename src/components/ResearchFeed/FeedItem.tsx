@@ -40,6 +40,32 @@ function timeAgo(iso: string): string {
   return `${days}d ago`;
 }
 
+function cleanDisplayText(event: FeedEvent): string {
+  const { event_type, display_text } = event;
+  switch (event_type) {
+    case "chat_started":
+      // Remove "Started chat: " and/or "Tell me about" prefixes
+      return display_text
+        .replace(/^Started\s+chat:\s*/i, "")
+        .replace(/^Tell\s+me\s+about:?\s*/i, "")
+        .replace(/^["'\u201C\u201D]+/, "");
+    case "record_inquiry":
+      // Remove "Inquired about XXXX:" prefix — show the part after the colon
+      return display_text.replace(/^Inquired about\s+\S+:\s*/i, "");
+    case "nuclide_filter":
+      // "Filtered by nuclide 100Cd" → "Nuclide 100Cd"
+      return display_text.replace(/^Filtered by\s+nuclide/i, "Nuclide");
+    case "reaction_filter":
+      // "Filtered by reaction (p,n)" → "Reaction (p,n)"
+      return display_text.replace(/^Filtered by\s+reaction/i, "Reaction");
+    case "element_range_filter":
+      // "Filtered by element range Z=40-50" → "Element range Z=40-50"
+      return display_text.replace(/^Filtered by\s+/i, "");
+    default:
+      return display_text;
+  }
+}
+
 function buildFeedItemPath(event: FeedEvent): string | null {
   const { event_type, entity_value, metadata } = event;
 
@@ -106,6 +132,7 @@ export function FeedItem({ event }: FeedItemProps) {
   const Icon = ICON_MAP[event.event_type] ?? Search;
   const isInsight = INSIGHT_TYPES.has(event.event_type);
   const isClickable = CLICKABLE_TYPES.has(event.event_type);
+  const displayText = cleanDisplayText(event);
 
   const handleClick = () => {
     const path = buildFeedItemPath(event);
@@ -129,7 +156,7 @@ export function FeedItem({ event }: FeedItemProps) {
       {isInsight ? (
         <>
           <span className="flex-1 text-xs font-semibold text-green-400 leading-snug line-clamp-2">
-            {event.display_text.split("(")[0].trim()}
+            {displayText.split("(")[0].trim()}
           </span>
           <span className="text-[10px] text-green-400/70 flex-shrink-0 mt-0.5">
             {timeAgo(event.created_at)}
@@ -138,7 +165,7 @@ export function FeedItem({ event }: FeedItemProps) {
       ) : (
         <>
           <span className="flex-1 text-xs text-muted-foreground group-hover:text-foreground leading-snug line-clamp-2 transition-colors">
-            {event.display_text}
+            {displayText}
           </span>
           <span className="text-[10px] text-muted-foreground flex-shrink-0 mt-0.5 transition-colors">
             {timeAgo(event.created_at)}

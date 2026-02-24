@@ -108,7 +108,7 @@ function ChatSessionItem({
         }`}
       >
         <MessageSquare className="h-3.5 w-3.5 flex-shrink-0 text-muted-foreground" />
-        <span className="truncate">{title.replace(/^Tell me about\s*/i, "")}</span>
+        <span className="truncate">{title.replace(/^Tell me about\s*/i, "").replace(/^["'\u201C\u201D]+/, "")}</span>
       </button>
 
       {/* Hover ... button */}
