@@ -25,6 +25,7 @@ const CLICKABLE_TYPES = new Set([
   "nuclide_filter",
   "reaction_filter",
   "element_range_filter",
+  "trending_nuclide",
 ]);
 
 function timeAgo(iso: string): string {
@@ -71,6 +72,10 @@ function buildFeedItemPath(event: FeedEvent): string | null {
       return entity_value
         ? `/references?zRange=${encodeURIComponent(entity_value)}`
         : null;
+    case "trending_nuclide":
+      return entity_value
+        ? `/references?nuclide=${encodeURIComponent(entity_value)}`
+        : null;
     default:
       return null;
   }
@@ -112,7 +117,7 @@ export function FeedItem({ event }: FeedItemProps) {
       onClick={isClickable ? handleClick : undefined}
       className={
         isInsight
-          ? "group flex items-start gap-2.5 mx-2 my-1 px-3 py-2.5 rounded-md bg-green-500/15 border border-green-500/30"
+          ? "group flex items-start gap-2.5 px-4 py-2.5 cursor-pointer hover:bg-green-500/15 rounded-md transition-colors"
           : `group flex items-start gap-2.5 px-4 py-2.5${
               isClickable
                 ? " cursor-pointer hover:bg-muted rounded-md transition-colors"
