@@ -243,8 +243,25 @@ export function useChat() {
     [persistence]
   );
 
+  const stopGeneration = useCallback(() => {
+    if (abortRef.current) {
+      abortRef.current.abort();
+      abortRef.current = null;
+    }
+    setIsLoading(false);
+    // Mark any streaming messages as complete
+    setMessages((prev) =>
+      prev.map((m) => (m.isStreaming ? { ...m, isStreaming: false } : m))
+    );
+  }, []);
+
   const clearMessages = useCallback(() => {
+    if (abortRef.current) {
+      abortRef.current.abort();
+      abortRef.current = null;
+    }
     setMessages([]);
+    setIsLoading(false);
     persistence.setCurrentSessionId(null);
   }, [persistence]);
 
@@ -252,6 +269,7 @@ export function useChat() {
     messages,
     isLoading,
     sendMessage,
+    stopGeneration,
     clearMessages,
     loadSession,
     sessionId: persistence.currentSessionId,

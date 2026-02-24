@@ -138,11 +138,12 @@ const MIN_SEARCH_LEN = 2;
 
 interface ChatInputProps {
   onSubmit: (message: string) => void;
+  onStop?: () => void;
   isLoading?: boolean;
   initialValue?: string;
 }
 
-export function ChatInput({ onSubmit, isLoading, initialValue }: ChatInputProps) {
+export function ChatInput({ onSubmit, onStop, isLoading, initialValue }: ChatInputProps) {
   const [value, setValue] = useState(initialValue ?? "");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -584,12 +585,12 @@ export function ChatInput({ onSubmit, isLoading, initialValue }: ChatInputProps)
               )}
             </div>
 
-            {/* Send button */}
+            {/* Send / Stop button */}
             <button
               type="button"
-              onClick={handleSubmit}
-              disabled={!value.trim() && !isLoading}
-              className={`h-10 w-10 rounded-xl flex items-center justify-center transition-colors ${
+              onClick={isLoading ? onStop : handleSubmit}
+              disabled={!isLoading && !value.trim()}
+              className={`h-10 w-10 rounded-xl flex items-center justify-center transition-colors cursor-pointer ${
                 isLoading
                   ? "bg-destructive hover:bg-destructive/90 text-white"
                   : "bg-foreground hover:bg-foreground/85 text-background"

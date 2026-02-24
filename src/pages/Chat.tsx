@@ -8,7 +8,7 @@ export default function Chat() {
   const [searchParams] = useSearchParams();
   const { sessionId: routeSessionId } = useParams();
   const navigate = useNavigate();
-  const { messages, isLoading, sendMessage, loadSession, sessionId } =
+  const { messages, isLoading, sendMessage, stopGeneration, clearMessages, loadSession, sessionId } =
     useChat();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [autoSubmitted, setAutoSubmitted] = useState(false);
@@ -19,13 +19,30 @@ export default function Chat() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // Load existing session from route param
+  // Cmd+Shift+O → new chat
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key.toLowerCase() === "o") {
+        e.preventDefault();
+        clearMessages();
+        navigate("/");
+      }
+    }
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [clearMessages, navigate]);
+
+  // Load existing session from route param, or clear for new chat
   useEffect(() => {
     if (routeSessionId && routeSessionId !== loadedSessionRef.current) {
       loadedSessionRef.current = routeSessionId;
       loadSession(routeSessionId);
+    } else if (!routeSessionId && loadedSessionRef.current) {
+      // Navigated to "/" from a session — start fresh
+      loadedSessionRef.current = null;
+      clearMessages();
     }
-  }, [routeSessionId, loadSession]);
+  }, [routeSessionId, loadSession, clearMessages]);
 
   // Update URL when session is created (without remounting)
   useEffect(() => {
@@ -101,6 +118,7 @@ export default function Chat() {
           <div className="px-4 py-4 shrink-0 bg-background">
             <ChatInput
               onSubmit={(text) => sendMessage(text)}
+              onStop={stopGeneration}
               isLoading={isLoading}
             />
           </div>

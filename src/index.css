@@ -73,6 +73,9 @@
     font-family: system-ui, -apple-system, sans-serif;
     margin: 0;
   }
+  button, a, [role="button"] {
+    cursor: pointer;
+  }
 }
 
 /* Global minimal scrollbar — Claude-style pill thumb */
