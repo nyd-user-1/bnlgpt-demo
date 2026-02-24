@@ -59,8 +59,8 @@ export function ChatResponseFooter({
           </button>
         )}
 
-        {/* PDF viewer */}
-        {pdfUrl && (
+        {/* PDF viewer (only for embeddable PDF URLs) */}
+        {pdfUrl && pdfUrl.toLowerCase().endsWith(".pdf") && (
           <button
             onClick={() => {
               setPdfOpen(!pdfOpen);
