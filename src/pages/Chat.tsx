@@ -47,6 +47,7 @@ export default function Chat() {
   // Update URL when session is created (without remounting)
   useEffect(() => {
     if (sessionId && !routeSessionId && messages.length > 0 && !isLoading) {
+      loadedSessionRef.current = sessionId; // prevent loadSession from re-fetching
       navigate(`/c/${sessionId}`, { replace: true });
     }
   }, [sessionId, routeSessionId, messages.length, isLoading]);
