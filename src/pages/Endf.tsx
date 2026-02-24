@@ -1,6 +1,6 @@
 import { useState, useDeferredValue, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { ArrowUpDown, ChevronLeft, ChevronRight, Calendar } from "lucide-react";
+import { ArrowUpDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { SearchInput } from "@/components/SearchInput";
 import { EndfReportCard } from "@/components/EndfReportCard";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -96,7 +96,20 @@ export default function Endf() {
             }`}
           >
             Date
-            <Calendar className="h-3.5 w-3.5" />
+            <ArrowUpDown className="h-3.5 w-3.5" />
+          </button>
+
+          {/* Report sort toggle */}
+          <button
+            onClick={() => toggleSort("report_number")}
+            className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm transition-colors ${
+              isSortActive("report_number")
+                ? "bg-foreground text-background font-medium"
+                : "text-muted-foreground hover:bg-muted hover:text-foreground"
+            }`}
+          >
+            Report
+            <ArrowUpDown className="h-3.5 w-3.5" />
           </button>
 
           {/* Inline pagination (far right) */}

@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { EndfReport } from "@/types/endf";
 
-export type EndfSortField = "seq_number" | "report_date_parsed" | "authors";
+export type EndfSortField = "seq_number" | "report_date_parsed" | "authors" | "report_number";
 
 interface Filters {
   query?: string;
@@ -39,6 +39,8 @@ async function fetchReports(filters: Filters): Promise<PaginatedResult> {
     query = query.order("authors", { ascending: sortAsc, nullsFirst: false });
   } else if (sortBy === "report_date_parsed") {
     query = query.order("report_date_parsed", { ascending: sortAsc, nullsFirst: false });
+  } else if (sortBy === "report_number") {
+    query = query.order("report_number", { ascending: sortAsc });
   } else {
     query = query.order("seq_number", { ascending: sortAsc });
   }
