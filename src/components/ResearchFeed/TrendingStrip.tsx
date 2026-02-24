@@ -17,7 +17,7 @@ export function TrendingStrip({ items }: TrendingStripProps) {
 
   return (
     <div className="px-4 py-2">
-      <div className="flex flex-wrap gap-1.5">
+      <div className="flex flex-nowrap gap-1.5 overflow-hidden">
         {items.map((item) => (
           <span
             key={item.value}

@@ -112,7 +112,7 @@ export function FeedItem({ event }: FeedItemProps) {
       onClick={isClickable ? handleClick : undefined}
       className={
         isInsight
-          ? "group flex items-start gap-2.5 mx-2 my-1 px-3 py-2.5 rounded-md bg-green-800 border border-green-600"
+          ? "group flex items-start gap-2.5 mx-2 my-1 px-3 py-2.5 rounded-md bg-green-500/15 border border-green-500/30"
           : `group flex items-start gap-2.5 px-4 py-2.5${
               isClickable
                 ? " cursor-pointer hover:bg-muted rounded-md transition-colors"
@@ -120,23 +120,16 @@ export function FeedItem({ event }: FeedItemProps) {
             }`
       }
     >
-      <Icon className={`h-3.5 w-3.5 mt-0.5 flex-shrink-0 ${isInsight ? "text-white" : "text-muted-foreground group-hover:text-foreground transition-colors"}`} />
+      <Icon className={`h-3.5 w-3.5 mt-0.5 flex-shrink-0 ${isInsight ? "text-green-400" : "text-muted-foreground group-hover:text-foreground transition-colors"}`} />
       {isInsight ? (
-        <div className="flex-1 min-w-0">
-          <div className="flex items-start justify-between gap-2">
-            <span className="text-xs font-semibold text-white leading-snug">
-              {event.display_text.split("(")[0].trim()}
-            </span>
-            <span className="text-[10px] text-white/70 flex-shrink-0 mt-0.5">
-              {timeAgo(event.created_at)}
-            </span>
-          </div>
-          {event.display_text.includes("(") && (
-            <span className="text-[10px] text-white/70 leading-snug">
-              ({event.display_text.split("(").slice(1).join("(")}
-            </span>
-          )}
-        </div>
+        <>
+          <span className="flex-1 text-xs font-semibold text-green-400 leading-snug line-clamp-2">
+            {event.display_text.split("(")[0].trim()}
+          </span>
+          <span className="text-[10px] text-green-400/70 flex-shrink-0 mt-0.5">
+            {timeAgo(event.created_at)}
+          </span>
+        </>
       ) : (
         <>
           <span className="flex-1 text-xs text-muted-foreground group-hover:text-foreground leading-snug line-clamp-2 transition-colors">
