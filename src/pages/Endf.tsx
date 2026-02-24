@@ -10,7 +10,7 @@ const CARDS_PER_PAGE = 99;
 
 export default function Endf() {
   const [query, setQuery] = useState("");
-  const [sortBy, setSortBy] = useState<EndfSortField>("seq_number");
+  const [sortBy, setSortBy] = useState<EndfSortField>("report_date_parsed");
   const [sortAsc, setSortAsc] = useState(false);
   const [page, setPage] = useState(1);
 
@@ -40,13 +40,15 @@ export default function Endf() {
     scrollRef.current?.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const defaultSort: EndfSortField = "report_date_parsed";
+
   const toggleSort = (field: EndfSortField) => {
     if (sortBy === field) {
-      // Cycle: asc → desc → off
+      // Cycle: asc → desc → off (back to default)
       if (sortAsc) {
         setSortAsc(false);
       } else {
-        setSortBy("seq_number");
+        setSortBy(defaultSort);
         setSortAsc(false);
       }
     } else {
@@ -55,7 +57,8 @@ export default function Endf() {
     }
   };
 
-  const isSortActive = (field: EndfSortField) => sortBy === field;
+  const isSortActive = (field: EndfSortField) =>
+    sortBy === field && !(field === defaultSort && !sortAsc);
 
   return (
     <div className="h-full flex flex-col">
