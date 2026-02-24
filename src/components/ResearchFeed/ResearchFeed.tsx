@@ -1,7 +1,6 @@
 import { useResearchFeed } from "@/hooks/useResearchFeed";
 import { FeedHeader } from "./FeedHeader";
 import { FeedItem } from "./FeedItem";
-import { TrendingStrip } from "./TrendingStrip";
 
 interface ResearchFeedProps {
   isOpen: boolean;
@@ -9,7 +8,7 @@ interface ResearchFeedProps {
 }
 
 export function ResearchFeed({ isOpen, onClose: _onClose }: ResearchFeedProps) {
-  const { events, trending } = useResearchFeed();
+  const { events } = useResearchFeed();
 
   return (
     <aside
@@ -21,7 +20,6 @@ export function ResearchFeed({ isOpen, onClose: _onClose }: ResearchFeedProps) {
     >
       <div className="w-[300px] h-full flex flex-col bg-background">
         <FeedHeader />
-        <TrendingStrip items={trending} />
 
         <div className="flex-1 overflow-y-auto">
           {events.length === 0 ? (
