@@ -89,7 +89,7 @@ export const NsrRecordCard = memo(function NsrRecordCard({ record, searchQuery, 
   return (
     <div
       onClick={onClick}
-      className="group relative rounded-lg border border-border/40 bg-muted/40 p-4 pb-14 md:p-6 md:pb-16 min-h-[240px] md:min-h-[280px] transition-all hover:shadow-lg hover:border-border cursor-pointer"
+      className="group relative rounded-lg border border-border/40 bg-muted/40 p-4 pb-14 md:p-6 md:pb-16 min-h-[240px] md:min-h-[280px] transition-all hover:shadow-lg hover:border-border active:shadow-lg active:border-border cursor-pointer"
     >
       {/* Top row: hash icon + key number + year */}
       <div className="flex items-center gap-2 mb-3">
@@ -213,7 +213,7 @@ export const NsrRecordCard = memo(function NsrRecordCard({ record, searchQuery, 
         ) : (
           <span />
         )}
-        <div className="flex items-center gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+        <div className="flex items-center gap-2 opacity-0 group-active:opacity-100 group-hover:opacity-100 transition-opacity">
         <button
           onClick={handleCopy}
           className="flex h-10 w-10 items-center justify-center rounded-full bg-muted text-foreground shadow-lg transition-all hover:scale-110"

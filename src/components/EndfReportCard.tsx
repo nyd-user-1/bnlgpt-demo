@@ -82,7 +82,7 @@ export const EndfReportCard = memo(function EndfReportCard({ report, searchQuery
   };
 
   return (
-    <div className="group relative rounded-lg border border-border/40 bg-muted/40 p-4 pb-14 md:p-6 md:pb-16 min-h-[240px] md:min-h-[280px] transition-all hover:shadow-lg hover:border-border">
+    <div onTouchStart={() => {}} className="group relative rounded-lg border border-border/40 bg-muted/40 p-4 pb-14 md:p-6 md:pb-16 min-h-[240px] md:min-h-[280px] transition-all hover:shadow-lg hover:border-border active:shadow-lg active:border-border">
       {/* Top row: # icon + seq_number + date */}
       <div className="flex items-center gap-2 mb-3">
         <Hash className="h-5 w-5 text-muted-foreground" />
@@ -148,7 +148,7 @@ export const EndfReportCard = memo(function EndfReportCard({ report, searchQuery
         ) : (
           <span />
         )}
-        <div className="flex items-center gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+        <div className="flex items-center gap-2 opacity-0 group-active:opacity-100 group-hover:opacity-100 transition-opacity">
           <button
             onClick={handleCopy}
             className="flex h-10 w-10 items-center justify-center rounded-full bg-muted text-foreground shadow-lg transition-all hover:scale-110"

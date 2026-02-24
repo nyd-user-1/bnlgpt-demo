@@ -9,7 +9,7 @@ export function AppLayout() {
   const [feedOpen, setFeedOpen] = useState(false);
 
   return (
-    <div className="flex h-screen bg-background p-1 md:p-4">
+    <div className="flex h-screen bg-background p-0 md:p-4">
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       {/* Mobile backdrop */}
@@ -22,7 +22,7 @@ export function AppLayout() {
 
       {/* App wrapper — rounded border container */}
       <div
-        className="flex flex-1 flex-col min-w-0 rounded-xl border bg-background overflow-hidden"
+        className="flex flex-1 flex-col min-w-0 md:rounded-xl md:border bg-background overflow-hidden"
         onClick={() => {}}
       >
         {/* Top bar — inside the wrapper */}
