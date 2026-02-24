@@ -1,10 +1,10 @@
 import {
-  Drawer,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerDescription,
-} from "@/components/ui/drawer";
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+} from "@/components/ui/sheet";
 import {
   Hash,
   ExternalLink,
@@ -42,14 +42,14 @@ export function RecordDrawer({
   const hasNext = currentIndex < records.length - 1;
 
   return (
-    <Drawer open={open} onOpenChange={onOpenChange}>
-      <DrawerContent className="h-[482px] flex flex-col">
-        <DrawerHeader className="pb-0 shrink-0">
+    <Sheet open={open} onOpenChange={onOpenChange}>
+      <SheetContent side="right" className="flex flex-col">
+        <SheetHeader className="pb-0 shrink-0">
           <div className="flex items-center gap-2">
             <Hash className="h-4 w-4 text-muted-foreground" />
-            <DrawerTitle className="text-base">
+            <SheetTitle className="text-base">
               {record.key_number}
-            </DrawerTitle>
+            </SheetTitle>
             <span className="text-sm text-muted-foreground">
               {record.pub_year}
             </span>
@@ -77,12 +77,12 @@ export function RecordDrawer({
               </span>
             )}
           </div>
-          <DrawerDescription className="text-foreground font-medium text-sm leading-snug mt-1">
+          <SheetDescription className="text-foreground font-medium text-sm leading-snug mt-1">
             {record.title}
-          </DrawerDescription>
-        </DrawerHeader>
+          </SheetDescription>
+        </SheetHeader>
 
-        <div className="overflow-y-auto px-4 pb-6 pt-2 flex-1 min-h-0 select-text" data-vaul-no-drag>
+        <div className="overflow-y-auto px-4 pb-6 pt-2 flex-1 min-h-0 select-text">
           {/* Loading state */}
           {s2Loading && (
             <div className="flex items-center justify-center py-8">
@@ -162,7 +162,7 @@ export function RecordDrawer({
                   <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-1.5 block">
                     Abstract
                   </span>
-                  <p className="text-sm text-muted-foreground leading-relaxed max-h-[7rem] overflow-y-auto">
+                  <p className="text-sm text-muted-foreground leading-relaxed">
                     {s2.abstract}
                   </p>
                 </div>
@@ -258,7 +258,7 @@ export function RecordDrawer({
             </>
           )}
         </div>
-      </DrawerContent>
-    </Drawer>
+      </SheetContent>
+    </Sheet>
   );
 }
