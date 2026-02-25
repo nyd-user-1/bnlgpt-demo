@@ -101,181 +101,185 @@ export function RecordDrawer({
             </div>
           )}
 
-          {/* No S2 data */}
-          {!s2Loading && (!s2 || s2.s2_lookup_status === "not_found" || s2.s2_lookup_status === "error") && (
-            <>
-              {/* Year */}
-              <div className="py-3 border-b border-border/50">
-                <span className="text-xs text-muted-foreground">Year</span>
-                <p className="text-sm font-medium">{record.pub_year}</p>
-              </div>
-              {/* Tags row (always show) */}
-              <div className="py-3 border-b border-border/50">
-                <div className="flex flex-wrap gap-2">
-                  {record.nuclides?.map((nuc) => (
-                    <span key={nuc} className="inline-flex items-center rounded-full bg-nuclear/20 px-2.5 py-0.5 text-[11px] font-medium text-nuclear">{nuc}</span>
-                  ))}
-                  {record.reactions?.map((rxn) => (
-                    <span key={rxn} className="inline-flex items-center rounded-full bg-nuclear/20 px-2.5 py-0.5 text-[11px] font-medium text-nuclear">{rxn}</span>
-                  ))}
-                </div>
-              </div>
-              <p className="text-sm text-muted-foreground py-4 text-center">
-                No Semantic Scholar data available for this record.
-              </p>
-              {record.doi && (
-                <div className="flex justify-center">
-                  <a href={`https://doi.org/${record.doi}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs text-nuclear hover:underline">
-                    <ExternalLink className="h-3.5 w-3.5" />DOI: {record.doi}
-                  </a>
-                </div>
-              )}
-            </>
-          )}
+          {!s2Loading && (() => {
+            const s2Found = s2 && s2.s2_lookup_status === "found";
 
-          {/* S2 data found */}
-          {!s2Loading && s2 && s2.s2_lookup_status === "found" && (
-            <>
-              {/* Venue */}
-              {s2.venue && (
-                <div className="py-3 border-b border-border/50">
-                  <span className="text-xs text-muted-foreground">Journal</span>
-                  <p className="text-sm font-medium">{s2.venue}</p>
-                </div>
-              )}
-
-              {/* Stats */}
-              <div className="py-3 border-b border-border/50 text-xs">
-                <div className="flex items-center gap-4">
-                  <div>
-                    <span className="text-muted-foreground">Citations</span>
-                    <p className="font-medium">{s2.citation_count ?? "—"}</p>
+            return (
+              <>
+                {/* Venue/Journal (S2 only) */}
+                {s2Found && s2.venue && (
+                  <div className="py-3 border-b border-border/50">
+                    <span className="text-xs text-muted-foreground">Journal</span>
+                    <p className="text-sm font-medium">{s2.venue}</p>
                   </div>
-                  <div>
-                    <span className="text-muted-foreground">Influential</span>
-                    <p className="font-medium">{s2.influential_citation_count ?? "—"}</p>
+                )}
+
+                {/* TLDR (S2 only) */}
+                {s2Found && s2.tldr && (
+                  <div className="py-3 border-b border-border/50">
+                    <span className="text-xs text-muted-foreground block mb-1">TL;DR</span>
+                    <p className="text-sm font-medium text-foreground leading-relaxed">{s2.tldr}</p>
                   </div>
-                  <div>
-                    <span className="text-muted-foreground">References</span>
-                    <p className="font-medium">{s2.reference_count ?? "—"}</p>
+                )}
+
+                {/* Abstract (S2 only) */}
+                {s2Found && s2.abstract && (
+                  <div className="py-3 border-b border-border/50">
+                    <span className="text-xs text-muted-foreground block mb-1">Abstract</span>
+                    <p className="text-sm font-medium text-foreground/80 leading-relaxed">{s2.abstract}</p>
                   </div>
-                </div>
-              </div>
+                )}
 
-              {/* TLDR */}
-              {s2.tldr && (
+                {/* Year */}
                 <div className="py-3 border-b border-border/50">
-                  <span className="text-xs text-muted-foreground block mb-1">
-                    TL;DR
-                  </span>
-                  <p className="text-sm font-medium text-foreground leading-relaxed">
-                    {s2.tldr}
-                  </p>
+                  <span className="text-xs text-muted-foreground">Year</span>
+                  <p className="text-sm font-medium">{record.pub_year}</p>
                 </div>
-              )}
 
-              {/* Abstract */}
-              {s2.abstract && (
-                <div className="py-3 border-b border-border/50">
-                  <span className="text-xs text-muted-foreground block mb-1">
-                    Abstract
-                  </span>
-                  <p className="text-sm font-medium text-foreground/80 leading-relaxed">
-                    {s2.abstract}
-                  </p>
-                </div>
-              )}
+                {/* Authors — prefer S2 authors (with h-index), fall back to base record */}
+                {s2Found && s2.s2_authors && s2.s2_authors.length > 0 ? (
+                  <div className="py-3 border-b border-border/50">
+                    <span className="text-xs text-muted-foreground block mb-1.5">Authors</span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {s2.s2_authors.map((author) => {
+                        const hasExtra = (author.hIndex != null && author.hIndex > 0) || author.affiliations?.[0];
+                        return (
+                          <span
+                            key={author.name}
+                            className={`inline-flex items-center gap-1.5 rounded-full border border-border/50 bg-muted/40 text-xs ${hasExtra ? "px-2.5 py-1" : "px-2 py-0.5"}`}
+                          >
+                            <span className="font-medium">{author.name}</span>
+                            {author.hIndex != null && author.hIndex > 0 && (
+                              <span className="text-[10px] text-muted-foreground">
+                                h:{author.hIndex}
+                              </span>
+                            )}
+                          </span>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ) : record.authors && (
+                  <div className="py-3 border-b border-border/50">
+                    <span className="text-xs text-muted-foreground">Authors</span>
+                    <p className="text-sm font-medium">{record.authors}</p>
+                  </div>
+                )}
 
-              {/* Year */}
-              <div className="py-3 border-b border-border/50">
-                <span className="text-xs text-muted-foreground">Year</span>
-                <p className="text-sm font-medium">{record.pub_year}</p>
-              </div>
+                {/* Citations / Influential / References (S2 only, after authors) */}
+                {s2Found && (
+                  <div className="py-3 border-b border-border/50 text-xs">
+                    <div className="flex items-center gap-4">
+                      <div>
+                        <span className="text-muted-foreground">Citations</span>
+                        <p className="font-medium">{s2.citation_count ?? "—"}</p>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground">Influential</span>
+                        <p className="font-medium">{s2.influential_citation_count ?? "—"}</p>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground">References</span>
+                        <p className="font-medium">{s2.reference_count ?? "—"}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
-              {/* Authors */}
-              {s2.s2_authors && s2.s2_authors.length > 0 && (
-                <div className="py-3 border-b border-border/50">
-                  <span className="text-xs text-muted-foreground block mb-1.5">
-                    Authors
-                  </span>
-                  <div className="flex flex-wrap gap-1.5">
-                    {s2.s2_authors.map((author) => {
-                      const hasExtra = (author.hIndex != null && author.hIndex > 0) || author.affiliations?.[0];
-                      return (
+                {/* Reference (always from base record) */}
+                {record.reference && (
+                  <div className="py-3 border-b border-border/50">
+                    <span className="text-xs text-muted-foreground">Reference</span>
+                    <p className="text-sm font-medium">{record.reference}</p>
+                  </div>
+                )}
+
+                {/* Nuclides (with label, matching card pattern) */}
+                {record.nuclides && record.nuclides.length > 0 && (
+                  <div className="py-3 border-b border-border/50">
+                    <span className="text-xs text-muted-foreground block mb-1">Nuclides</span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {record.nuclides.map((nuc) => (
                         <span
-                          key={author.name}
-                          className={`inline-flex items-center gap-1.5 rounded-full border border-border/50 bg-muted/40 text-xs ${hasExtra ? "px-2.5 py-1" : "px-2 py-0.5"}`}
+                          key={nuc}
+                          className="inline-flex items-center rounded-full bg-foreground/10 px-2 py-0.5 text-[11px] font-medium text-foreground/80"
                         >
-                          <span className="font-medium">{author.name}</span>
-                          {author.hIndex != null && author.hIndex > 0 && (
-                            <span className="text-[10px] text-muted-foreground">
-                              h:{author.hIndex}
-                            </span>
-                          )}
+                          {nuc}
                         </span>
-                      );
-                    })}
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
-
-              {/* Fields of study + tags */}
-              <div className="py-3 border-b border-border/50">
-                <div className="flex flex-wrap gap-2">
-                  {s2.fields_of_study?.map((field) => (
-                    <span
-                      key={field}
-                      className="inline-flex items-center rounded-full bg-foreground/10 px-2.5 py-0.5 text-[11px] font-medium text-foreground/80"
-                    >
-                      {field}
-                    </span>
-                  ))}
-                  {record.nuclides?.map((nuc) => (
-                    <span
-                      key={nuc}
-                      className="inline-flex items-center rounded-full bg-nuclear/20 px-2.5 py-0.5 text-[11px] font-medium text-nuclear"
-                    >
-                      {nuc}
-                    </span>
-                  ))}
-                  {record.reactions?.map((rxn) => (
-                    <span
-                      key={rxn}
-                      className="inline-flex items-center rounded-full bg-nuclear/20 px-2.5 py-0.5 text-[11px] font-medium text-nuclear"
-                    >
-                      {rxn}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Action links */}
-              <div className="flex items-center gap-3 pt-3">
-                {record.doi && (
-                  <a
-                    href={`https://doi.org/${record.doi}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-xs text-nuclear hover:underline"
-                  >
-                    <ExternalLink className="h-3.5 w-3.5" />
-                    DOI: {record.doi}
-                  </a>
                 )}
-                {s2.is_open_access && s2.open_access_pdf_url && (
-                  <a
-                    href={s2.open_access_pdf_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-xs text-green-400 hover:underline"
-                  >
-                    <Download className="h-3.5 w-3.5" />
-                    Download PDF
-                  </a>
+
+                {/* Reactions (with label, matching card pattern) */}
+                {record.reactions && record.reactions.length > 0 && (
+                  <div className="py-3 border-b border-border/50">
+                    <span className="text-xs text-muted-foreground block mb-1">Reactions</span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {record.reactions.map((rxn) => (
+                        <span
+                          key={rxn}
+                          className="inline-flex items-center rounded-full bg-foreground/10 px-2 py-0.5 text-[11px] font-medium text-foreground/80"
+                        >
+                          {rxn}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 )}
-              </div>
-            </>
-          )}
+
+                {/* Fields of study (S2 only) */}
+                {s2Found && s2.fields_of_study && s2.fields_of_study.length > 0 && (
+                  <div className="py-3 border-b border-border/50">
+                    <span className="text-xs text-muted-foreground block mb-1">Fields of Study</span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {s2.fields_of_study.map((field) => (
+                        <span
+                          key={field}
+                          className="inline-flex items-center rounded-full bg-foreground/10 px-2 py-0.5 text-[11px] font-medium text-foreground/80"
+                        >
+                          {field}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* No S2 data message */}
+                {!s2Found && (
+                  <p className="text-sm text-muted-foreground py-4 text-center">
+                    No Semantic Scholar data available for this record.
+                  </p>
+                )}
+
+                {/* Action links */}
+                <div className="flex items-center gap-3 pt-3">
+                  {record.doi && (
+                    <a
+                      href={`https://doi.org/${record.doi}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-xs text-nuclear hover:underline"
+                    >
+                      <ExternalLink className="h-3.5 w-3.5" />
+                      DOI: {record.doi}
+                    </a>
+                  )}
+                  {s2Found && s2.is_open_access && s2.open_access_pdf_url && (
+                    <a
+                      href={s2.open_access_pdf_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-xs text-green-400 hover:underline"
+                    >
+                      <Download className="h-3.5 w-3.5" />
+                      Download PDF
+                    </a>
+                  )}
+                </div>
+              </>
+            );
+          })()}
         </div>
       </SheetContent>
     </Sheet>
