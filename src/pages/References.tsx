@@ -214,6 +214,8 @@ export default function References() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paramKey]);
 
+  const terminalActive = searchParams.get("terminal") === "1";
+
   const debouncedQuery = useDebouncedValue(query, 320);
   const search = useNsrSearch(debouncedQuery, searchMode);
   const browse = useNsrRecords({
@@ -670,6 +672,7 @@ export default function References() {
       {/* Scrollable content area */}
       <div ref={scrollRef} className="flex-1 overflow-y-auto px-3 md:px-6 py-4">
         <TerminalInsightsPanel
+          terminalActive={terminalActive}
           nuclide={structuredParams?.nuclides?.[0] ?? null}
           trendWindow={trendWindow}
           compare={comparePair}
