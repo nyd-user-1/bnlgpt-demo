@@ -144,19 +144,18 @@ export function RecordDrawer({
 
             return (
               <>
-                {/* Venue/Journal */}
-                {s2?.venue && (
+                {/* DOI */}
+                {record.doi && (
                   <div className="py-3 border-b border-border/50">
-                    <span className="text-xs text-muted-foreground">Journal</span>
-                    <p className="text-sm font-medium">{s2.venue}</p>
-                  </div>
-                )}
-
-                {/* TLDR */}
-                {s2?.tldr && (
-                  <div className="py-3 border-b border-border/50">
-                    <span className="text-xs text-muted-foreground block mb-1">TL;DR</span>
-                    <p className="text-sm font-medium text-foreground leading-relaxed">{s2.tldr}</p>
+                    <a
+                      href={`https://doi.org/${record.doi}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-xs text-nuclear hover:underline"
+                    >
+                      <ExternalLink className="h-3.5 w-3.5" />
+                      DOI: {record.doi}
+                    </a>
                   </div>
                 )}
 
@@ -193,12 +192,6 @@ export function RecordDrawer({
                   </div>
                 )}
 
-                {/* Year */}
-                <div className="py-3 border-b border-border/50">
-                  <span className="text-xs text-muted-foreground">Year</span>
-                  <p className="text-sm font-medium">{record.pub_year}</p>
-                </div>
-
                 {/* Authors — prefer S2 authors (with h-index), fall back to base record */}
                 {s2Found && s2.s2_authors && s2.s2_authors.length > 0 ? (
                   <div className="py-3 border-b border-border/50">
@@ -229,7 +222,21 @@ export function RecordDrawer({
                   </div>
                 )}
 
-                {/* Citations / Influential / References (S2 only, after authors) */}
+                {/* Venue/Journal */}
+                {s2?.venue && (
+                  <div className="py-3 border-b border-border/50">
+                    <span className="text-xs text-muted-foreground">Journal</span>
+                    <p className="text-sm font-medium">{s2.venue}</p>
+                  </div>
+                )}
+
+                {/* Year */}
+                <div className="py-3 border-b border-border/50">
+                  <span className="text-xs text-muted-foreground">Year</span>
+                  <p className="text-sm font-medium">{record.pub_year}</p>
+                </div>
+
+                {/* Citations / Influential / References (S2 only) */}
                 {s2Found && (
                   <div className="py-3 border-b border-border/50 text-xs">
                     <div className="flex items-center gap-4">
@@ -308,20 +315,9 @@ export function RecordDrawer({
                   </div>
                 )}
 
-                {/* Action links */}
-                <div className="flex items-center gap-3 pt-3">
-                  {record.doi && (
-                    <a
-                      href={`https://doi.org/${record.doi}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 text-xs text-nuclear hover:underline"
-                    >
-                      <ExternalLink className="h-3.5 w-3.5" />
-                      DOI: {record.doi}
-                    </a>
-                  )}
-                  {s2Found && s2.is_open_access && s2.open_access_pdf_url && (
+                {/* Download PDF link */}
+                {s2Found && s2.is_open_access && s2.open_access_pdf_url && (
+                  <div className="pt-3">
                     <a
                       href={s2.open_access_pdf_url}
                       target="_blank"
@@ -331,14 +327,7 @@ export function RecordDrawer({
                       <Download className="h-3.5 w-3.5" />
                       Download PDF
                     </a>
-                  )}
-                </div>
-
-                {/* No S2 data message — pushed to bottom */}
-                {!s2Found && (
-                  <p className="text-xs text-muted-foreground/60 pt-6 text-center">
-                    No Semantic Scholar data available for this record.
-                  </p>
+                  </div>
                 )}
               </>
             );
