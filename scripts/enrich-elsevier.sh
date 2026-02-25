@@ -1,15 +1,16 @@
 #!/bin/bash
 # Batch enrich NSR records with Elsevier/Scopus data.
-# Targets records where S2 enrichment returned not_found or search_not_found.
-# Calls the enrich-elsevier Edge Function in a loop until all DOIs are processed.
-# Usage: ./scripts/enrich-elsevier.sh
+# Usage:
+#   ./scripts/enrich-elsevier.sh             # default: enrich not_found/search_not_found
+#   ./scripts/enrich-elsevier.sh backfill    # backfill abstracts for "found" records
 
 SUPABASE_URL="https://stsumwwmyijxutabzice.supabase.co/functions/v1/enrich-elsevier"
 ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN0c3Vtd3dteWlqeHV0YWJ6aWNlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MjM0NzksImV4cCI6MjA4NzE5OTQ3OX0.jTRjEfHDp5JaQUf14FWegYeDVIaYmswSV2eY4eRXfEA"
 BATCH_SIZE=40
+MODE=${1:-enrich}
 
 echo "=== Elsevier/Scopus Enrichment Script ==="
-echo "Batch size: $BATCH_SIZE"
+echo "Mode: $MODE | Batch size: $BATCH_SIZE"
 echo ""
 
 TOTAL_PROCESSED=0
@@ -26,7 +27,7 @@ while true; do
     -H "Content-Type: application/json" \
     -H "Authorization: Bearer $ANON_KEY" \
     -H "apikey: $ANON_KEY" \
-    -d "{\"batch_size\": $BATCH_SIZE}")
+    -d "{\"batch_size\": $BATCH_SIZE, \"mode\": \"$MODE\"}")
 
   PROCESSED=$(echo "$RESPONSE" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('processed',0))" 2>/dev/null)
   FOUND=$(echo "$RESPONSE" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('found',0))" 2>/dev/null)

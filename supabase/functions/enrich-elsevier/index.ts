@@ -75,12 +75,11 @@ async function fetchFromScopus(
   doi: string,
   apiKey: string
 ): Promise<ScopusResponse | null> {
-  const url = `${SCOPUS_BASE_URL}/${encodeURIComponent(doi)}`;
+  const url = `${SCOPUS_BASE_URL}/${encodeURIComponent(doi)}?view=META_ABS`;
   const res = await fetch(url, {
     headers: {
       "X-ELS-APIKey": apiKey,
       Accept: "application/json",
-      "X-ELS-ReqInst": "META_ABS",
     },
   });
 
@@ -194,18 +193,34 @@ Deno.serve(async (req) => {
 
     const body = await req.json().catch(() => ({}));
     const batchSize = Math.min(Math.max(body.batch_size || 40, 1), 100);
+    const mode = body.mode || "enrich"; // "enrich" or "backfill"
     const startTime = Date.now();
 
-    // Find NSR records that S2 couldn't enrich but have a DOI
-    const { data: records, error: fetchError } = await supabase
-      .from("nsr")
-      .select("id, doi")
-      .in("s2_lookup_status", ["not_found", "search_not_found"])
-      .not("doi", "is", null)
-      .not("doi", "eq", "")
-      .order("id", { ascending: true })
-      .limit(batchSize);
+    let query;
+    if (mode === "backfill") {
+      // Backfill: records already "found" (by S2 or Elsevier) but missing abstract
+      query = supabase
+        .from("nsr")
+        .select("id, doi")
+        .eq("s2_lookup_status", "found")
+        .is("abstract", null)
+        .not("doi", "is", null)
+        .not("doi", "eq", "")
+        .order("id", { ascending: true })
+        .limit(batchSize);
+    } else {
+      // Default: enrich records that S2 couldn't find
+      query = supabase
+        .from("nsr")
+        .select("id, doi")
+        .in("s2_lookup_status", ["not_found", "search_not_found"])
+        .not("doi", "is", null)
+        .not("doi", "eq", "")
+        .order("id", { ascending: true })
+        .limit(batchSize);
+    }
 
+    const { data: records, error: fetchError } = await query;
     if (fetchError) throw fetchError;
 
     const toProcess = records ?? [];
@@ -214,6 +229,7 @@ Deno.serve(async (req) => {
       return new Response(
         JSON.stringify({
           success: true,
+          mode,
           processed: 0,
           found: 0,
           not_found: 0,
@@ -236,12 +252,26 @@ Deno.serve(async (req) => {
         if (scopusData) {
           const mapped = mapScopusToNsr(scopusData);
 
-          if (mapped) {
+          if (mode === "backfill") {
+            // Backfill: only fill in the abstract (don't overwrite existing S2 data)
+            if (mapped && mapped.abstract) {
+              const { error: updateError } = await supabase
+                .from("nsr")
+                .update({ abstract: mapped.abstract })
+                .eq("id", record.id);
+              if (updateError) {
+                totalErrors++;
+              } else {
+                totalFound++;
+              }
+            } else {
+              totalNotFound++;
+            }
+          } else if (mapped) {
             const { error: updateError } = await supabase
               .from("nsr")
               .update({
                 ...mapped,
-                // s2_paper_id stays null — distinguishes Elsevier-sourced records
                 s2_lookup_status: "found",
                 s2_looked_up_at: new Date().toISOString(),
               })
@@ -253,7 +283,6 @@ Deno.serve(async (req) => {
               totalFound++;
             }
           } else {
-            // Response parsed but no usable data
             await supabase
               .from("nsr")
               .update({
@@ -264,7 +293,23 @@ Deno.serve(async (req) => {
             totalNotFound++;
           }
         } else {
-          // 404 — DOI not in Scopus
+          if (mode !== "backfill") {
+            await supabase
+              .from("nsr")
+              .update({
+                s2_lookup_status: "elsevier_not_found",
+                s2_looked_up_at: new Date().toISOString(),
+              })
+              .eq("id", record.id);
+          }
+          totalNotFound++;
+        }
+      } catch (err) {
+        const msg = (err as Error).message;
+        if (msg.includes("429")) {
+          break;
+        }
+        if (mode !== "backfill") {
           await supabase
             .from("nsr")
             .update({
@@ -272,32 +317,17 @@ Deno.serve(async (req) => {
               s2_looked_up_at: new Date().toISOString(),
             })
             .eq("id", record.id);
-          totalNotFound++;
         }
-      } catch (err) {
-        const msg = (err as Error).message;
-        // Rate limited — stop processing
-        if (msg.includes("429")) {
-          break;
-        }
-        // Other errors — mark as elsevier_not_found to prevent re-processing
-        await supabase
-          .from("nsr")
-          .update({
-            s2_lookup_status: "elsevier_not_found",
-            s2_looked_up_at: new Date().toISOString(),
-          })
-          .eq("id", record.id);
         totalErrors++;
       }
 
-      // Rate limit: ~8 requests per second (120ms delay)
       await new Promise((resolve) => setTimeout(resolve, DELAY_MS));
     }
 
     return new Response(
       JSON.stringify({
         success: true,
+        mode,
         processed: toProcess.length,
         found: totalFound,
         not_found: totalNotFound,
