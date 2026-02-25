@@ -15,7 +15,7 @@ import {
   X,
   Check,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import type { NsrRecord } from "@/types/nsr";
 import { useS2Enrichment } from "@/hooks/useS2Enrichment";
 import { supabase } from "@/integrations/supabase/client";
@@ -63,6 +63,21 @@ export function RecordDrawer({
 
   const hasPrev = currentIndex > 0;
   const hasNext = currentIndex < records.length - 1;
+
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      if ((e.target as HTMLElement).tagName === "TEXTAREA") return;
+      if (e.key === "ArrowLeft" && hasPrev) onNavigate(currentIndex - 1);
+      if (e.key === "ArrowRight" && hasNext) onNavigate(currentIndex + 1);
+    },
+    [hasPrev, hasNext, currentIndex, onNavigate]
+  );
+
+  useEffect(() => {
+    if (!open) return;
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [open, handleKeyDown]);
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
