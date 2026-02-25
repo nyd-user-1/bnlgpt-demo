@@ -85,9 +85,12 @@ export function RecordDrawer({
             </span>
           )}
 
-          <SheetDescription className="text-foreground font-medium text-sm leading-snug mt-1">
-            {record.title}
-          </SheetDescription>
+          <div className="mt-1">
+            <span className="text-xs text-muted-foreground block mb-0.5">Title</span>
+            <SheetDescription className="text-foreground font-medium text-sm leading-snug">
+              {record.title}
+            </SheetDescription>
+          </div>
         </SheetHeader>
 
         <div className="overflow-y-auto px-4 pb-6 pt-2 flex-1 min-h-0 select-text">
@@ -103,8 +106,8 @@ export function RecordDrawer({
             <>
               {/* Year */}
               <div className="py-3 border-b border-border/50">
-                <span className="text-xs font-semibold uppercase tracking-wide text-nuclear/60">Year</span>
-                <span className="ml-2 text-sm font-medium text-nuclear">{record.pub_year}</span>
+                <span className="text-xs text-muted-foreground">Year</span>
+                <p className="text-sm font-medium">{record.pub_year}</p>
               </div>
               {/* Tags row (always show) */}
               <div className="py-3 border-b border-border/50">
@@ -133,25 +136,28 @@ export function RecordDrawer({
           {/* S2 data found */}
           {!s2Loading && s2 && s2.s2_lookup_status === "found" && (
             <>
-              {/* Venue + Stats */}
-              <div className="py-3 border-b border-border/50 text-xs space-y-2">
-                {s2.venue && (
-                  <span className="inline-flex items-center rounded-full bg-foreground/10 px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground">
-                    {s2.venue}
-                  </span>
-                )}
+              {/* Venue */}
+              {s2.venue && (
+                <div className="py-3 border-b border-border/50">
+                  <span className="text-xs text-muted-foreground">Journal</span>
+                  <p className="text-sm font-medium">{s2.venue}</p>
+                </div>
+              )}
+
+              {/* Stats */}
+              <div className="py-3 border-b border-border/50 text-xs">
                 <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-1.5">
-                    <span className="font-semibold">{s2.citation_count ?? "—"}</span>
-                    <span className="text-muted-foreground">citations</span>
+                  <div>
+                    <span className="text-muted-foreground">Citations</span>
+                    <p className="font-medium">{s2.citation_count ?? "—"}</p>
                   </div>
-                  <div className="flex items-center gap-1.5">
-                    <span className="font-semibold">{s2.influential_citation_count ?? "—"}</span>
-                    <span className="text-muted-foreground">influential</span>
+                  <div>
+                    <span className="text-muted-foreground">Influential</span>
+                    <p className="font-medium">{s2.influential_citation_count ?? "—"}</p>
                   </div>
-                  <div className="flex items-center gap-1.5">
-                    <span className="font-semibold">{s2.reference_count ?? "—"}</span>
-                    <span className="text-muted-foreground">references</span>
+                  <div>
+                    <span className="text-muted-foreground">References</span>
+                    <p className="font-medium">{s2.reference_count ?? "—"}</p>
                   </div>
                 </div>
               </div>
@@ -159,10 +165,10 @@ export function RecordDrawer({
               {/* TLDR */}
               {s2.tldr && (
                 <div className="py-3 border-b border-border/50">
-                  <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-1.5 block">
+                  <span className="text-xs text-muted-foreground block mb-1">
                     TL;DR
                   </span>
-                  <p className="text-sm text-foreground leading-relaxed">
+                  <p className="text-sm font-medium text-foreground leading-relaxed">
                     {s2.tldr}
                   </p>
                 </div>
@@ -171,10 +177,10 @@ export function RecordDrawer({
               {/* Abstract */}
               {s2.abstract && (
                 <div className="py-3 border-b border-border/50">
-                  <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-1.5 block">
+                  <span className="text-xs text-muted-foreground block mb-1">
                     Abstract
                   </span>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
+                  <p className="text-sm font-medium text-foreground/80 leading-relaxed">
                     {s2.abstract}
                   </p>
                 </div>
@@ -182,14 +188,14 @@ export function RecordDrawer({
 
               {/* Year */}
               <div className="py-3 border-b border-border/50">
-                <span className="text-xs font-semibold uppercase tracking-wide text-nuclear/60">Year</span>
-                <span className="ml-2 text-sm font-medium text-nuclear">{record.pub_year}</span>
+                <span className="text-xs text-muted-foreground">Year</span>
+                <p className="text-sm font-medium">{record.pub_year}</p>
               </div>
 
               {/* Authors */}
               {s2.s2_authors && s2.s2_authors.length > 0 && (
                 <div className="py-3 border-b border-border/50">
-                  <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2 block">
+                  <span className="text-xs text-muted-foreground block mb-1.5">
                     Authors
                   </span>
                   <div className="flex flex-wrap gap-1.5">
