@@ -13,9 +13,13 @@ import {
   ChevronRight,
   Loader2,
   X,
+  Check,
 } from "lucide-react";
+import { useState } from "react";
 import type { NsrRecord } from "@/types/nsr";
 import { useS2Enrichment } from "@/hooks/useS2Enrichment";
+import { supabase } from "@/integrations/supabase/client";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface RecordDrawerProps {
   records: NsrRecord[];
@@ -38,6 +42,25 @@ export function RecordDrawer({
   const { data: s2, isLoading: s2Loading } = useS2Enrichment(
     open ? record.id : null
   );
+  const queryClient = useQueryClient();
+  const [abstractDraft, setAbstractDraft] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  const handleSaveAbstract = async () => {
+    if (!abstractDraft.trim()) return;
+    setSaving(true);
+    await supabase
+      .from("nsr")
+      .update({ abstract: abstractDraft.trim() } as Record<string, unknown>)
+      .eq("id", record.id);
+    setSaving(false);
+    setSaved(true);
+    setAbstractDraft("");
+    queryClient.invalidateQueries({ queryKey: ["s2-enrichment", record.id] });
+    setTimeout(() => setSaved(false), 2000);
+  };
+
   const hasPrev = currentIndex > 0;
   const hasNext = currentIndex < records.length - 1;
 
@@ -106,27 +129,52 @@ export function RecordDrawer({
 
             return (
               <>
-                {/* Venue/Journal (S2 only) */}
-                {s2Found && s2.venue && (
+                {/* Venue/Journal */}
+                {s2?.venue && (
                   <div className="py-3 border-b border-border/50">
                     <span className="text-xs text-muted-foreground">Journal</span>
                     <p className="text-sm font-medium">{s2.venue}</p>
                   </div>
                 )}
 
-                {/* TLDR (S2 only) */}
-                {s2Found && s2.tldr && (
+                {/* TLDR */}
+                {s2?.tldr && (
                   <div className="py-3 border-b border-border/50">
                     <span className="text-xs text-muted-foreground block mb-1">TL;DR</span>
                     <p className="text-sm font-medium text-foreground leading-relaxed">{s2.tldr}</p>
                   </div>
                 )}
 
-                {/* Abstract (S2 only) */}
-                {s2Found && s2.abstract && (
+                {/* Abstract — show from S2 data regardless of lookup status */}
+                {s2?.abstract ? (
                   <div className="py-3 border-b border-border/50">
                     <span className="text-xs text-muted-foreground block mb-1">Abstract</span>
                     <p className="text-sm font-medium text-foreground/80 leading-relaxed">{s2.abstract}</p>
+                  </div>
+                ) : !s2Loading && (
+                  <div className="py-3 border-b border-border/50">
+                    <span className="text-xs text-muted-foreground block mb-1">Abstract</span>
+                    <textarea
+                      value={abstractDraft}
+                      onChange={(e) => setAbstractDraft(e.target.value)}
+                      placeholder="Paste abstract here..."
+                      className="w-full rounded-md border border-border/50 bg-muted/30 px-3 py-2 text-sm text-foreground leading-relaxed placeholder:text-muted-foreground/40 outline-none focus:ring-1 focus:ring-foreground/20 resize-none min-h-[80px]"
+                      rows={3}
+                    />
+                    {abstractDraft.trim() && (
+                      <button
+                        onClick={handleSaveAbstract}
+                        disabled={saving}
+                        className="mt-1.5 inline-flex items-center gap-1.5 rounded-md bg-foreground text-background px-3 py-1 text-xs font-medium hover:bg-foreground/90 transition-colors disabled:opacity-50"
+                      >
+                        {saving ? (
+                          <Loader2 className="h-3 w-3 animate-spin" />
+                        ) : saved ? (
+                          <Check className="h-3 w-3" />
+                        ) : null}
+                        {saving ? "Saving..." : saved ? "Saved" : "Save Abstract"}
+                      </button>
+                    )}
                   </div>
                 )}
 
