@@ -8,7 +8,6 @@ import {
 import {
   Hash,
   ExternalLink,
-  Users,
   Download,
   ChevronLeft,
   ChevronRight,
@@ -51,33 +50,29 @@ export function RecordDrawer({
             <SheetTitle className="text-base">
               {record.key_number}
             </SheetTitle>
-            <span className="text-sm text-muted-foreground">
-              {record.pub_year}
-            </span>
 
-            {/* Prev/next navigation */}
-            <div className="ml-auto flex items-center gap-1">
-              <button
-                onClick={() => hasPrev && onNavigate(currentIndex - 1)}
-                disabled={!hasPrev}
-                className="inline-flex items-center justify-center h-7 w-7 rounded-md hover:bg-muted disabled:opacity-30 transition-colors"
-              >
-                <ChevronLeft className="h-4 w-4" />
-              </button>
-              <button
-                onClick={() => hasNext && onNavigate(currentIndex + 1)}
-                disabled={!hasNext}
-                className="inline-flex items-center justify-center h-7 w-7 rounded-md hover:bg-muted disabled:opacity-30 transition-colors"
-              >
-                <ChevronRight className="h-4 w-4" />
-              </button>
-              <button
-                onClick={() => onOpenChange(false)}
-                className="inline-flex items-center justify-center h-7 w-7 rounded-md hover:bg-muted opacity-70 hover:opacity-100 transition-all ml-1"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </div>
+            {/* Prev/next navigation right after key number */}
+            <button
+              onClick={() => hasPrev && onNavigate(currentIndex - 1)}
+              disabled={!hasPrev}
+              className="inline-flex items-center justify-center h-7 w-7 rounded-md hover:bg-muted disabled:opacity-30 transition-colors"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <button
+              onClick={() => hasNext && onNavigate(currentIndex + 1)}
+              disabled={!hasNext}
+              className="inline-flex items-center justify-center h-7 w-7 rounded-md hover:bg-muted disabled:opacity-30 transition-colors"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
+
+            <button
+              onClick={() => onOpenChange(false)}
+              className="ml-auto inline-flex items-center justify-center h-7 w-7 rounded-md hover:bg-muted opacity-70 hover:opacity-100 transition-all"
+            >
+              <X className="h-4 w-4" />
+            </button>
           </div>
 
           {/* Open Access badge */}
@@ -103,6 +98,11 @@ export function RecordDrawer({
           {/* No S2 data */}
           {!s2Loading && (!s2 || s2.s2_lookup_status === "not_found" || s2.s2_lookup_status === "error") && (
             <>
+              {/* Year */}
+              <div className="py-3 border-b border-border/50">
+                <span className="text-xs font-semibold uppercase tracking-wide text-nuclear/60">Year</span>
+                <span className="ml-2 text-sm font-medium text-nuclear">{record.pub_year}</span>
+              </div>
               {/* Tags row (always show) */}
               <div className="py-3 border-b border-border/50">
                 <div className="flex flex-wrap gap-2">
@@ -177,15 +177,18 @@ export function RecordDrawer({
                 </div>
               )}
 
-              {/* Authors with S2 enrichment */}
+              {/* Year */}
+              <div className="py-3 border-b border-border/50">
+                <span className="text-xs font-semibold uppercase tracking-wide text-nuclear/60">Year</span>
+                <span className="ml-2 text-sm font-medium text-nuclear">{record.pub_year}</span>
+              </div>
+
+              {/* Authors */}
               {s2.s2_authors && s2.s2_authors.length > 0 && (
                 <div className="py-3 border-b border-border/50">
-                  <div className="flex items-center gap-1.5 mb-2">
-                    <Users className="h-3.5 w-3.5 text-muted-foreground" />
-                    <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                      Authors
-                    </span>
-                  </div>
+                  <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2 block">
+                    Authors
+                  </span>
                   <div className="flex flex-wrap gap-1.5">
                     {s2.s2_authors.map((author) => {
                       const hasExtra = (author.hIndex != null && author.hIndex > 0) || author.affiliations?.[0];
