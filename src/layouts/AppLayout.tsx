@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import { List, Activity } from "lucide-react";
 import { Sidebar } from "@/components/Sidebar";
 import { ResearchFeed } from "@/components/ResearchFeed";
+import { TerminalCommandBar } from "@/components/TerminalCommandBar";
 
 export function AppLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -34,8 +35,11 @@ export function AppLayout() {
             <List className="h-5 w-5" />
           </button>
 
-          {/* Search bar portal target — filled by page components */}
-          <div id="header-search" className="flex-1 mx-2" />
+          <div className="flex-1 mx-2 space-y-2">
+            <TerminalCommandBar />
+            {/* Search bar portal target — filled by page components */}
+            <div id="header-search" className="flex-1" />
+          </div>
 
           <button
             onClick={() => setFeedOpen((o) => !o)}

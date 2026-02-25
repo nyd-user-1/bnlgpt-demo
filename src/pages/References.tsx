@@ -14,6 +14,7 @@ import { useNsrRecords } from "@/hooks/useNsrRecords";
 import { useNsrStructuredSearch } from "@/hooks/useNsrStructuredSearch";
 import { useFeedEmitter } from "@/hooks/useFeedEmitter";
 import { RecordDrawer } from "@/components/RecordDrawer";
+import { TerminalInsightsPanel } from "@/components/TerminalInsightsPanel";
 import type { NsrRecord } from "@/types/nsr";
 
 const CARDS_PER_PAGE = 99;
@@ -107,12 +108,30 @@ export default function References() {
   const initialMode = (searchParams.get("mode") as SearchMode) || "semantic";
   const initialNuclide = searchParams.get("nuclide") ?? "";
   const initialReaction = searchParams.get("reaction") ?? "";
+  const initialTrend = searchParams.get("trend");
+  const initialCompare = searchParams.get("compare");
+  const initialHeatmap = searchParams.get("heatmap");
   const [query, setQuery] = useState(initialQ);
   const [yearFilter, setYearFilter] = useState<string | null>(null);
   const [authorsSortAsc, setAuthorsSortAsc] = useState<boolean | null>(null);
   const [keySortAsc, setKeySortAsc] = useState<boolean | null>(null);
   const [page, setPage] = useState(1);
   const [searchMode, setSearchMode] = useState<SearchMode>(initialMode);
+  const [trendWindow, setTrendWindow] = useState<string | null>(initialTrend);
+  const [comparePair, setComparePair] = useState<{ left: string; right: string } | null>(() => {
+    if (!initialCompare) return null;
+    const [left, right] = initialCompare.split(",");
+    if (!left || !right) return null;
+    return { left: left.trim(), right: right.trim() };
+  });
+  const [heatmapRange, setHeatmapRange] = useState<{ start: number; end: number } | null>(() => {
+    if (!initialHeatmap) return null;
+    const [startRaw, endRaw] = initialHeatmap.split("-");
+    const start = Number(startRaw);
+    const end = Number(endRaw);
+    if (!Number.isFinite(start) || !Number.isFinite(end)) return null;
+    return { start, end };
+  });
 
   // Structured search inputs
   // Record detail drawer
@@ -145,6 +164,26 @@ export default function References() {
     const mode = (searchParams.get("mode") as SearchMode) || "semantic";
     const nuclide = searchParams.get("nuclide") ?? "";
     const reaction = searchParams.get("reaction") ?? "";
+    const trend = searchParams.get("trend");
+    const compare = searchParams.get("compare");
+    const heatmap = searchParams.get("heatmap");
+
+    setTrendWindow(trend);
+    if (compare) {
+      const [left, right] = compare.split(",");
+      setComparePair(left && right ? { left: left.trim(), right: right.trim() } : null);
+    } else {
+      setComparePair(null);
+    }
+
+    if (heatmap) {
+      const [startRaw, endRaw] = heatmap.split("-");
+      const start = Number(startRaw);
+      const end = Number(endRaw);
+      setHeatmapRange(Number.isFinite(start) && Number.isFinite(end) ? { start, end } : null);
+    } else {
+      setHeatmapRange(null);
+    }
 
     // Apply search params
     if (q) {
@@ -168,8 +207,10 @@ export default function References() {
     }
     setPage(1);
 
-    // Clear URL params after applying
-    setSearchParams({}, { replace: true });
+    // Clear URL params after applying for non-terminal interactions
+    if (searchParams.get("terminal") !== "1") {
+      setSearchParams({}, { replace: true });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paramKey]);
 
@@ -628,6 +669,13 @@ export default function References() {
 
       {/* Scrollable content area */}
       <div ref={scrollRef} className="flex-1 overflow-y-auto px-3 md:px-6 py-4">
+        <TerminalInsightsPanel
+          nuclide={structuredParams?.nuclides?.[0] ?? null}
+          trendWindow={trendWindow}
+          compare={comparePair}
+          heatmap={heatmapRange}
+        />
+
         {/* Error state */}
         {error && (
           <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-4 text-sm text-destructive mb-6">

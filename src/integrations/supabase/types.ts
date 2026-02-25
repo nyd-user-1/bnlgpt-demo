@@ -188,6 +188,45 @@ export interface Database {
           reactions: string[] | null;
         }[];
       };
+      get_nuclide_trend: {
+        Args: {
+          p_nuclide: string;
+          p_start_year?: number | null;
+          p_end_year?: number | null;
+        };
+        Returns: {
+          nuclide: string;
+          pub_year: number;
+          paper_count: number;
+          yoy_pct: number | null;
+        }[];
+      };
+      compare_nuclide_trends: {
+        Args: {
+          p_left_nuclide: string;
+          p_right_nuclide: string;
+          p_start_year?: number | null;
+          p_end_year?: number | null;
+        };
+        Returns: {
+          pub_year: number;
+          left_count: number;
+          right_count: number;
+          spread: number;
+        }[];
+      };
+      get_nuclide_heatmap: {
+        Args: {
+          p_start_year: number;
+          p_end_year: number;
+          p_limit?: number;
+        };
+        Returns: {
+          nuclide: string;
+          pub_year: number;
+          paper_count: number;
+        }[];
+      };
     };
     Enums: Record<string, never>;
     CompositeTypes: Record<string, never>;
