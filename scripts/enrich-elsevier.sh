@@ -1,0 +1,63 @@
+#!/bin/bash
+# Batch enrich NSR records with Elsevier/Scopus data.
+# Targets records where S2 enrichment returned not_found or search_not_found.
+# Calls the enrich-elsevier Edge Function in a loop until all DOIs are processed.
+# Usage: ./scripts/enrich-elsevier.sh
+
+SUPABASE_URL="https://stsumwwmyijxutabzice.supabase.co/functions/v1/enrich-elsevier"
+ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN0c3Vtd3dteWlqeHV0YWJ6aWNlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MjM0NzksImV4cCI6MjA4NzE5OTQ3OX0.jTRjEfHDp5JaQUf14FWegYeDVIaYmswSV2eY4eRXfEA"
+BATCH_SIZE=40
+
+echo "=== Elsevier/Scopus Enrichment Script ==="
+echo "Batch size: $BATCH_SIZE"
+echo ""
+
+TOTAL_PROCESSED=0
+TOTAL_FOUND=0
+TOTAL_NOT_FOUND=0
+TOTAL_ERRORS=0
+ITERATION=0
+
+while true; do
+  ITERATION=$((ITERATION + 1))
+  echo "[$(date '+%H:%M:%S')] Batch $ITERATION..."
+
+  RESPONSE=$(curl -s -X POST "$SUPABASE_URL" \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer $ANON_KEY" \
+    -H "apikey: $ANON_KEY" \
+    -d "{\"batch_size\": $BATCH_SIZE}")
+
+  PROCESSED=$(echo "$RESPONSE" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('processed',0))" 2>/dev/null)
+  FOUND=$(echo "$RESPONSE" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('found',0))" 2>/dev/null)
+  NOT_FOUND=$(echo "$RESPONSE" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('not_found',0))" 2>/dev/null)
+  ERRORS=$(echo "$RESPONSE" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('errors',0))" 2>/dev/null)
+  SUCCESS=$(echo "$RESPONSE" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('success',''))" 2>/dev/null)
+
+  if [ "$SUCCESS" != "True" ]; then
+    echo "  WARN: Request failed (502/timeout), retrying in 10s..."
+    echo "  Response: $RESPONSE"
+    sleep 10
+    continue
+  fi
+
+  TOTAL_PROCESSED=$((TOTAL_PROCESSED + PROCESSED))
+  TOTAL_FOUND=$((TOTAL_FOUND + FOUND))
+  TOTAL_NOT_FOUND=$((TOTAL_NOT_FOUND + NOT_FOUND))
+  TOTAL_ERRORS=$((TOTAL_ERRORS + ERRORS))
+
+  echo "  Batch: processed=$PROCESSED found=$FOUND not_found=$NOT_FOUND errors=$ERRORS"
+  echo "  Total: processed=$TOTAL_PROCESSED found=$TOTAL_FOUND not_found=$TOTAL_NOT_FOUND errors=$TOTAL_ERRORS"
+
+  if [ "$PROCESSED" -eq 0 ]; then
+    echo ""
+    echo "=== Elsevier enrichment complete! ==="
+    echo "Total processed: $TOTAL_PROCESSED"
+    echo "Found on Scopus: $TOTAL_FOUND"
+    echo "Not found: $TOTAL_NOT_FOUND"
+    echo "Errors: $TOTAL_ERRORS"
+    exit 0
+  fi
+
+  sleep 2
+done
