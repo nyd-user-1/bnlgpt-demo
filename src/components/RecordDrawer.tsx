@@ -171,6 +171,12 @@ export function RecordDrawer({
                     <textarea
                       value={abstractDraft}
                       onChange={(e) => setAbstractDraft(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" && !e.shiftKey && abstractDraft.trim()) {
+                          e.preventDefault();
+                          handleSaveAbstract();
+                        }
+                      }}
                       placeholder="Paste abstract here..."
                       className="w-full rounded-md border border-border/80 bg-muted/30 px-3 py-2 text-sm text-foreground leading-relaxed placeholder:text-muted-foreground/40 outline-none focus:ring-1 focus:ring-foreground/20 resize-none min-h-[80px]"
                       rows={3}
