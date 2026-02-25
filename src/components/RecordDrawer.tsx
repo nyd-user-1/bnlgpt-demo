@@ -161,12 +161,12 @@ export function RecordDrawer({
 
                 {/* Abstract — show from S2 data regardless of lookup status */}
                 {s2?.abstract ? (
-                  <div className="py-3 border-b border-border/80">
+                  <div className="py-3">
                     <span className="text-xs text-muted-foreground block mb-1">Abstract</span>
                     <p className="text-sm font-medium text-foreground/80 leading-relaxed">{s2.abstract}</p>
                   </div>
                 ) : !s2Loading && (
-                  <div className="py-3 border-b border-border/80">
+                  <div className="py-3">
                     <span className="text-xs text-muted-foreground block mb-1">Abstract</span>
                     <textarea
                       value={abstractDraft}
@@ -200,7 +200,7 @@ export function RecordDrawer({
 
                 {/* Authors — prefer S2 authors (with h-index), fall back to base record */}
                 {s2Found && s2.s2_authors && s2.s2_authors.length > 0 ? (
-                  <div className="py-3 border-b border-border/80">
+                  <div className="py-3">
                     <span className="text-xs text-muted-foreground block mb-1.5">Authors</span>
                     <div className="flex flex-wrap gap-1.5">
                       {s2.s2_authors.map((author) => {
@@ -222,7 +222,7 @@ export function RecordDrawer({
                     </div>
                   </div>
                 ) : record.authors && (
-                  <div className="py-3 border-b border-border/80">
+                  <div className="py-3">
                     <span className="text-xs text-muted-foreground">Authors</span>
                     <p className="text-sm font-medium">{record.authors}</p>
                   </div>
@@ -230,21 +230,21 @@ export function RecordDrawer({
 
                 {/* Venue/Journal */}
                 {s2?.venue && (
-                  <div className="py-3 border-b border-border/80">
+                  <div className="py-3">
                     <span className="text-xs text-muted-foreground">Journal</span>
                     <p className="text-sm font-medium">{s2.venue}</p>
                   </div>
                 )}
 
                 {/* Year */}
-                <div className="py-3 border-b border-border/80">
+                <div className="py-3">
                   <span className="text-xs text-muted-foreground">Year</span>
                   <p className="text-sm font-medium">{record.pub_year}</p>
                 </div>
 
                 {/* Citations / Influential / References (S2 only) */}
                 {s2Found && (
-                  <div className="py-3 border-b border-border/80 text-xs">
+                  <div className="py-3 text-xs">
                     <div className="flex items-center gap-4">
                       <div>
                         <span className="text-muted-foreground">Citations</span>
@@ -264,7 +264,7 @@ export function RecordDrawer({
 
                 {/* Reference (always from base record) */}
                 {record.reference && (
-                  <div className="py-3 border-b border-border/80">
+                  <div className="py-3">
                     <span className="text-xs text-muted-foreground">Reference</span>
                     <p className="text-sm font-medium">{record.reference}</p>
                   </div>
@@ -272,7 +272,7 @@ export function RecordDrawer({
 
                 {/* Nuclides (with label, matching card pattern) */}
                 {record.nuclides && record.nuclides.length > 0 && (
-                  <div className="py-3 border-b border-border/80">
+                  <div className="py-3">
                     <span className="text-xs text-muted-foreground block mb-1">Nuclides</span>
                     <div className="flex flex-wrap gap-1.5">
                       {record.nuclides.map((nuc) => (
@@ -289,7 +289,7 @@ export function RecordDrawer({
 
                 {/* Reactions (with label, matching card pattern) */}
                 {record.reactions && record.reactions.length > 0 && (
-                  <div className="py-3 border-b border-border/80">
+                  <div className="py-3">
                     <span className="text-xs text-muted-foreground block mb-1">Reactions</span>
                     <div className="flex flex-wrap gap-1.5">
                       {record.reactions.map((rxn) => (
@@ -306,7 +306,7 @@ export function RecordDrawer({
 
                 {/* Fields of study (S2 only) */}
                 {s2Found && s2.fields_of_study && s2.fields_of_study.length > 0 && (
-                  <div className="py-3 border-b border-border/80">
+                  <div className="py-3">
                     <span className="text-xs text-muted-foreground block mb-1">Fields of Study</span>
                     <div className="flex flex-wrap gap-1.5">
                       {s2.fields_of_study.map((field) => (
