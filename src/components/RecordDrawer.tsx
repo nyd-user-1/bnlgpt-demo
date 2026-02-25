@@ -45,13 +45,8 @@ export function RecordDrawer({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent side="right" showCloseButton={false} className="flex flex-col">
         <SheetHeader className="pb-0 shrink-0 pr-4">
-          <div className="flex items-center gap-2">
-            <Hash className="h-4 w-4 text-muted-foreground" />
-            <SheetTitle className="text-base">
-              {record.key_number}
-            </SheetTitle>
-
-            {/* Prev/next navigation right after key number */}
+          {/* Navigation row */}
+          <div className="flex items-center gap-1">
             <button
               onClick={() => hasPrev && onNavigate(currentIndex - 1)}
               disabled={!hasPrev}
@@ -73,6 +68,14 @@ export function RecordDrawer({
             >
               <X className="h-4 w-4" />
             </button>
+          </div>
+
+          {/* Key number */}
+          <div className="flex items-center gap-2">
+            <Hash className="h-4 w-4 text-muted-foreground" />
+            <SheetTitle className="text-base">
+              {record.key_number}
+            </SheetTitle>
           </div>
 
           {/* Open Access badge */}
