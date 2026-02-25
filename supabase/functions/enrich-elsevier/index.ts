@@ -68,14 +68,14 @@ interface ScopusResponse {
 }
 
 /**
- * Fetch a paper from Scopus by DOI.
+ * Fetch a paper from Scopus by DOI using the Abstract Retrieval API.
  * Returns parsed response or null if 404 / not found.
  */
 async function fetchFromScopus(
   doi: string,
   apiKey: string
 ): Promise<ScopusResponse | null> {
-  const url = `${SCOPUS_BASE_URL}/${encodeURIComponent(doi)}?view=META_ABS`;
+  const url = `${SCOPUS_BASE_URL}/${encodeURIComponent(doi)}`;
   const res = await fetch(url, {
     headers: {
       "X-ELS-APIKey": apiKey,
@@ -93,6 +93,32 @@ async function fetchFromScopus(
   }
 
   return await res.json();
+}
+
+/**
+ * Fetch abstract via Scopus Search API as a fallback.
+ * The Search API often returns dc:description even for basic API keys.
+ */
+async function fetchAbstractFromSearch(
+  doi: string,
+  apiKey: string
+): Promise<string | null> {
+  const url = `https://api.elsevier.com/content/search/scopus?query=DOI(${encodeURIComponent(doi)})&field=dc:description`;
+  const res = await fetch(url, {
+    headers: {
+      "X-ELS-APIKey": apiKey,
+      Accept: "application/json",
+    },
+  });
+
+  if (!res.ok) return null;
+
+  const json = await res.json();
+  const entries = json?.["search-results"]?.entry;
+  if (!entries || entries.length === 0) return null;
+
+  const desc = entries[0]?.["dc:description"];
+  return typeof desc === "string" && desc.length > 0 ? desc : null;
 }
 
 /**
@@ -255,10 +281,17 @@ Deno.serve(async (req) => {
 
           if (mode === "backfill") {
             // Backfill: only fill in the abstract (don't overwrite existing S2 data)
-            if (mapped && mapped.abstract) {
+            let abstract = mapped?.abstract ?? null;
+
+            // If Abstract Retrieval didn't include abstract, try Search API
+            if (!abstract) {
+              abstract = await fetchAbstractFromSearch(record.doi, elsevierApiKey);
+            }
+
+            if (abstract) {
               const { error: updateError } = await supabase
                 .from("nsr")
-                .update({ abstract: mapped.abstract })
+                .update({ abstract })
                 .eq("id", record.id);
               if (updateError) {
                 totalErrors++;
@@ -294,7 +327,24 @@ Deno.serve(async (req) => {
             totalNotFound++;
           }
         } else {
-          if (mode !== "backfill") {
+          // Abstract Retrieval returned 404
+          if (mode === "backfill") {
+            // Still try Search API as fallback
+            const abstract = await fetchAbstractFromSearch(record.doi, elsevierApiKey);
+            if (abstract) {
+              const { error: updateError } = await supabase
+                .from("nsr")
+                .update({ abstract })
+                .eq("id", record.id);
+              if (updateError) {
+                totalErrors++;
+              } else {
+                totalFound++;
+              }
+            } else {
+              totalNotFound++;
+            }
+          } else {
             await supabase
               .from("nsr")
               .update({
@@ -302,8 +352,8 @@ Deno.serve(async (req) => {
                 s2_looked_up_at: new Date().toISOString(),
               })
               .eq("id", record.id);
+            totalNotFound++;
           }
-          totalNotFound++;
         }
       } catch (err) {
         const msg = (err as Error).message;
