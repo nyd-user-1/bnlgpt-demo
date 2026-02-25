@@ -242,6 +242,7 @@ Deno.serve(async (req) => {
     let totalFound = 0;
     let totalNotFound = 0;
     let totalErrors = 0;
+    let lastError: string | null = null;
 
     for (const record of toProcess) {
       if (Date.now() - startTime > TIMEOUT_MS) break;
@@ -318,6 +319,8 @@ Deno.serve(async (req) => {
             })
             .eq("id", record.id);
         }
+        // Capture first error for debugging
+        if (!lastError) lastError = `id=${record.id} doi=${record.doi}: ${msg}`;
         totalErrors++;
       }
 
@@ -332,6 +335,7 @@ Deno.serve(async (req) => {
         found: totalFound,
         not_found: totalNotFound,
         errors: totalErrors,
+        last_error: lastError,
       }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
