@@ -1,4 +1,4 @@
-import { useState, useDeferredValue, useMemo, useRef, useEffect } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useSearchParams } from "react-router-dom";
 import { ArrowUpDown, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
@@ -9,6 +9,7 @@ import { NuclideCombobox } from "@/components/NuclideCombobox";
 import { ReactionCombobox } from "@/components/ReactionCombobox";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useNsrSearch, type SearchMode } from "@/hooks/useNsrSearch";
+import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import { useNsrRecords } from "@/hooks/useNsrRecords";
 import { useNsrStructuredSearch } from "@/hooks/useNsrStructuredSearch";
 import { useFeedEmitter } from "@/hooks/useFeedEmitter";
@@ -172,9 +173,8 @@ export default function References() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paramKey]);
 
-  const deferredQuery = useDeferredValue(query);
-
-  const search = useNsrSearch(deferredQuery, searchMode);
+  const debouncedQuery = useDebouncedValue(query, 320);
+  const search = useNsrSearch(debouncedQuery, searchMode);
   const browse = useNsrRecords({
     year: yearFilter ? Number(yearFilter) : undefined,
     page,
@@ -189,17 +189,17 @@ export default function References() {
 
   // Emit semantic/keyword search events
   useEffect(() => {
-    if (!search.data || !deferredQuery || deferredQuery.length < 3) return;
-    if (deferredQuery === prevSearchQueryRef.current) return;
-    prevSearchQueryRef.current = deferredQuery;
+    if (!search.data || !debouncedQuery || debouncedQuery.length < 3) return;
+    if (debouncedQuery === prevSearchQueryRef.current) return;
+    prevSearchQueryRef.current = debouncedQuery;
     emit({
       event_type: searchMode === "semantic" ? "semantic_search" : "keyword_search",
       category: "search",
       entity_type: "query",
-      entity_value: deferredQuery,
-      display_text: `Searched "${deferredQuery}"`,
+      entity_value: debouncedQuery,
+      display_text: `Searched "${debouncedQuery}"`,
     });
-  }, [search.data, deferredQuery, searchMode, emit]);
+  }, [search.data, debouncedQuery, searchMode, emit]);
 
   // Emit structured filter events
   useEffect(() => {
@@ -268,7 +268,7 @@ export default function References() {
     }
   };
 
-  const isSearching = deferredQuery.length >= 3;
+  const isSearching = debouncedQuery.length >= 3;
   const isStructured = structuredParams !== null;
 
   // Determine which data source to show
@@ -330,8 +330,47 @@ export default function References() {
     return records.slice(start, start + CARDS_PER_PAGE);
   }, [records, currentPage, isBrowsing]);
 
+  const [visibleCount, setVisibleCount] = useState(20);
+  const [renderCompletedAt, setRenderCompletedAt] = useState<number | null>(null);
+  const searchRequestStartRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (query.length >= 3) {
+      searchRequestStartRef.current = performance.now();
+    }
+  }, [query, searchMode]);
+
+  useEffect(() => {
+    if (!pagedRecords || pagedRecords.length === 0) {
+      setVisibleCount(20);
+      return;
+    }
+
+    setVisibleCount(Math.min(20, pagedRecords.length));
+    if (pagedRecords.length > 20) {
+      const t = window.setTimeout(() => setVisibleCount(pagedRecords.length), 50);
+      return () => window.clearTimeout(t);
+    }
+  }, [pagedRecords]);
+
+  useEffect(() => {
+    if (!search.data || !isSearching) return;
+
+    requestAnimationFrame(() => {
+      const renderEnd = performance.now();
+      setRenderCompletedAt(renderEnd);
+      const requestStart = searchRequestStartRef.current;
+      console.table({
+        query: debouncedQuery,
+        mode: searchMode,
+        request_to_render_ms: requestStart ? Number((renderEnd - requestStart).toFixed(1)) : undefined,
+        result_count: search.data?.count ?? 0,
+      });
+    });
+  }, [search.data, isSearching, debouncedQuery, searchMode]);
+
   // Reset page when data source changes
-  useEffect(() => { setPage(1); }, [deferredQuery, yearFilter, structuredParams]);
+  useEffect(() => { setPage(1); }, [debouncedQuery, yearFilter, structuredParams]);
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -623,12 +662,17 @@ export default function References() {
 
         {/* Results grid */}
         {pagedRecords && pagedRecords.length > 0 && (
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {pagedRecords.map((record) => (
+          <>
+            <div className="mb-2 text-xs text-muted-foreground">
+              Showing {Math.min(visibleCount, pagedRecords.length)} of {pagedRecords.length} results
+              {renderCompletedAt ? ` • Render @ ${Math.round(renderCompletedAt)}ms` : ""}
+            </div>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {pagedRecords.slice(0, visibleCount).map((record) => (
               <NsrRecordCard
                 key={record.id}
                 record={record}
-                searchQuery={isSearching ? deferredQuery : undefined}
+                searchQuery={isSearching ? debouncedQuery : undefined}
                 searchMode={searchMode}
                 onClick={() => {
                   const idx = pagedRecords?.indexOf(record) ?? 0;
@@ -638,6 +682,7 @@ export default function References() {
               />
             ))}
           </div>
+          </>
         )}
 
 
