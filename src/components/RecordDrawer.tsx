@@ -245,13 +245,6 @@ export function RecordDrawer({
                   </div>
                 )}
 
-                {/* No S2 data message */}
-                {!s2Found && (
-                  <p className="text-sm text-muted-foreground py-4 text-center">
-                    No Semantic Scholar data available for this record.
-                  </p>
-                )}
-
                 {/* Action links */}
                 <div className="flex items-center gap-3 pt-3">
                   {record.doi && (
@@ -277,6 +270,13 @@ export function RecordDrawer({
                     </a>
                   )}
                 </div>
+
+                {/* No S2 data message — pushed to bottom */}
+                {!s2Found && (
+                  <p className="text-xs text-muted-foreground/60 pt-6 text-center">
+                    No Semantic Scholar data available for this record.
+                  </p>
+                )}
               </>
             );
           })()}
