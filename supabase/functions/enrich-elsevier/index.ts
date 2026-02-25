@@ -96,29 +96,34 @@ async function fetchFromScopus(
 }
 
 /**
- * Fetch abstract via Scopus Search API as a fallback.
- * The Search API often returns dc:description even for basic API keys.
+ * Fetch abstract from OpenAlex (free, no API key).
+ * Abstracts are stored as inverted indexes that we reconstruct.
  */
-async function fetchAbstractFromSearch(
-  doi: string,
-  apiKey: string
+async function fetchAbstractFromOpenAlex(
+  doi: string
 ): Promise<string | null> {
-  const url = `https://api.elsevier.com/content/search/scopus?query=DOI(${encodeURIComponent(doi)})&field=dc:description`;
+  const url = `https://api.openalex.org/works/doi:${encodeURIComponent(doi)}?select=abstract_inverted_index`;
   const res = await fetch(url, {
-    headers: {
-      "X-ELS-APIKey": apiKey,
-      Accept: "application/json",
-    },
+    headers: { "User-Agent": "mailto:brendan@bnlgpt.com" },
   });
 
   if (!res.ok) return null;
 
   const json = await res.json();
-  const entries = json?.["search-results"]?.entry;
-  if (!entries || entries.length === 0) return null;
+  const inv = json?.abstract_inverted_index;
+  if (!inv || typeof inv !== "object") return null;
 
-  const desc = entries[0]?.["dc:description"];
-  return typeof desc === "string" && desc.length > 0 ? desc : null;
+  // Reconstruct abstract from inverted index
+  const words: Record<number, string> = {};
+  for (const [word, positions] of Object.entries(inv)) {
+    for (const pos of positions as number[]) {
+      words[pos] = word;
+    }
+  }
+  const indices = Object.keys(words).map(Number).sort((a, b) => a - b);
+  if (indices.length === 0) return null;
+
+  return indices.map((i) => words[i]).join(" ");
 }
 
 /**
@@ -285,7 +290,7 @@ Deno.serve(async (req) => {
 
             // If Abstract Retrieval didn't include abstract, try Search API
             if (!abstract) {
-              abstract = await fetchAbstractFromSearch(record.doi, elsevierApiKey);
+              abstract = await fetchAbstractFromOpenAlex(record.doi);
             }
 
             if (abstract) {
@@ -330,7 +335,7 @@ Deno.serve(async (req) => {
           // Abstract Retrieval returned 404
           if (mode === "backfill") {
             // Still try Search API as fallback
-            const abstract = await fetchAbstractFromSearch(record.doi, elsevierApiKey);
+            const abstract = await fetchAbstractFromOpenAlex(record.doi);
             if (abstract) {
               const { error: updateError } = await supabase
                 .from("nsr")
