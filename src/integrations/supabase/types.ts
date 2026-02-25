@@ -127,6 +127,32 @@ export interface Database {
           similarity: number;
         }[];
       };
+      search_nsr_hybrid: {
+        Args: {
+          query_text: string;
+          query_embedding: string;
+          match_threshold?: number;
+          match_count?: number;
+          filter_year?: number;
+          prefilter_count?: number;
+        };
+        Returns: {
+          id: number;
+          key_number: string;
+          pub_year: number;
+          reference: string | null;
+          authors: string | null;
+          title: string;
+          doi: string | null;
+          exfor_keys: string | null;
+          keywords: string | null;
+          nuclides: string[] | null;
+          reactions: string[] | null;
+          similarity: number;
+          strategy: string;
+          db_execution_ms: number;
+        }[];
+      };
       insert_feed_event: {
         Args: {
           p_event_type: string;
