@@ -172,6 +172,11 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const [chatsExpanded, setChatsExpanded] = useState(true);
   const { data: sessions, refresh } = useChatSessions();
 
+  // Only close sidebar on mobile (< md breakpoint)
+  const closeMobile = () => {
+    if (window.innerWidth < 768) onClose?.();
+  };
+
   return (
     <aside
       className={`${
@@ -185,7 +190,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
             Nuclear Science References
           </h1>
           <button
-            onClick={() => { navigate("/references"); onClose?.(); }}
+            onClick={() => { navigate("/references"); closeMobile(); }}
             className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
               location.pathname === "/references"
                 ? "bg-muted"
@@ -197,7 +202,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
           </button>
 
           <button
-            onClick={() => { navigate("/endf"); onClose?.(); }}
+            onClick={() => { navigate("/endf"); closeMobile(); }}
             className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
               location.pathname === "/endf"
                 ? "bg-muted"
@@ -212,7 +217,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
             onClick={() => {
               navigate("/new-chat");
               window.dispatchEvent(new Event("new-chat"));
-              onClose?.();
+              closeMobile();
             }}
             className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
               location.pathname === "/" || location.pathname === "/new-chat"
@@ -246,7 +251,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                     id={session.id}
                     title={session.title}
                     isActive={location.pathname === `/c/${session.id}`}
-                    onNavigate={() => { navigate(`/c/${session.id}`); onClose?.(); }}
+                    onNavigate={() => { navigate(`/c/${session.id}`); closeMobile(); }}
                     onRefresh={refresh}
                   />
                 ))}
