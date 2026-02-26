@@ -150,26 +150,32 @@ async function fetchAuthorRecords(
     .order("pub_year", { ascending: false })
     .limit(8);
 
-  if (error) return [];
+  if (error) {
+    console.error("fetchAuthorRecords error:", error);
+    return [];
+  }
   return (data ?? []).map((r: any) => ({ ...r, similarity: 1.0 }));
 }
 
-/** Fetch NSR records matching a specific nuclide via structured array query */
-async function fetchNuclideRecords(
+/** Fetch NSR records matching nuclides and/or reactions via the search_nsr_structured RPC */
+async function fetchStructuredRecords(
   nuclides: string[],
+  reactions: string[],
   supabaseUrl: string,
   supabaseKey: string,
 ): Promise<NsrResult[]> {
-  if (nuclides.length === 0) return [];
+  if (nuclides.length === 0 && reactions.length === 0) return [];
   const supabase = createClient(supabaseUrl, supabaseKey);
-  const { data, error } = await supabase
-    .from("nsr")
-    .select("key_number, title, authors, pub_year, doi, keywords")
-    .contains("nuclides", nuclides)
-    .order("pub_year", { ascending: false })
-    .limit(8);
+  const { data, error } = await supabase.rpc("search_nsr_structured", {
+    p_nuclides: nuclides.length > 0 ? nuclides : null,
+    p_reactions: reactions.length > 0 ? reactions : null,
+    p_limit: 10,
+  });
 
-  if (error) return [];
+  if (error) {
+    console.error("search_nsr_structured error:", error);
+    return [];
+  }
   return (data ?? []).map((r: any) => ({ ...r, similarity: 1.0 }));
 }
 
@@ -287,19 +293,20 @@ Deno.serve(async (req) => {
 
     // 1. Extract structured entities from the query
     const nuclides = extractNuclides(userMessage);
+    const reactions = extractReactions(userMessage);
     const authorQuery = extractAuthorQuery(userMessage);
 
     // 2. Embed user message, fetch S2 papers, and structured searches in parallel
-    const [queryEmbedding, s2Papers, nuclideRecords, authorRecords] = await Promise.all([
+    const [queryEmbedding, s2Papers, structuredDbRecords, authorRecords] = await Promise.all([
       embedQuery(userMessage, openaiKey),
       fetchS2Papers(userMessage, s2Key),
-      fetchNuclideRecords(nuclides, supabaseUrl, supabaseKey),
+      fetchStructuredRecords(nuclides, reactions, supabaseUrl, supabaseKey),
       fetchAuthorRecords(authorQuery, supabaseUrl, supabaseKey),
     ]);
 
-    // 3. Semantic search + merge with structured results (author + nuclide first)
+    // 3. Semantic search + merge with structured results (author + nuclide/reaction first)
     const semanticRecords = await fetchNsrRecords(queryEmbedding, supabaseUrl, supabaseKey);
-    const structuredRecords = mergeNsrResults(authorRecords, nuclideRecords);
+    const structuredRecords = mergeNsrResults(authorRecords, structuredDbRecords);
     const nsrRecords = mergeNsrResults(structuredRecords, semanticRecords);
 
     // 4. Build grounded system prompt
