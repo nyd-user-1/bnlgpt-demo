@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { ArrowUp, ChevronDown, X, Loader2, Search } from "lucide-react";
 import type { SearchMode } from "@/hooks/useNsrSearch";
+import { PlusMenu } from "@/components/PlusMenu";
 
 /* ------------------------------------------------------------------ */
 /*  Simple SearchInput (used by Home, Endf, References)                 */
@@ -137,8 +138,8 @@ export function SearchBox({
 
         {/* Bottom bar */}
         <div className="flex items-center justify-between pt-1">
-          {/* Spacer */}
-          <div />
+          {/* + menu for quick insertion */}
+          <PlusMenu mode="search" onSelect={(text) => { onChange(text); }} />
 
           <div className="flex items-center gap-2">
             {/* Mode selector */}
