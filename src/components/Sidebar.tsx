@@ -187,7 +187,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
       <div className="w-[281px] h-full flex flex-col bg-background">
         {/* Navigation */}
         <nav className="flex-1 overflow-y-auto px-3 pt-2 space-y-1">
-          <h1 className="px-3 pt-1 pb-3 text-lg font-bold tracking-tight">
+          <h1 className="px-3 pt-1 pb-3 text-[clamp(0.875rem,4.5vw,1.125rem)] font-bold tracking-tight whitespace-nowrap">
             <button
               onClick={() => { navigate("/new-chat"); window.dispatchEvent(new Event("new-chat")); closeMobile(); }}
               className="hover:opacity-80 transition-opacity"
