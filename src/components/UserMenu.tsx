@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Sun,
   Moon,
@@ -6,6 +7,7 @@ import {
   Settings,
   Zap,
   LogOut,
+  LayoutList,
 } from "lucide-react";
 import { useTheme } from "@/hooks/useTheme";
 
@@ -14,6 +16,7 @@ export function UserMenu() {
   const [themeOpen, setThemeOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const { theme, setTheme } = useTheme();
+  const navigate = useNavigate();
 
   // Close on outside click
   useEffect(() => {
@@ -57,6 +60,18 @@ export function UserMenu() {
           <button className="flex w-full items-center gap-2.5 px-3 py-2 text-sm hover:bg-muted transition-colors text-muted-foreground">
             <Settings className="h-4 w-4" />
             Settings
+          </button>
+
+          {/* Features comparison */}
+          <button
+            onClick={() => {
+              navigate("/features");
+              setOpen(false);
+            }}
+            className="flex w-full items-center gap-2.5 px-3 py-2 text-sm hover:bg-muted transition-colors text-muted-foreground"
+          >
+            <LayoutList className="h-4 w-4" />
+            Features
           </button>
 
           {/* Theme — functional */}

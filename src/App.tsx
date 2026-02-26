@@ -8,6 +8,7 @@ import References from "@/pages/References";
 import Resources from "@/pages/Resources";
 import Endf from "@/pages/Endf";
 import Search from "@/pages/Search";
+import Features from "@/pages/Features";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +26,7 @@ function App() {
               <Route path="/resources" element={<Resources />} />
               <Route path="/endf" element={<Endf />} />
               <Route path="/search" element={<Search />} />
+              <Route path="/features" element={<Features />} />
             </Route>
           </Routes>
           <Toaster />
