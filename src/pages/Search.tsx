@@ -416,154 +416,149 @@ export default function Search() {
     reactionEntries.length > 0 ||
     journalEntries.length > 0;
 
-  // Find drawer index in filtered records for navigation
   const drawerRecords = filteredRecords;
 
   return (
-    <div className="flex h-full flex-col">
-      {/* Sticky search area */}
-      <div className="shrink-0 px-4 pt-4 pb-2">
-        <div className="mx-auto w-full max-w-[1200px]">
-          <SearchBox
-            value={inputValue}
-            onChange={handleClear}
-            onSubmit={handleSubmit}
-            mode={mode}
-            onModeChange={setMode}
-            isLoading={isLoading}
-          />
+    <div className="h-full px-4 pt-4 pb-6">
+      <div className="mx-auto flex h-full max-w-[1200px] flex-col lg:flex-row gap-6">
+        {/* Left column — search box + scrollable results */}
+        <div className="flex flex-1 min-w-0 flex-col">
+          {/* Search box (stays put) */}
+          <div className="shrink-0 max-w-[720px]">
+            <SearchBox
+              value={inputValue}
+              onChange={handleClear}
+              onSubmit={handleSubmit}
+              mode={mode}
+              onModeChange={setMode}
+              isLoading={isLoading}
+            />
 
-          {/* Active filters indicator */}
-          {hasActiveFilters(filters) && (
-            <div className="mt-2 flex items-center gap-2">
-              <span className="text-xs text-muted-foreground">
-                Filtered: {filteredRecords.length} of {records.length} results
-              </span>
-              <button
-                onClick={() => setFilters(EMPTY_FILTERS)}
-                className="text-xs text-nuclear hover:underline"
-              >
-                Clear filters
-              </button>
-            </div>
-          )}
-
-          {/* Count header */}
-          <div className="mt-3">
-            {isLoading ? (
-              <div className="flex items-center gap-2 py-2">
-                <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                <span className="text-sm text-muted-foreground">Searching…</span>
+            {/* Active filters indicator */}
+            {hasActiveFilters(filters) && (
+              <div className="mt-2 flex items-center gap-2">
+                <span className="text-xs text-muted-foreground">
+                  Filtered: {filteredRecords.length} of {records.length} results
+                </span>
+                <button
+                  onClick={() => setFilters(EMPTY_FILTERS)}
+                  className="text-xs text-nuclear hover:underline"
+                >
+                  Clear filters
+                </button>
               </div>
-            ) : filteredRecords.length === 0 ? (
-              <p className="text-sm text-muted-foreground py-2">
-                No results found for &ldquo;{urlQuery}&rdquo;
-              </p>
-            ) : (
-              <p className="text-sm text-muted-foreground">
-                About {hasActiveFilters(filters) ? filteredRecords.length : (data?.count ?? records.length)} results
-              </p>
+            )}
+
+            {/* Count header */}
+            <div className="mt-3">
+              {isLoading ? (
+                <div className="flex items-center gap-2 py-2">
+                  <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground">Searching…</span>
+                </div>
+              ) : filteredRecords.length === 0 ? (
+                <p className="text-sm text-muted-foreground py-2">
+                  No results found for &ldquo;{urlQuery}&rdquo;
+                </p>
+              ) : (
+                <p className="text-sm text-muted-foreground">
+                  About {hasActiveFilters(filters) ? filteredRecords.length : (data?.count ?? records.length)} results
+                </p>
+              )}
+            </div>
+          </div>
+
+          {/* Scrollable results list */}
+          <div className="flex-1 overflow-y-auto min-h-0 mt-1">
+            {!isLoading && filteredRecords.length > 0 && (
+              <div>
+                {filteredRecords.map((record, i) => (
+                  <ResultRow
+                    key={record.id}
+                    record={record}
+                    mode={mode}
+                    onClick={() => setDrawerIndex(i)}
+                  />
+                ))}
+              </div>
             )}
           </div>
         </div>
-      </div>
 
-      {/* Scrollable content area */}
-      <div className="flex-1 overflow-y-auto px-4 pb-6">
-        <div className="mx-auto w-full max-w-[1200px]">
-          <div className="flex flex-col lg:flex-row gap-6">
-            {/* Left column — result list */}
-            <div className="flex-1 min-w-0">
-              {!isLoading && filteredRecords.length > 0 && (
-                <div>
-                  {filteredRecords.map((record, i) => (
-                    <ResultRow
-                      key={record.id}
-                      record={record}
-                      mode={mode}
-                      onClick={() => setDrawerIndex(i)}
-                    />
-                  ))}
+        {/* Right column — widgets (stays put, scrolls independently if needed) */}
+        {!isLoading && hasWidgets && (
+          <div className="w-full lg:w-auto lg:min-w-[280px] lg:max-w-[620px] shrink-0 overflow-y-auto">
+            <div className="flex flex-wrap gap-4">
+              {/* Year bar chart */}
+              {!hiddenWidgets.has("yearChart") && (
+                <div className="w-full min-w-[222px]">
+                  <YearBarChart
+                    entries={yearEntries}
+                    activeYears={filters.years}
+                    onToggle={(v) => toggleSet("years", v)}
+                    onClose={() => hideWidget("yearChart")}
+                  />
+                </div>
+              )}
+
+              {/* Year table */}
+              {!hiddenWidgets.has("yearTable") && (
+                <div className="flex-1 min-w-[222px] max-w-[300px]">
+                  <StatWidget
+                    icon={<Calendar className="h-3.5 w-3.5 text-muted-foreground" />}
+                    title="Year"
+                    entries={yearEntries}
+                    activeValues={filters.years}
+                    onToggle={(v) => toggleSet("years", v)}
+                    onClose={() => hideWidget("yearTable")}
+                  />
+                </div>
+              )}
+
+              {/* Journals */}
+              {journalEntries.length > 0 && !hiddenWidgets.has("journals") && (
+                <div className="flex-1 min-w-[222px] max-w-[300px]">
+                  <StatWidget
+                    icon={<BookOpen className="h-3.5 w-3.5 text-muted-foreground" />}
+                    title="Journal"
+                    entries={journalEntries}
+                    activeValues={filters.journals}
+                    onToggle={(v) => toggleSet("journals", v)}
+                    onClose={() => hideWidget("journals")}
+                  />
+                </div>
+              )}
+
+              {/* Nuclides */}
+              {nuclideEntries.length > 0 && !hiddenWidgets.has("nuclides") && (
+                <div className="flex-1 min-w-[222px] max-w-[300px]">
+                  <StatWidget
+                    icon={<Atom className="h-3.5 w-3.5 text-muted-foreground" />}
+                    title="Nuclides"
+                    entries={nuclideEntries}
+                    activeValues={filters.nuclides}
+                    onToggle={(v) => toggleSet("nuclides", v)}
+                    onClose={() => hideWidget("nuclides")}
+                  />
+                </div>
+              )}
+
+              {/* Reactions */}
+              {reactionEntries.length > 0 && !hiddenWidgets.has("reactions") && (
+                <div className="flex-1 min-w-[222px] max-w-[300px]">
+                  <StatWidget
+                    icon={<Zap className="h-3.5 w-3.5 text-muted-foreground" />}
+                    title="Reactions"
+                    entries={reactionEntries}
+                    activeValues={filters.reactions}
+                    onToggle={(v) => toggleSet("reactions", v)}
+                    onClose={() => hideWidget("reactions")}
+                  />
                 </div>
               )}
             </div>
-
-            {/* Right column — widgets in flex wrap grid */}
-            {!isLoading && hasWidgets && (
-              <div className="w-full lg:w-auto lg:min-w-[280px] lg:max-w-[620px] shrink-0">
-                <div className="flex flex-wrap gap-4">
-                  {/* Year bar chart */}
-                  {!hiddenWidgets.has("yearChart") && (
-                    <div className="w-full min-w-[222px]">
-                      <YearBarChart
-                        entries={yearEntries}
-                        activeYears={filters.years}
-                        onToggle={(v) => toggleSet("years", v)}
-                        onClose={() => hideWidget("yearChart")}
-                      />
-                    </div>
-                  )}
-
-                  {/* Year table */}
-                  {!hiddenWidgets.has("yearTable") && (
-                    <div className="flex-1 min-w-[222px] max-w-[300px]">
-                      <StatWidget
-                        icon={<Calendar className="h-3.5 w-3.5 text-muted-foreground" />}
-                        title="Year"
-                        entries={yearEntries}
-                        activeValues={filters.years}
-                        onToggle={(v) => toggleSet("years", v)}
-                        onClose={() => hideWidget("yearTable")}
-                      />
-                    </div>
-                  )}
-
-                  {/* Journals */}
-                  {journalEntries.length > 0 && !hiddenWidgets.has("journals") && (
-                    <div className="flex-1 min-w-[222px] max-w-[300px]">
-                      <StatWidget
-                        icon={<BookOpen className="h-3.5 w-3.5 text-muted-foreground" />}
-                        title="Journal"
-                        entries={journalEntries}
-                        activeValues={filters.journals}
-                        onToggle={(v) => toggleSet("journals", v)}
-                        onClose={() => hideWidget("journals")}
-                      />
-                    </div>
-                  )}
-
-                  {/* Nuclides */}
-                  {nuclideEntries.length > 0 && !hiddenWidgets.has("nuclides") && (
-                    <div className="flex-1 min-w-[222px] max-w-[300px]">
-                      <StatWidget
-                        icon={<Atom className="h-3.5 w-3.5 text-muted-foreground" />}
-                        title="Nuclides"
-                        entries={nuclideEntries}
-                        activeValues={filters.nuclides}
-                        onToggle={(v) => toggleSet("nuclides", v)}
-                        onClose={() => hideWidget("nuclides")}
-                      />
-                    </div>
-                  )}
-
-                  {/* Reactions */}
-                  {reactionEntries.length > 0 && !hiddenWidgets.has("reactions") && (
-                    <div className="flex-1 min-w-[222px] max-w-[300px]">
-                      <StatWidget
-                        icon={<Zap className="h-3.5 w-3.5 text-muted-foreground" />}
-                        title="Reactions"
-                        entries={reactionEntries}
-                        activeValues={filters.reactions}
-                        onToggle={(v) => toggleSet("reactions", v)}
-                        onClose={() => hideWidget("reactions")}
-                      />
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
           </div>
-        </div>
+        )}
       </div>
 
       {/* Record drawer */}
