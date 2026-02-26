@@ -188,7 +188,12 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
         {/* Navigation */}
         <nav className="flex-1 overflow-y-auto px-3 pt-2 space-y-1">
           <h1 className="px-3 pt-1 pb-3 text-lg font-bold tracking-tight">
-            Nuclear Science References
+            <button
+              onClick={() => { navigate("/new-chat"); closeMobile(); }}
+              className="hover:opacity-80 transition-opacity"
+            >
+              Nuclear Science References
+            </button>
           </h1>
           <button
             onClick={() => { navigate("/references"); closeMobile(); }}
