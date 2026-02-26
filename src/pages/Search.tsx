@@ -275,7 +275,7 @@ function ResultRow({
 
   return (
     <div
-      className="py-3 border-b border-border/10 cursor-pointer hover:bg-muted/30 transition-colors px-1 -mx-1 rounded-sm overflow-hidden"
+      className="py-3 border-b border-border/10 cursor-pointer hover:bg-muted/60 transition-colors px-3 -mx-3 rounded-lg overflow-hidden"
       onClick={onClick}
     >
       <div className="flex items-start gap-2">
