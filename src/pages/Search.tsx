@@ -152,17 +152,17 @@ function StatWidget({
           </span>
         )}
       </div>
-      <div className="divide-y divide-border/30">
+      <div className="p-1">
         {visible.map((e) => {
           const isActive = activeValues.has(e.value);
           return (
             <button
               key={e.value}
               onClick={() => onToggle(e.value)}
-              className={`flex w-full items-center justify-between px-3 py-1.5 transition-colors text-left ${
+              className={`flex w-full items-center justify-between rounded-lg px-3 py-2 transition-colors text-left ${
                 isActive
-                  ? "bg-foreground/10 text-foreground"
-                  : "hover:bg-muted/40 text-foreground"
+                  ? "bg-muted font-medium text-foreground"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
               }`}
             >
               <span className="text-xs truncate mr-2">{e.value}</span>
