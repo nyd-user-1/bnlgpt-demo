@@ -3,6 +3,7 @@ import {
   SquarePen,
   Atom,
   FileText,
+  Search,
   ChevronDown,
   MoreHorizontal,
   Pencil,
@@ -211,6 +212,18 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
           >
             <FileText className="h-4 w-4" />
             ENDF Reports
+          </button>
+
+          <button
+            onClick={() => { navigate("/search"); closeMobile(); }}
+            className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+              location.pathname === "/search"
+                ? "bg-muted"
+                : "hover:bg-muted"
+            }`}
+          >
+            <Search className="h-4 w-4" />
+            New Search
           </button>
 
           <button

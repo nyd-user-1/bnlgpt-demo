@@ -7,6 +7,7 @@ import Chat from "@/pages/Chat";
 import References from "@/pages/References";
 import Resources from "@/pages/Resources";
 import Endf from "@/pages/Endf";
+import Search from "@/pages/Search";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,7 @@ function App() {
               <Route path="/references" element={<References />} />
               <Route path="/resources" element={<Resources />} />
               <Route path="/endf" element={<Endf />} />
+              <Route path="/search" element={<Search />} />
             </Route>
           </Routes>
           <Toaster />
