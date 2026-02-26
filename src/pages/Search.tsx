@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Loader2, Calendar, Atom, Zap, ExternalLink } from "lucide-react";
 import { useNsrSearch, type SearchMode } from "@/hooks/useNsrSearch";
-import { SearchInput } from "@/components/SearchInput";
+import { SearchBox } from "@/components/SearchInput";
 import { RecordDrawer } from "@/components/RecordDrawer";
 import type { NsrRecord } from "@/types/nsr";
 
@@ -205,7 +205,7 @@ export default function Search() {
           Search Nuclear Science References
         </h1>
         <div className="w-full max-w-[720px]">
-          <SearchInput
+          <SearchBox
             value={inputValue}
             onChange={setInputValue}
             onSubmit={handleSubmit}
@@ -231,7 +231,7 @@ export default function Search() {
           {/* Left column */}
           <div className="flex-1 min-w-0 md:max-w-[650px]">
             {/* Search input */}
-            <SearchInput
+            <SearchBox
               value={inputValue}
               onChange={handleClear}
               onSubmit={handleSubmit}
