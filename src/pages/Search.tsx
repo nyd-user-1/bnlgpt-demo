@@ -285,11 +285,11 @@ function ResultRow({
 
   return (
     <div
-      className="py-3 border-b border-border/10 cursor-pointer hover:bg-muted/30 transition-colors px-1 -mx-1 rounded-sm"
+      className="py-3 border-b border-border/10 cursor-pointer hover:bg-muted/30 transition-colors px-1 -mx-1 rounded-sm overflow-hidden"
       onClick={onClick}
     >
       <div className="flex items-start gap-2">
-        <span className="text-sm font-medium text-foreground leading-snug hover:underline flex-1">
+        <span className="text-sm font-medium text-foreground leading-snug hover:underline flex-1 min-w-0">
           {record.title}
         </span>
         {mode === "semantic" && record.similarity != null && (
@@ -309,10 +309,10 @@ function ResultRow({
           target="_blank"
           rel="noopener noreferrer"
           onClick={(e) => e.stopPropagation()}
-          className="inline-flex items-center gap-1 text-[11px] text-muted-foreground/70 hover:text-foreground mt-0.5 transition-colors"
+          className="inline-flex items-center gap-1 text-[11px] text-muted-foreground/70 hover:text-foreground mt-0.5 transition-colors truncate max-w-full"
         >
-          <ExternalLink className="h-3 w-3" />
-          {record.doi}
+          <ExternalLink className="h-3 w-3 shrink-0" />
+          <span className="truncate">{record.doi}</span>
         </a>
       )}
     </div>
@@ -419,7 +419,7 @@ export default function Search() {
   const drawerRecords = filteredRecords;
 
   return (
-    <div className="h-full px-4 pt-4 pb-6">
+    <div className="h-full px-4 pt-4 pb-6 overflow-x-hidden">
       <div className="mx-auto flex h-full max-w-[1200px] flex-col lg:flex-row gap-6">
         {/* Left column — search box + scrollable results */}
         <div className="flex flex-1 min-w-0 flex-col">
