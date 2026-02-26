@@ -73,7 +73,9 @@ export function SearchBox({
 }: SearchBoxProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [modeMenuOpen, setModeMenuOpen] = useState(false);
+  const [modeMenuAbove, setModeMenuAbove] = useState(true);
   const modeRef = useRef<HTMLDivElement>(null);
+  const modeBtnRef = useRef<HTMLButtonElement>(null);
 
   // Auto-resize textarea
   useEffect(() => {
@@ -144,8 +146,15 @@ export function SearchBox({
             {/* Mode selector */}
             <div className="relative" ref={modeRef}>
               <button
+                ref={modeBtnRef}
                 type="button"
-                onClick={() => setModeMenuOpen(!modeMenuOpen)}
+                onClick={() => {
+                  if (!modeMenuOpen && modeBtnRef.current) {
+                    const rect = modeBtnRef.current.getBoundingClientRect();
+                    setModeMenuAbove(rect.top > 200);
+                  }
+                  setModeMenuOpen(!modeMenuOpen);
+                }}
                 className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors rounded-lg px-2 py-1"
               >
                 <span className="font-medium">{selectedMode.label}</span>
@@ -155,7 +164,9 @@ export function SearchBox({
               </button>
 
               {modeMenuOpen && (
-                <div className="absolute bottom-full right-0 mb-2 w-[calc(100vw-2rem)] md:w-[260px] rounded-xl border bg-background shadow-xl animate-in fade-in slide-in-from-bottom-2 duration-150 overflow-hidden py-1">
+                <div className={`absolute right-0 w-[calc(100vw-2rem)] md:w-[260px] rounded-xl border bg-background shadow-xl animate-in fade-in duration-150 overflow-hidden py-1 ${
+                  modeMenuAbove ? "bottom-full mb-2 slide-in-from-bottom-2" : "top-full mt-2 slide-in-from-top-2"
+                }`}>
                   {MODE_OPTIONS.map((m) => (
                     <button
                       key={m.value}

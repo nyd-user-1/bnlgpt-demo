@@ -46,8 +46,10 @@ export function ChatInput({ onSubmit, onStop, isLoading, initialValue }: ChatInp
 
   // Model selector state
   const [modelMenuOpen, setModelMenuOpen] = useState(false);
+  const [modelMenuAbove, setModelMenuAbove] = useState(true);
   const [selectedModel, setSelectedModel] = useState("GPT-4o");
   const modelRef = useRef<HTMLDivElement>(null);
+  const modelBtnRef = useRef<HTMLButtonElement>(null);
 
   // ---- textarea auto-resize ----
   useEffect(() => {
@@ -119,8 +121,15 @@ export function ChatInput({ onSubmit, onStop, isLoading, initialValue }: ChatInp
             {/* Model selector */}
             <div className="relative" ref={modelRef}>
               <button
+                ref={modelBtnRef}
                 type="button"
-                onClick={() => setModelMenuOpen(!modelMenuOpen)}
+                onClick={() => {
+                  if (!modelMenuOpen && modelBtnRef.current) {
+                    const rect = modelBtnRef.current.getBoundingClientRect();
+                    setModelMenuAbove(rect.top > 350);
+                  }
+                  setModelMenuOpen(!modelMenuOpen);
+                }}
                 className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors rounded-lg px-2 py-1"
               >
                 {MODEL_OPTIONS.find((m) => m.label === selectedModel)?.icon}
@@ -129,7 +138,9 @@ export function ChatInput({ onSubmit, onStop, isLoading, initialValue }: ChatInp
               </button>
 
               {modelMenuOpen && (
-                <div className="absolute bottom-full right-0 mb-2 w-[calc(100vw-2rem)] md:w-[260px] rounded-xl border bg-background shadow-xl animate-in fade-in slide-in-from-bottom-2 duration-150 overflow-hidden py-1">
+                <div className={`absolute right-0 w-[calc(100vw-2rem)] md:w-[260px] rounded-xl border bg-background shadow-xl animate-in fade-in duration-150 overflow-hidden py-1 ${
+                  modelMenuAbove ? "bottom-full mb-2 slide-in-from-bottom-2" : "top-full mt-2 slide-in-from-top-2"
+                }`}>
                   {MODEL_OPTIONS.map((m) => (
                     <button
                       key={m.label}

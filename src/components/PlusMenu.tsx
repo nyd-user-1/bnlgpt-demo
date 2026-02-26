@@ -132,7 +132,9 @@ interface PlusMenuProps {
 export function PlusMenu({ onSelect, mode }: PlusMenuProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [drawerCategory, setDrawerCategory] = useState<DrawerCategory | null>(null);
+  const [openAbove, setOpenAbove] = useState(true);
   const menuRef = useRef<HTMLDivElement>(null);
+  const btnRef = useRef<HTMLButtonElement>(null);
 
   // Per-category DB items
   const [availableNuclides, setAvailableNuclides] = useState<DbItem[]>([]);
@@ -342,11 +344,16 @@ export function PlusMenu({ onSelect, mode }: PlusMenuProps) {
   return (
     <div className="relative" ref={menuRef}>
       <button
+        ref={btnRef}
         type="button"
         onClick={() => {
           if (menuOpen) {
             closeMenu();
           } else {
+            if (btnRef.current) {
+              const rect = btnRef.current.getBoundingClientRect();
+              setOpenAbove(rect.top > 300);
+            }
             setMenuOpen(true);
             setDrawerCategory(null);
             setDrawerSearch("");
@@ -360,7 +367,9 @@ export function PlusMenu({ onSelect, mode }: PlusMenuProps) {
 
       {menuOpen && !drawerCategory && (
         /* -------- Category list -------- */
-        <div className="absolute bottom-full left-0 mb-2 w-[calc(100vw-2rem)] max-w-[calc(100vw-2rem)] md:w-56 rounded-2xl border border-border/60 bg-background shadow-xl animate-in fade-in slide-in-from-bottom-2 duration-150 overflow-hidden">
+        <div className={`absolute left-0 w-[calc(100vw-2rem)] max-w-[calc(100vw-2rem)] md:w-56 rounded-2xl border border-border/60 bg-background shadow-xl animate-in fade-in duration-150 overflow-hidden ${
+          openAbove ? "bottom-full mb-2 slide-in-from-bottom-2" : "top-full mt-2 slide-in-from-top-2"
+        }`}>
           <div className="py-1">
             {CATEGORIES.map((cat, i) => (
               <button
@@ -381,7 +390,9 @@ export function PlusMenu({ onSelect, mode }: PlusMenuProps) {
 
       {menuOpen && drawerCategory && (
         /* -------- Drawer -------- */
-        <div className="absolute bottom-full left-0 mb-2 w-[calc(100vw-2rem)] max-w-[calc(100vw-2rem)] md:w-80 rounded-2xl border border-border/60 bg-background shadow-xl animate-in fade-in slide-in-from-bottom-2 duration-150 overflow-hidden">
+        <div className={`absolute left-0 w-[calc(100vw-2rem)] max-w-[calc(100vw-2rem)] md:w-80 rounded-2xl border border-border/60 bg-background shadow-xl animate-in fade-in duration-150 overflow-hidden ${
+          openAbove ? "bottom-full mb-2 slide-in-from-bottom-2" : "top-full mt-2 slide-in-from-top-2"
+        }`}>
           {/* Header: back + search + clear */}
           <div className="flex items-center gap-2 px-3 py-2.5 border-b border-border/40">
             <button
