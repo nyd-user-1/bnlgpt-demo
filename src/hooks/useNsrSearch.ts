@@ -64,7 +64,7 @@ async function semanticSearch(query: string, signal?: AbortSignal): Promise<Sear
     },
     body: JSON.stringify({
       query,
-      match_count: 20,
+      match_count: 200,
       match_threshold: 0.3,
       prefilter_count: 200,
       include_timing: true,
@@ -113,7 +113,7 @@ async function keyNumberSearch(query: string): Promise<SearchResult> {
     .select("id, key_number, pub_year, reference, authors, title, doi, exfor_keys, keywords, nuclides, reactions")
     .ilike("key_number", pattern)
     .order("key_number", { ascending: true })
-    .limit(20);
+    .limit(200);
 
   if (error) throw new Error(error.message);
 
@@ -148,7 +148,7 @@ async function textSearch(query: string): Promise<SearchResult> {
     .select("id, key_number, pub_year, reference, authors, title, doi, exfor_keys, keywords, nuclides, reactions")
     .or(`key_number.ilike.${pattern},title.ilike.${pattern},authors.ilike.${pattern},keywords.ilike.${pattern}`)
     .order("pub_year", { ascending: false })
-    .limit(20);
+    .limit(200);
 
   if (error) throw new Error(error.message);
 
