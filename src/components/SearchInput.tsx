@@ -116,7 +116,7 @@ export function SearchBox({
             value={value}
             onChange={(e) => onChange(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Search nuclear science references..."
+            placeholder="Search the Nuclear Science References database..."
             rows={1}
             autoFocus
             className="min-h-[40px] w-full resize-none border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 p-0 pr-8 placeholder:text-muted-foreground/60 text-base text-foreground outline-none"

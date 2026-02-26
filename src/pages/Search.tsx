@@ -200,10 +200,7 @@ export default function Search() {
   /* ---------- Empty state ---------- */
   if (!hasQuery) {
     return (
-      <div className="flex flex-1 flex-col items-center justify-center px-4">
-        <h1 className="text-2xl md:text-3xl font-bold tracking-tight mb-6 text-center">
-          Search Nuclear Science References
-        </h1>
+      <div className="flex flex-1 flex-col items-center justify-end pb-8 px-4">
         <div className="w-full max-w-[720px]">
           <SearchBox
             value={inputValue}

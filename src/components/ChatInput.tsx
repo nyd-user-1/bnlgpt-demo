@@ -403,7 +403,7 @@ export function ChatInput({ onSubmit, onStop, isLoading, initialValue }: ChatInp
           value={value}
           onChange={(e) => setValue(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="What are you researching?"
+          placeholder="Chat with the NSRdb"
           rows={1}
           className="flex-1 min-h-[40px] w-full resize-none border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 p-0 placeholder:text-muted-foreground/60 text-base text-foreground outline-none"
         />
