@@ -1,18 +1,12 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import {
-  Loader2, Calendar, Atom, Zap, ExternalLink, BookOpen, Unlock,
+  Loader2, Calendar, Atom, Zap, ExternalLink, BookOpen,
 } from "lucide-react";
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Pie, PieChart, Cell } from "recharts";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Cell, ResponsiveContainer } from "recharts";
 import { useNsrSearch, type SearchMode } from "@/hooks/useNsrSearch";
 import { SearchBox } from "@/components/SearchInput";
 import { RecordDrawer } from "@/components/RecordDrawer";
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-  type ChartConfig,
-} from "@/components/ui/chart";
 import type { NsrRecord } from "@/types/nsr";
 
 /* ------------------------------------------------------------------ */
@@ -54,12 +48,17 @@ function countYears(records: NsrRecord[]): CountEntry[] {
   );
 }
 
-/** Extract journal name from reference string like "Phys.Rev. C 100, 064319 (2019)" */
+/** Extract journal name from reference like "Phys.Rev. C 100, 064319 (2019)" */
 function extractJournal(ref: string | null): string | null {
   if (!ref) return null;
-  // Take everything before the first comma, volume number, or parenthesized year
-  const match = ref.match(/^([A-Za-z][A-Za-z.&\s]+)/);
-  return match ? match[1].trim().replace(/\.$/, "") : ref.split(",")[0]?.trim() ?? null;
+  // Strip everything from the first digit-comma or digit-space-( pattern onward
+  // to get "Phys.Rev. C" from "Phys.Rev. C 100, 064319 (2019)"
+  const cleaned = ref
+    .replace(/\s+\d+[\s,].*$/, "")  // strip from " 100, ..." onward
+    .replace(/\s*\(.*$/, "")         // strip from " (" onward
+    .trim()
+    .replace(/[.,;:]+$/, "");        // strip trailing punctuation
+  return cleaned.length >= 3 ? cleaned : null;
 }
 
 function countJournals(records: NsrRecord[]): CountEntry[] {
@@ -73,15 +72,6 @@ function countJournals(records: NsrRecord[]): CountEntry[] {
   );
 }
 
-function countOpenAccess(records: NsrRecord[]): { oa: number; closed: number } {
-  let oa = 0;
-  let closed = 0;
-  for (const r of records) {
-    if (r.is_open_access) oa++;
-    else closed++;
-  }
-  return { oa, closed };
-}
 
 /* ------------------------------------------------------------------ */
 /*  Filter types                                                        */
@@ -92,7 +82,6 @@ interface Filters {
   nuclides: Set<string>;
   reactions: Set<string>;
   journals: Set<string>;
-  openAccess: boolean | null; // null = no filter, true = OA only, false = closed only
 }
 
 const EMPTY_FILTERS: Filters = {
@@ -100,7 +89,6 @@ const EMPTY_FILTERS: Filters = {
   nuclides: new Set(),
   reactions: new Set(),
   journals: new Set(),
-  openAccess: null,
 };
 
 function applyFilters(records: NsrRecord[], filters: Filters): NsrRecord[] {
@@ -116,8 +104,6 @@ function applyFilters(records: NsrRecord[], filters: Filters): NsrRecord[] {
       const j = extractJournal(r.reference);
       if (!j || !filters.journals.has(j)) return false;
     }
-    if (filters.openAccess === true && !r.is_open_access) return false;
-    if (filters.openAccess === false && r.is_open_access) return false;
     return true;
   });
 }
@@ -127,8 +113,7 @@ function hasActiveFilters(f: Filters): boolean {
     f.years.size > 0 ||
     f.nuclides.size > 0 ||
     f.reactions.size > 0 ||
-    f.journals.size > 0 ||
-    f.openAccess !== null
+    f.journals.size > 0
   );
 }
 
@@ -201,10 +186,6 @@ function StatWidget({
 /*  Year bar chart widget                                               */
 /* ------------------------------------------------------------------ */
 
-const yearChartConfig: ChartConfig = {
-  count: { label: "Papers", color: "#FF9933" },
-};
-
 function YearBarChart({
   entries,
   activeYears,
@@ -231,7 +212,7 @@ function YearBarChart({
         <span className="text-xs font-semibold text-foreground">Year</span>
       </div>
       <div className="px-2 py-3">
-        <ChartContainer config={yearChartConfig} className="h-[140px] w-full">
+        <ResponsiveContainer width="100%" height={140}>
           <BarChart data={data} margin={{ left: 0, right: 0, top: 4, bottom: 0 }}>
             <CartesianGrid vertical={false} strokeDasharray="3 3" stroke="#222" />
             <XAxis
@@ -242,10 +223,6 @@ function YearBarChart({
               tickMargin={4}
             />
             <YAxis hide />
-            <ChartTooltip
-              cursor={{ fill: "rgba(255,153,51,0.08)" }}
-              content={<ChartTooltipContent nameKey="year" />}
-            />
             <Bar
               dataKey="count"
               radius={[2, 2, 0, 0]}
@@ -257,92 +234,12 @@ function YearBarChart({
               ))}
             </Bar>
           </BarChart>
-        </ChartContainer>
+        </ResponsiveContainer>
       </div>
     </div>
   );
 }
 
-/* ------------------------------------------------------------------ */
-/*  Open Access pie chart widget                                        */
-/* ------------------------------------------------------------------ */
-
-const OA_COLORS = { oa: "#4CAF50", closed: "#555555" };
-
-const oaChartConfig: ChartConfig = {
-  oa: { label: "Open Access", color: OA_COLORS.oa },
-  closed: { label: "Closed", color: OA_COLORS.closed },
-};
-
-function OpenAccessPie({
-  oaCount,
-  closedCount,
-  activeFilter,
-  onToggle,
-}: {
-  oaCount: number;
-  closedCount: number;
-  activeFilter: boolean | null;
-  onToggle: (val: boolean) => void;
-}) {
-  const total = oaCount + closedCount;
-  if (total === 0) return null;
-
-  const pct = total > 0 ? ((oaCount / total) * 100).toFixed(0) : "0";
-  const data = [
-    { name: "Open Access", value: oaCount, fill: OA_COLORS.oa },
-    { name: "Closed", value: closedCount, fill: OA_COLORS.closed },
-  ];
-
-  return (
-    <div className="rounded-lg border border-border overflow-hidden min-w-0">
-      <div className="flex items-center gap-2 px-3 py-2 bg-muted/30 border-b border-border">
-        <Unlock className="h-3.5 w-3.5 text-muted-foreground" />
-        <span className="text-xs font-semibold text-foreground">Open Access</span>
-      </div>
-      <div className="flex items-center gap-3 px-3 py-3">
-        <ChartContainer config={oaChartConfig} className="h-[80px] w-[80px] shrink-0">
-          <PieChart>
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel />}
-            />
-            <Pie
-              data={data}
-              dataKey="value"
-              nameKey="name"
-              innerRadius={22}
-              outerRadius={36}
-              strokeWidth={0}
-            />
-          </PieChart>
-        </ChartContainer>
-        <div className="flex flex-col gap-1.5">
-          <button
-            onClick={() => onToggle(true)}
-            className={`flex items-center gap-2 text-xs transition-colors rounded px-1.5 py-0.5 ${
-              activeFilter === true ? "bg-foreground/10" : "hover:bg-muted/40"
-            }`}
-          >
-            <span className="h-2 w-2 rounded-full shrink-0" style={{ background: OA_COLORS.oa }} />
-            <span className="text-foreground">{pct}% Open Access</span>
-            <span className="text-muted-foreground tabular-nums">{oaCount}</span>
-          </button>
-          <button
-            onClick={() => onToggle(false)}
-            className={`flex items-center gap-2 text-xs transition-colors rounded px-1.5 py-0.5 ${
-              activeFilter === false ? "bg-foreground/10" : "hover:bg-muted/40"
-            }`}
-          >
-            <span className="h-2 w-2 rounded-full shrink-0" style={{ background: OA_COLORS.closed }} />
-            <span className="text-foreground">Closed</span>
-            <span className="text-muted-foreground tabular-nums">{closedCount}</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 /* ------------------------------------------------------------------ */
 /*  Result row                                                          */
@@ -442,7 +339,6 @@ export default function Search() {
     [records],
   );
   const journalEntries = useMemo(() => countJournals(records), [records]);
-  const oaCounts = useMemo(() => countOpenAccess(records), [records]);
 
   const handleSubmit = () => {
     const trimmed = inputValue.trim();
@@ -469,13 +365,6 @@ export default function Search() {
     },
     [],
   );
-
-  const toggleOA = useCallback((val: boolean) => {
-    setFilters((prev) => ({
-      ...prev,
-      openAccess: prev.openAccess === val ? null : val,
-    }));
-  }, []);
 
   const hasQuery = urlQuery.length >= 3;
 
@@ -582,18 +471,6 @@ export default function Search() {
                     onToggle={(v) => toggleSet("years", v)}
                   />
                 </div>
-
-                {/* Open Access pie */}
-                {(oaCounts.oa > 0 || oaCounts.closed > 0) && (
-                  <div className="flex-1 min-w-[222px] max-w-[300px]">
-                    <OpenAccessPie
-                      oaCount={oaCounts.oa}
-                      closedCount={oaCounts.closed}
-                      activeFilter={filters.openAccess}
-                      onToggle={toggleOA}
-                    />
-                  </div>
-                )}
 
                 {/* Year table */}
                 <div className="flex-1 min-w-[222px] max-w-[300px]">
