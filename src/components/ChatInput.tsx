@@ -129,7 +129,7 @@ export function ChatInput({ onSubmit, onStop, isLoading, initialValue }: ChatInp
               </button>
 
               {modelMenuOpen && (
-                <div className="absolute bottom-full left-0 md:left-auto md:right-0 mb-2 w-[calc(100vw-2rem)] md:w-[260px] rounded-xl border bg-background shadow-xl animate-in fade-in slide-in-from-bottom-2 duration-150 overflow-hidden py-1">
+                <div className="absolute bottom-full right-0 mb-2 w-[calc(100vw-2rem)] md:w-[260px] rounded-xl border bg-background shadow-xl animate-in fade-in slide-in-from-bottom-2 duration-150 overflow-hidden py-1">
                   {MODEL_OPTIONS.map((m) => (
                     <button
                       key={m.label}

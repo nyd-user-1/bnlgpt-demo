@@ -9,7 +9,7 @@ export function AppLayout() {
   const [feedOpen, setFeedOpen] = useState(false);
 
   return (
-    <div className="flex h-screen bg-background p-0 md:p-4">
+    <div className="flex h-dvh bg-background p-0 md:p-4">
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       {/* Mobile backdrop */}

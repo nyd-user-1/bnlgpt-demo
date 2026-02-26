@@ -23,7 +23,7 @@ export function SearchInput({ value, onChange, isLoading, placeholder = "Search 
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="h-11 md:h-9 w-full rounded-lg border border-input bg-background pl-10 pr-4 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        className="h-11 md:h-9 w-full rounded-lg border border-input bg-background pl-10 pr-4 text-base md:text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       />
       {isLoading && (
         <div className="absolute right-4 top-1/2 -translate-y-1/2">
@@ -119,7 +119,6 @@ export function SearchBox({
             onKeyDown={handleKeyDown}
             placeholder="Search the Nuclear Science References database..."
             rows={1}
-            autoFocus
             className="min-h-[40px] w-full resize-none border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 p-0 pr-8 placeholder:text-muted-foreground/60 text-base text-foreground outline-none"
           />
           {value && (
@@ -156,7 +155,7 @@ export function SearchBox({
               </button>
 
               {modeMenuOpen && (
-                <div className="absolute bottom-full left-0 md:left-auto md:right-0 mb-2 w-[calc(100vw-2rem)] md:w-[260px] rounded-xl border bg-background shadow-xl animate-in fade-in slide-in-from-bottom-2 duration-150 overflow-hidden py-1">
+                <div className="absolute bottom-full right-0 mb-2 w-[calc(100vw-2rem)] md:w-[260px] rounded-xl border bg-background shadow-xl animate-in fade-in slide-in-from-bottom-2 duration-150 overflow-hidden py-1">
                   {MODE_OPTIONS.map((m) => (
                     <button
                       key={m.value}

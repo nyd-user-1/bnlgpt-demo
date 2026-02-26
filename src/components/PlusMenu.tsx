@@ -360,7 +360,7 @@ export function PlusMenu({ onSelect, mode }: PlusMenuProps) {
 
       {menuOpen && !drawerCategory && (
         /* -------- Category list -------- */
-        <div className="absolute bottom-full left-0 mb-2 w-[calc(100vw-2rem)] md:w-56 rounded-2xl border border-border/60 bg-background shadow-xl animate-in fade-in slide-in-from-bottom-2 duration-150 overflow-hidden">
+        <div className="absolute bottom-full left-0 mb-2 w-[calc(100vw-2rem)] max-w-[calc(100vw-2rem)] md:w-56 rounded-2xl border border-border/60 bg-background shadow-xl animate-in fade-in slide-in-from-bottom-2 duration-150 overflow-hidden">
           <div className="py-1">
             {CATEGORIES.map((cat, i) => (
               <button
@@ -381,7 +381,7 @@ export function PlusMenu({ onSelect, mode }: PlusMenuProps) {
 
       {menuOpen && drawerCategory && (
         /* -------- Drawer -------- */
-        <div className="absolute bottom-full left-0 mb-2 w-[calc(100vw-2rem)] md:w-80 rounded-2xl border border-border/60 bg-background shadow-xl animate-in fade-in slide-in-from-bottom-2 duration-150 overflow-hidden">
+        <div className="absolute bottom-full left-0 mb-2 w-[calc(100vw-2rem)] max-w-[calc(100vw-2rem)] md:w-80 rounded-2xl border border-border/60 bg-background shadow-xl animate-in fade-in slide-in-from-bottom-2 duration-150 overflow-hidden">
           {/* Header: back + search + clear */}
           <div className="flex items-center gap-2 px-3 py-2.5 border-b border-border/40">
             <button
@@ -399,8 +399,7 @@ export function PlusMenu({ onSelect, mode }: PlusMenuProps) {
               value={drawerSearch}
               onChange={(e) => setDrawerSearch(e.target.value)}
               placeholder={`Search ${CATEGORIES.find((c) => c.key === drawerCategory)?.label ?? ""}...`}
-              autoFocus
-              className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground/50"
+              className="flex-1 bg-transparent text-base outline-none placeholder:text-muted-foreground/50"
             />
             {drawerSearch && (
               <button
