@@ -288,7 +288,7 @@ function ResultRow({
           </span>
         )}
       </div>
-      <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed line-clamp-2">
+      <p className="text-sm text-foreground mt-0.5 leading-snug line-clamp-2">
         {record.title}
       </p>
       {meta.length > 0 && (
