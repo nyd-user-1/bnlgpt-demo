@@ -30,6 +30,8 @@ interface NsrResult {
   pub_year: number;
   doi: string | null;
   keywords: string | null;
+  nuclides: string[] | null;
+  reactions: string[] | null;
   similarity: number;
 }
 
@@ -51,6 +53,12 @@ function formatNsrContext(records: NsrResult[]): string {
       `[${i + 1}] ${r.key_number} — "${r.title}"`,
       `    Authors: ${r.authors ?? "N/A"} | Year: ${r.pub_year}${r.doi ? ` | DOI: ${r.doi}` : ""}`,
     ];
+    if (r.nuclides && r.nuclides.length > 0) {
+      parts.push(`    Nuclides: ${r.nuclides.join(", ")}`);
+    }
+    if (r.reactions && r.reactions.length > 0) {
+      parts.push(`    Reactions: ${r.reactions.join(", ")}`);
+    }
     if (r.keywords) {
       parts.push(`    Keywords: ${r.keywords.slice(0, 200)}`);
     }
@@ -145,7 +153,7 @@ async function fetchAuthorRecords(
   const supabase = createClient(supabaseUrl, supabaseKey);
   const { data, error } = await supabase
     .from("nsr")
-    .select("key_number, title, authors, pub_year, doi, keywords")
+    .select("key_number, title, authors, pub_year, doi, keywords, nuclides, reactions")
     .ilike("authors", `%${authorName}%`)
     .order("pub_year", { ascending: false })
     .limit(8);
