@@ -380,8 +380,11 @@ export default function Features() {
         </div>
 
         {/* Footer */}
-        <p className="text-center text-xs text-muted-foreground mt-8">
-          NNDC — Brookhaven National Laboratory | nsr.nysgpt.com | February 2026
+        <p className="text-center text-xs text-muted-foreground mt-8 max-w-[600px] mx-auto leading-relaxed">
+          NSRgpt is an independent project and is not affiliated with, endorsed by, or sponsored by Brookhaven National Laboratory, the National Nuclear Data Center (NNDC), or the U.S. Department of Energy. NSR data is publicly available and sourced from nndc.bnl.gov/nsr.
+        </p>
+        <p className="text-center text-xs text-muted-foreground mt-2">
+          nsr.nysgpt.com | February 2026
         </p>
 
         {/* CTA */}
