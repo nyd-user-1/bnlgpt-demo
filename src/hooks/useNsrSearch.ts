@@ -138,26 +138,66 @@ async function keyNumberSearch(query: string): Promise<SearchResult> {
   return result;
 }
 
-/** Text search via Supabase — matches key_number, title, authors, keywords */
+/** Extract nuclide-like tokens (e.g. "100Br", "208Pb") from a query string */
+function extractNuclideTokens(text: string): string[] {
+  const found = new Set<string>();
+  // Match "100Br" or "Br-100" patterns
+  for (const m of text.matchAll(/\b(\d{1,3})([A-Z][a-z]?)\b/g)) {
+    found.add(`${m[1]}${m[2][0].toUpperCase()}${m[2].slice(1).toLowerCase()}`);
+  }
+  for (const m of text.matchAll(/\b([A-Z][a-z]?)-?(\d{1,3})\b/g)) {
+    found.add(`${m[2]}${m[1][0].toUpperCase()}${m[1].slice(1).toLowerCase()}`);
+  }
+  return [...found];
+}
+
+/** Text search via Supabase — matches key_number, title, authors, keywords + nuclides/reactions */
 async function textSearch(query: string): Promise<SearchResult> {
   const pattern = `%${query}%`;
   const requestStartMs = performance.now();
 
-  const { data, error } = await supabase
-    .from("nsr")
-    .select("id, key_number, pub_year, reference, authors, title, doi, exfor_keys, keywords, nuclides, reactions")
-    .or(`key_number.ilike.${pattern},title.ilike.${pattern},authors.ilike.${pattern},keywords.ilike.${pattern}`)
-    .order("pub_year", { ascending: false })
-    .limit(200);
+  // Run text ILIKE search and structured nuclide/reaction search in parallel
+  const nuclideTokens = extractNuclideTokens(query);
 
-  if (error) throw new Error(error.message);
+  const [textResult, structuredResult] = await Promise.all([
+    supabase
+      .from("nsr")
+      .select("id, key_number, pub_year, reference, authors, title, doi, exfor_keys, keywords, nuclides, reactions")
+      .or(`key_number.ilike.${pattern},title.ilike.${pattern},authors.ilike.${pattern},keywords.ilike.${pattern}`)
+      .order("pub_year", { ascending: false })
+      .limit(200),
+    nuclideTokens.length > 0
+      ? supabase.rpc("search_nsr_structured", {
+          p_nuclides: nuclideTokens,
+          p_limit: 200,
+        })
+      : Promise.resolve({ data: [], error: null }),
+  ]);
+
+  if (textResult.error) throw new Error(textResult.error.message);
+
+  // Merge: structured hits first (exact nuclide matches), then text hits, deduplicated
+  const seen = new Set<number>();
+  const merged: NsrRecord[] = [];
+
+  for (const r of (structuredResult.data ?? []) as NsrRecord[]) {
+    if (!seen.has(r.id)) {
+      seen.add(r.id);
+      merged.push(r);
+    }
+  }
+  for (const r of (textResult.data ?? []) as NsrRecord[]) {
+    if (!seen.has(r.id)) {
+      seen.add(r.id);
+      merged.push(r);
+    }
+  }
 
   const responseEndMs = performance.now();
-  const records = data ?? [];
-  const payloadBytes = JSON.stringify(records).length;
+  const payloadBytes = JSON.stringify(merged).length;
   const result: SearchResult = {
-    records,
-    count: records.length,
+    records: merged,
+    count: merged.length,
     metrics: {
       source: "supabase_rest",
       query,
