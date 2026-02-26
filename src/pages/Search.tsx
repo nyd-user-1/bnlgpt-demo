@@ -469,7 +469,7 @@ export default function Search() {
           </div>
 
           {/* Scrollable results list */}
-          <div className="flex-1 overflow-y-auto min-h-0 mt-1">
+          <div className="flex-1 overflow-y-auto overflow-x-hidden min-h-0 mt-1">
             {!isLoading && filteredRecords.length > 0 && (
               <div>
                 {filteredRecords.map((record, i) => (
