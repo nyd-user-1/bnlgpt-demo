@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import {
-  Loader2, Calendar, Atom, Zap, ExternalLink, BookOpen,
+  Loader2, Calendar, Atom, Zap, ExternalLink, BookOpen, X,
 } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Cell, ResponsiveContainer } from "recharts";
 import { useNsrSearch, type SearchMode } from "@/hooks/useNsrSearch";
@@ -129,12 +129,14 @@ function StatWidget({
   entries,
   activeValues,
   onToggle,
+  onClose,
 }: {
   icon: React.ReactNode;
   title: string;
   entries: CountEntry[];
   activeValues: Set<string>;
   onToggle: (value: string) => void;
+  onClose: () => void;
 }) {
   if (entries.length === 0) return null;
 
@@ -146,11 +148,18 @@ function StatWidget({
       <div className="flex items-center gap-2 px-3 py-2 bg-muted/30 border-b border-border">
         {icon}
         <span className="text-xs font-semibold text-foreground">{title}</span>
+        <span className="flex-1" />
         {activeValues.size > 0 && (
-          <span className="ml-auto text-[10px] text-muted-foreground">
+          <span className="text-[10px] text-muted-foreground">
             {activeValues.size} selected
           </span>
         )}
+        <button
+          onClick={onClose}
+          className="h-5 w-5 rounded flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+        >
+          <X className="h-3 w-3" />
+        </button>
       </div>
       <div className="p-1">
         {visible.map((e) => {
@@ -190,10 +199,12 @@ function YearBarChart({
   entries,
   activeYears,
   onToggle,
+  onClose,
 }: {
   entries: CountEntry[];
   activeYears: Set<string>;
   onToggle: (value: string) => void;
+  onClose: () => void;
 }) {
   if (entries.length === 0) return null;
 
@@ -210,6 +221,13 @@ function YearBarChart({
       <div className="flex items-center gap-2 px-3 py-2 bg-muted/30 border-b border-border">
         <Calendar className="h-3.5 w-3.5 text-muted-foreground" />
         <span className="text-xs font-semibold text-foreground">Year</span>
+        <span className="flex-1" />
+        <button
+          onClick={onClose}
+          className="h-5 w-5 rounded flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+        >
+          <X className="h-3 w-3" />
+        </button>
       </div>
       <div className="px-2 py-3">
         <ResponsiveContainer width="100%" height={140}>
@@ -312,11 +330,13 @@ export default function Search() {
   const [mode, setMode] = useState<SearchMode>("semantic");
   const [drawerIndex, setDrawerIndex] = useState(-1);
   const [filters, setFilters] = useState<Filters>(EMPTY_FILTERS);
+  const [hiddenWidgets, setHiddenWidgets] = useState<Set<string>>(new Set());
 
-  // Reset filters when query changes
+  // Reset filters and hidden widgets when query changes
   useEffect(() => {
     setInputValue(urlQuery);
     setFilters(EMPTY_FILTERS);
+    setHiddenWidgets(new Set());
   }, [urlQuery]);
 
   const { data, isLoading } = useNsrSearch(urlQuery, mode);
@@ -366,6 +386,10 @@ export default function Search() {
     [],
   );
 
+  const hideWidget = useCallback((name: string) => {
+    setHiddenWidgets((prev) => new Set(prev).add(name));
+  }, []);
+
   const hasQuery = urlQuery.length >= 3;
 
   /* ---------- Empty state ---------- */
@@ -396,134 +420,149 @@ export default function Search() {
   const drawerRecords = filteredRecords;
 
   return (
-    <div className="flex h-full flex-col overflow-y-auto">
-      <div className="mx-auto w-full max-w-[1200px] px-4 py-6">
-        {/* Two-column layout */}
-        <div className="flex flex-col lg:flex-row gap-6">
-          {/* Left column */}
-          <div className="flex-1 min-w-0">
-            <SearchBox
-              value={inputValue}
-              onChange={handleClear}
-              onSubmit={handleSubmit}
-              mode={mode}
-              onModeChange={setMode}
-              isLoading={isLoading}
-            />
+    <div className="flex h-full flex-col">
+      {/* Sticky search area */}
+      <div className="shrink-0 px-4 pt-4 pb-2">
+        <div className="mx-auto w-full max-w-[1200px]">
+          <SearchBox
+            value={inputValue}
+            onChange={handleClear}
+            onSubmit={handleSubmit}
+            mode={mode}
+            onModeChange={setMode}
+            isLoading={isLoading}
+          />
 
-            {/* Active filters indicator */}
-            {hasActiveFilters(filters) && (
-              <div className="mt-2 flex items-center gap-2">
-                <span className="text-xs text-muted-foreground">
-                  Filtered: {filteredRecords.length} of {records.length} results
-                </span>
-                <button
-                  onClick={() => setFilters(EMPTY_FILTERS)}
-                  className="text-xs text-nuclear hover:underline"
-                >
-                  Clear filters
-                </button>
+          {/* Active filters indicator */}
+          {hasActiveFilters(filters) && (
+            <div className="mt-2 flex items-center gap-2">
+              <span className="text-xs text-muted-foreground">
+                Filtered: {filteredRecords.length} of {records.length} results
+              </span>
+              <button
+                onClick={() => setFilters(EMPTY_FILTERS)}
+                className="text-xs text-nuclear hover:underline"
+              >
+                Clear filters
+              </button>
+            </div>
+          )}
+
+          {/* Count header */}
+          <div className="mt-3">
+            {isLoading ? (
+              <div className="flex items-center gap-2 py-2">
+                <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">Searching…</span>
               </div>
+            ) : filteredRecords.length === 0 ? (
+              <p className="text-sm text-muted-foreground py-2">
+                No results found for &ldquo;{urlQuery}&rdquo;
+              </p>
+            ) : (
+              <p className="text-sm text-muted-foreground">
+                About {hasActiveFilters(filters) ? filteredRecords.length : (data?.count ?? records.length)} results
+              </p>
             )}
+          </div>
+        </div>
+      </div>
 
-            {/* Count header */}
-            <div className="mt-3 mb-2">
-              {isLoading ? (
-                <div className="flex items-center gap-2 py-2">
-                  <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                  <span className="text-sm text-muted-foreground">Searching…</span>
+      {/* Scrollable content area */}
+      <div className="flex-1 overflow-y-auto px-4 pb-6">
+        <div className="mx-auto w-full max-w-[1200px]">
+          <div className="flex flex-col lg:flex-row gap-6">
+            {/* Left column — result list */}
+            <div className="flex-1 min-w-0">
+              {!isLoading && filteredRecords.length > 0 && (
+                <div>
+                  {filteredRecords.map((record, i) => (
+                    <ResultRow
+                      key={record.id}
+                      record={record}
+                      mode={mode}
+                      onClick={() => setDrawerIndex(i)}
+                    />
+                  ))}
                 </div>
-              ) : filteredRecords.length === 0 ? (
-                <p className="text-sm text-muted-foreground py-2">
-                  No results found for &ldquo;{urlQuery}&rdquo;
-                </p>
-              ) : (
-                <p className="text-sm text-muted-foreground">
-                  About {hasActiveFilters(filters) ? filteredRecords.length : (data?.count ?? records.length)} results
-                </p>
               )}
             </div>
 
-            {/* Result list */}
-            {!isLoading && filteredRecords.length > 0 && (
-              <div>
-                {filteredRecords.map((record, i) => (
-                  <ResultRow
-                    key={record.id}
-                    record={record}
-                    mode={mode}
-                    onClick={() => setDrawerIndex(i)}
-                  />
-                ))}
+            {/* Right column — widgets in flex wrap grid */}
+            {!isLoading && hasWidgets && (
+              <div className="w-full lg:w-auto lg:min-w-[280px] lg:max-w-[620px] shrink-0">
+                <div className="flex flex-wrap gap-4">
+                  {/* Year bar chart */}
+                  {!hiddenWidgets.has("yearChart") && (
+                    <div className="w-full min-w-[222px]">
+                      <YearBarChart
+                        entries={yearEntries}
+                        activeYears={filters.years}
+                        onToggle={(v) => toggleSet("years", v)}
+                        onClose={() => hideWidget("yearChart")}
+                      />
+                    </div>
+                  )}
+
+                  {/* Year table */}
+                  {!hiddenWidgets.has("yearTable") && (
+                    <div className="flex-1 min-w-[222px] max-w-[300px]">
+                      <StatWidget
+                        icon={<Calendar className="h-3.5 w-3.5 text-muted-foreground" />}
+                        title="Year"
+                        entries={yearEntries}
+                        activeValues={filters.years}
+                        onToggle={(v) => toggleSet("years", v)}
+                        onClose={() => hideWidget("yearTable")}
+                      />
+                    </div>
+                  )}
+
+                  {/* Journals */}
+                  {journalEntries.length > 0 && !hiddenWidgets.has("journals") && (
+                    <div className="flex-1 min-w-[222px] max-w-[300px]">
+                      <StatWidget
+                        icon={<BookOpen className="h-3.5 w-3.5 text-muted-foreground" />}
+                        title="Journal"
+                        entries={journalEntries}
+                        activeValues={filters.journals}
+                        onToggle={(v) => toggleSet("journals", v)}
+                        onClose={() => hideWidget("journals")}
+                      />
+                    </div>
+                  )}
+
+                  {/* Nuclides */}
+                  {nuclideEntries.length > 0 && !hiddenWidgets.has("nuclides") && (
+                    <div className="flex-1 min-w-[222px] max-w-[300px]">
+                      <StatWidget
+                        icon={<Atom className="h-3.5 w-3.5 text-muted-foreground" />}
+                        title="Nuclides"
+                        entries={nuclideEntries}
+                        activeValues={filters.nuclides}
+                        onToggle={(v) => toggleSet("nuclides", v)}
+                        onClose={() => hideWidget("nuclides")}
+                      />
+                    </div>
+                  )}
+
+                  {/* Reactions */}
+                  {reactionEntries.length > 0 && !hiddenWidgets.has("reactions") && (
+                    <div className="flex-1 min-w-[222px] max-w-[300px]">
+                      <StatWidget
+                        icon={<Zap className="h-3.5 w-3.5 text-muted-foreground" />}
+                        title="Reactions"
+                        entries={reactionEntries}
+                        activeValues={filters.reactions}
+                        onToggle={(v) => toggleSet("reactions", v)}
+                        onClose={() => hideWidget("reactions")}
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
             )}
           </div>
-
-          {/* Right column — widgets in flex wrap grid */}
-          {!isLoading && hasWidgets && (
-            <div className="w-full lg:w-auto lg:min-w-[280px] lg:max-w-[620px] shrink-0">
-              <div className="flex flex-wrap gap-4">
-                {/* Year bar chart */}
-                <div className="w-full min-w-[222px]">
-                  <YearBarChart
-                    entries={yearEntries}
-                    activeYears={filters.years}
-                    onToggle={(v) => toggleSet("years", v)}
-                  />
-                </div>
-
-                {/* Year table */}
-                <div className="flex-1 min-w-[222px] max-w-[300px]">
-                  <StatWidget
-                    icon={<Calendar className="h-3.5 w-3.5 text-muted-foreground" />}
-                    title="Year"
-                    entries={yearEntries}
-                    activeValues={filters.years}
-                    onToggle={(v) => toggleSet("years", v)}
-                  />
-                </div>
-
-                {/* Journals */}
-                {journalEntries.length > 0 && (
-                  <div className="flex-1 min-w-[222px] max-w-[300px]">
-                    <StatWidget
-                      icon={<BookOpen className="h-3.5 w-3.5 text-muted-foreground" />}
-                      title="Journal"
-                      entries={journalEntries}
-                      activeValues={filters.journals}
-                      onToggle={(v) => toggleSet("journals", v)}
-                    />
-                  </div>
-                )}
-
-                {/* Nuclides */}
-                {nuclideEntries.length > 0 && (
-                  <div className="flex-1 min-w-[222px] max-w-[300px]">
-                    <StatWidget
-                      icon={<Atom className="h-3.5 w-3.5 text-muted-foreground" />}
-                      title="Nuclides"
-                      entries={nuclideEntries}
-                      activeValues={filters.nuclides}
-                      onToggle={(v) => toggleSet("nuclides", v)}
-                    />
-                  </div>
-                )}
-
-                {/* Reactions */}
-                {reactionEntries.length > 0 && (
-                  <div className="flex-1 min-w-[222px] max-w-[300px]">
-                    <StatWidget
-                      icon={<Zap className="h-3.5 w-3.5 text-muted-foreground" />}
-                      title="Reactions"
-                      entries={reactionEntries}
-                      activeValues={filters.reactions}
-                      onToggle={(v) => toggleSet("reactions", v)}
-                    />
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
         </div>
       </div>
 
