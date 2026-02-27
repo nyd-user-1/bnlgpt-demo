@@ -57,9 +57,9 @@ export function AppLayout() {
       {/* Pinned info button */}
       <button
         onClick={() => setDisclaimerOpen(true)}
-        className="fixed bottom-5 left-[30px] z-50 h-8 w-8 rounded-full border border-border bg-background shadow-md flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+        className="fixed bottom-5 left-[30px] z-50 inline-flex items-center justify-center h-10 w-10 rounded-md text-foreground hover:bg-muted transition-colors"
       >
-        <Info className="h-4 w-4" />
+        <Info className="h-5 w-5" />
       </button>
 
       {/* Disclaimer dialog */}
